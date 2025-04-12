@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        appDataBase = AppDataBase.getDatabase(this)
-//        deleteDatabase("book.db")
+        deleteDatabase("book.db")
 
         enableEdgeToEdge()
         setContent {

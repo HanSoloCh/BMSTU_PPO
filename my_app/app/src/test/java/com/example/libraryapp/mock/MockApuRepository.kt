@@ -1,7 +1,7 @@
 package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.ApuModel
-import com.example.libraryapp.domain.query.apu.ApuSpecification
+import com.example.libraryapp.domain.specification.ApuSpecification
 import com.example.libraryapp.domain.repository.ApuRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

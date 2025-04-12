@@ -1,13 +1,11 @@
 package com.example.libraryapp.data.repository
 
 import androidx.sqlite.db.SimpleSQLiteQuery
-import androidx.sqlite.db.SupportSQLiteQuery
-import com.example.libraryapp.data.local.dao.BookDao
 import com.example.libraryapp.data.local.dao.ReservationDao
 import com.example.libraryapp.data.mapping.ReservationMapper
 import com.example.libraryapp.domain.model.ReservationModel
-import com.example.libraryapp.domain.query.reservation.ReservationSpecification
 import com.example.libraryapp.domain.repository.ReservationRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -36,11 +34,7 @@ class ReservationRepositoryImpl @Inject constructor(
         reservationDao.deleteReservation(reservationId)
     }
 
-    override fun query(specification: ReservationSpecification): Flow<List<ReservationModel>> {
-        val (clause, args) = specification.toSqlClause()
-        val sql = "SELECT * FROM reservation WHERE $clause"
-        return reservationDao.select(SimpleSQLiteQuery(sql, args.toTypedArray())).map { entities ->
-            entities.map { ReservationMapper.toDomain(it) }
-        }
+    override fun query(specification: Specification<ReservationModel>): Flow<List<ReservationModel>> {
+        TODO()
     }
 }

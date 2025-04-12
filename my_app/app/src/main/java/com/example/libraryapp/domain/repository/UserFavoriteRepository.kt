@@ -5,13 +5,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
+@OptIn(ExperimentalUuidApi::class)
 interface UserFavoriteRepository {
-    @OptIn(ExperimentalUuidApi::class)
     suspend fun create(userId: Uuid, bookId: Uuid)
 
-    @OptIn(ExperimentalUuidApi::class)
     suspend fun delete(userId: Uuid, bookId: Uuid)
 
-    @OptIn(ExperimentalUuidApi::class)
     fun readByUserId(userId: Uuid): Flow<List<BookModel>>
 }

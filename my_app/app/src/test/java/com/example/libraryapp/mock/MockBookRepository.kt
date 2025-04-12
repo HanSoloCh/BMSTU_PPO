@@ -1,7 +1,6 @@
 package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.query.book.BookSpecification
 import com.example.libraryapp.domain.repository.BookRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

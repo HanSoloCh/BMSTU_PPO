@@ -1,16 +1,11 @@
 package com.example.libraryapp.data.repository
 
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.libraryapp.data.local.dao.ApuDao
 import com.example.libraryapp.data.mapping.ApuMapper
-import com.example.libraryapp.data.mapping.ReservationMapper
 import com.example.libraryapp.domain.model.ApuModel
-import com.example.libraryapp.domain.model.ReservationModel
-import com.example.libraryapp.domain.query.apu.ApuSpecification
-import com.example.libraryapp.domain.query.reservation.ReservationSpecification
+import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.repository.ApuRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
@@ -39,11 +34,7 @@ class ApuRepositoryImpl @Inject constructor(
         apuDao.deleteById(apuId)
     }
 
-    override fun query(specification: ApuSpecification): Flow<List<ApuModel>> {
-        val (clause, args) = specification.toSqlClause()
-        val sql = "SELECT * FROM apu WHERE $clause"
-        return apuDao.select(SimpleSQLiteQuery(sql, args.toTypedArray())).map { entities ->
-            entities.map { ApuMapper.toDomain(it) }
-        }
+    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
+        TODO()
     }
 }

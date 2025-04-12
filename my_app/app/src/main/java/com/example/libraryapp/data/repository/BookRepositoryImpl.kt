@@ -1,11 +1,10 @@
 package com.example.libraryapp.data.repository
 
-import androidx.sqlite.db.SimpleSQLiteQuery
 import com.example.libraryapp.data.local.dao.BookDao
 import com.example.libraryapp.data.mapping.BookMapper
 import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.query.book.BookSpecification
 import com.example.libraryapp.domain.repository.BookRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -28,12 +27,8 @@ class BookRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun query(specification: BookSpecification): Flow<List<BookModel>> {
-        val (clause, args) = specification.toSqlClause()
-        val sql = "SELECT * FROM book WHERE $clause"
-        return bookDao.select(SimpleSQLiteQuery(sql, args.toTypedArray())).map { entities ->
-            entities.map { BookMapper.toDomain(it) }
-        }
+    override fun query(specification: Specification<BookModel>): Flow<List<BookModel>> {
+        TODO()
     }
 
 
