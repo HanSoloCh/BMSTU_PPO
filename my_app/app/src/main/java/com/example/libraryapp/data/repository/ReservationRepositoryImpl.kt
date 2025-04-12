@@ -1,64 +1,33 @@
 package com.example.libraryapp.data.repository
 
-import androidx.sqlite.db.SimpleSQLiteQuery
-import com.example.libraryapp.data.local.dao.ReservationDao
-import com.example.libraryapp.data.local.entity.ApuEntity
+import com.example.libraryapp.data.local.entity.ReservationEntity
 import com.example.libraryapp.data.mapping.ReservationMapper
-import com.example.libraryapp.data.mapping.toApuModel
-import com.example.libraryapp.data.mapping.toInsertStatement
-import com.example.libraryapp.data.mapping.toUpdateStatement
-import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.repository.ReservationRepository
-import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-import java.util.UUID
 import javax.inject.Inject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
-class ReservationRepositoryImpl @Inject constructor(
-    private val reservationDao: ReservationDao
-) : ReservationRepository {
-    override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
+class ReservationRepositoryImpl @Inject constructor() : ReservationRepository {
+    override suspend fun create(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.toApuModel()
-        }
-    }
-
-    override suspend fun create(apuModel: ApuModel) = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.insert {
-                apuModel.toInsertStatement(it)
+            ReservationEntity.insert {
+                ReservationMapper.toInsertStatement(reservationModel, it)
             }
-                .resultedValues?.first()?.toApuModel()?.id
-                ?: throw NoSuchElementException("Error saving apu: $apuModel")
+                .resultedValues?.first()?.let { ReservationMapper.toDomain(it).bookId }
+                ?: throw NoSuchElementException("Error saving reservation: $reservationModel")
+            TODO()
         }
     }
 
-    override suspend fun update(apuModel: ApuModel) = withContext(Dispatchers.IO) {
+    override suspend fun update(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.update({ ApuEntity.id eq apuModel.id }) {
-                apuModel.toUpdateStatement(it)
-            }
+            TODO()
+//            ReservationEntity.update({ ReservationEntity.id eq reservationModel.id }) {
+//                ReservationMapper.toUpdateStatement(reservationModel, it)
+//            }
         }
-    }
-
-    override suspend fun deleteById(apuId: UUID) = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.deleteWhere { ApuEntity.id eq apuId }
-        }
-    }
-
-    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
-        TODO("Not yet implemented")
     }
 }

@@ -1,16 +1,14 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.BbkModel
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface BbkRepository {
-    suspend fun readById(bbkId: Uuid): BbkModel?
+    suspend fun readById(bbkId: UUID): BbkModel?
 
-    suspend fun create(bbkModel: BbkModel)
+    suspend fun create(bbkModel: BbkModel): UUID
 
-    suspend fun update(bbkModel: BbkModel)
+    suspend fun update(bbkModel: BbkModel): Int
 
-    suspend fun deleteById(bbkId: Uuid)
+    suspend fun deleteById(bbkId: UUID): Int
 }

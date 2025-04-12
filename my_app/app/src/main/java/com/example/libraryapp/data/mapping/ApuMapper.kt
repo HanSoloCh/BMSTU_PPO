@@ -6,26 +6,29 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
+import java.util.UUID
 
 
-fun ResultRow.toApuModel(): ApuModel {
-    return ApuModel(
-        id = this[ApuEntity.id].value,
-        term = this[ApuEntity.term],
-        bbkId = this[ApuEntity.bbkId].value,
-    )
-}
-
-fun ApuModel.toInsertStatement(statement: InsertStatement<Number>): InsertStatement<Number> {
-    return statement.also {
-        it[ApuEntity.term] = this.term
-        it[ApuEntity.bbkId] = this.bbkId
+object ApuMapper {
+    fun toDomain(row: ResultRow): ApuModel {
+        return ApuModel(
+            id = row[ApuEntity.id].value,
+            term = row[ApuEntity.term],
+            bbkId = row[ApuEntity.bbkId].value,
+        )
     }
-}
 
-fun ApuModel.toUpdateStatement(statement: UpdateStatement): UpdateStatement {
-    return statement.also {
-        it[ApuEntity.term] = this.term
-        it[ApuEntity.bbkId] = this.bbkId
+    fun toInsertStatement(apuModel: ApuModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[ApuEntity.term] = apuModel.term
+            it[ApuEntity.bbkId] = apuModel.bbkId
+        }
+    }
+
+    fun toUpdateStatement(apuModel: ApuModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[ApuEntity.term] = apuModel.term
+            it[ApuEntity.bbkId] = apuModel.bbkId
+        }
     }
 }

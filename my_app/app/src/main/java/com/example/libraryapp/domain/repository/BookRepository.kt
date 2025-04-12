@@ -1,22 +1,18 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface BookRepository {
-    suspend fun readById(bookId: Uuid): BookModel?
+    suspend fun readById(bookId: UUID): BookModel?
 
-    fun readByAuthorId(authorId: Uuid): Flow<List<BookModel>>
+//    fun readByAuthorId(authorId: Uuid): Flow<List<BookModel>>
 
-    suspend fun create(bookModel: BookModel): Int
+    suspend fun create(bookModel: BookModel): UUID
 
-    suspend fun update(bookModel: BookModel)
+    suspend fun update(bookModel: BookModel): Int
 
-    suspend fun deleteById(bookId: Uuid)
+    suspend fun deleteById(bookId: UUID): Int
 
-    fun query(specification: Specification<BookModel>): Flow<List<BookModel>>
+//    fun query(specification: Specification<BookModel>): Flow<List<BookModel>>
 }

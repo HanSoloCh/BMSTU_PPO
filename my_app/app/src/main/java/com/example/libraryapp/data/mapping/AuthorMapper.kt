@@ -6,22 +6,23 @@ import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 import org.jetbrains.exposed.sql.ResultRow
 
-
-fun ResultRow.toAuthorModel(): AuthorModel {
-    return AuthorModel(
-        id = this[AuthorEntity.id].value,
-        name = this[AuthorEntity.name]
-    )
-}
-
-fun AuthorModel.toInsertStatement(statement: InsertStatement<Number>): InsertStatement<Number> {
-    return statement.also {
-        it[AuthorEntity.name] = this.name
+object AuthorMapper {
+    fun toDomain(row: ResultRow): AuthorModel {
+        return AuthorModel(
+            id = row[AuthorEntity.id].value,
+            name = row[AuthorEntity.name]
+        )
     }
-}
 
-fun AuthorModel.toUpdateStatement(statement: UpdateStatement): UpdateStatement {
-    return statement.also {
-        it[AuthorEntity.name] = this.name
+    fun toInsertStatement(author: AuthorModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[AuthorEntity.name] = author.name
+        }
+    }
+
+    fun toUpdateStatement(author: AuthorModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[AuthorEntity.name] = author.name
+        }
     }
 }

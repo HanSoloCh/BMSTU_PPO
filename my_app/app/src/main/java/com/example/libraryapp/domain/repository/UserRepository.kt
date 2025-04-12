@@ -1,18 +1,16 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.UserModel
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface UserRepository {
-    suspend fun readById(userId: Uuid): UserModel?
+    suspend fun readById(userId: UUID): UserModel?
 
-    suspend fun create(userModel: UserModel)
+    suspend fun create(userModel: UserModel): UUID
 
-    suspend fun update(userModel: UserModel)
+    suspend fun update(userModel: UserModel): Int
 
-    suspend fun deleteById(userId: Uuid)
+    suspend fun deleteById(userId: UUID): Int
 
     suspend fun login(email: String, password: String): UserModel?
 }

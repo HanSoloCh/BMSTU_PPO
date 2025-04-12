@@ -1,16 +1,14 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.PublisherModel
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface PublisherRepository {
-    suspend fun readById(publisherId: Uuid): PublisherModel?
+    suspend fun readById(publisherId: UUID): PublisherModel?
 
-    suspend fun create(publisherModel: PublisherModel)
+    suspend fun create(publisherModel: PublisherModel): UUID
 
-    suspend fun update(publisherModel: PublisherModel)
+    suspend fun update(publisherModel: PublisherModel): Int
 
-    suspend fun deleteById(publisherId: Uuid)
+    suspend fun deleteById(publisherId: UUID): Int
 }

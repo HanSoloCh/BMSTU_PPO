@@ -1,18 +1,10 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.local.dao.AuthorDao
-import com.example.libraryapp.data.local.entity.ApuEntity
+import com.example.libraryapp.data.local.entity.AuthorEntity
 import com.example.libraryapp.data.mapping.AuthorMapper
-import com.example.libraryapp.data.mapping.toApuModel
-import com.example.libraryapp.data.mapping.toInsertStatement
-import com.example.libraryapp.data.mapping.toUpdateStatement
-import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.repository.AuthorRepository
-import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -23,37 +15,39 @@ import javax.inject.Inject
 
 
 class AuthorRepositoryImpl @Inject constructor() : AuthorRepository {
-    override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
+    override suspend fun readById(authorId: UUID): AuthorModel? = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.toApuModel()
-        }
-    }
-
-    override suspend fun create(apuModel: ApuModel) = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.insert {
-                apuModel.toInsertStatement(it)
-            }
-                .resultedValues?.first()?.toApuModel()?.id
-                ?: throw NoSuchElementException("Error saving apu: $apuModel")
-        }
-    }
-
-    override suspend fun update(apuModel: ApuModel) = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.update({ ApuEntity.id eq apuModel.id }) {
-                apuModel.toUpdateStatement(it)
+            AuthorEntity.select { AuthorEntity.id eq authorId }.firstOrNull()?.let {
+                AuthorMapper.toDomain(it)
             }
         }
     }
 
-    override suspend fun deleteById(apuId: UUID) = withContext(Dispatchers.IO) {
+    override suspend fun create(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.deleteWhere { ApuEntity.id eq apuId }
+            AuthorEntity.insert {
+                AuthorMapper.toInsertStatement(authorModel, it)
+            }
+                .resultedValues?.first()?.let { AuthorMapper.toDomain(it).id }
+                ?: throw NoSuchElementException("Error saving author: $authorModel")
         }
     }
 
-    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
-        TODO("Not yet implemented")
+    override suspend fun update(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
+        transaction {
+            AuthorEntity.update({ AuthorEntity.id eq authorModel.id }) {
+                AuthorMapper.toUpdateStatement(authorModel, it)
+            }
+        }
     }
+
+    override suspend fun deleteById(authorId: UUID) = withContext(Dispatchers.IO) {
+        transaction {
+            AuthorEntity.deleteWhere { AuthorEntity.id eq authorId }
+        }
+    }
+
+//    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
+//        TODO("Not yet implemented")
+//    }
 }

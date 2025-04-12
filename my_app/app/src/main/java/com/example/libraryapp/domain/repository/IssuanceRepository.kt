@@ -1,20 +1,14 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.IssuanceModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface IssuanceRepository {
-    suspend fun readById(issuanceId: Uuid): IssuanceModel?
-
     suspend fun create(issuanceModel: IssuanceModel)
 
-    suspend fun update(issuanceModel: IssuanceModel)
+    suspend fun update(issuanceModel: IssuanceModel): Int
 
-    suspend fun deleteById(issuanceId: Uuid)
+//    suspend fun deleteById(issuanceId: UUID): Int
 
-    fun query(specification: Specification<IssuanceModel>): Flow<List<IssuanceModel>>
+//    fun query(specification: Specification<IssuanceModel>): Flow<List<IssuanceModel>>
 }

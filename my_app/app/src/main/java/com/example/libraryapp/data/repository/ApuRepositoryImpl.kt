@@ -1,10 +1,7 @@
 package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.local.entity.ApuEntity
-import com.example.libraryapp.data.mapping.toApuModel
-import com.example.libraryapp.data.mapping.toDomain
-import com.example.libraryapp.data.mapping.toInsertStatement
-import com.example.libraryapp.data.mapping.toUpdateStatement
+import com.example.libraryapp.data.mapping.ApuMapper
 import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.repository.ApuRepository
@@ -22,16 +19,18 @@ import javax.inject.Inject
 class ApuRepositoryImpl @Inject constructor() : ApuRepository {
     override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.toApuModel()
+            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.let {
+                ApuMapper.toDomain(it)
+            }
         }
     }
 
     override suspend fun create(apuModel: ApuModel) = withContext(Dispatchers.IO) {
         transaction {
             ApuEntity.insert {
-                apuModel.toInsertStatement(it)
+                ApuMapper.toInsertStatement(apuModel, it)
             }
-                .resultedValues?.first()?.toApuModel()?.id
+                .resultedValues?.first()?.let { ApuMapper.toDomain(it).id }
                 ?: throw NoSuchElementException("Error saving apu: $apuModel")
         }
     }
@@ -39,7 +38,7 @@ class ApuRepositoryImpl @Inject constructor() : ApuRepository {
     override suspend fun update(apuModel: ApuModel) = withContext(Dispatchers.IO) {
         transaction {
             ApuEntity.update({ ApuEntity.id eq apuModel.id }) {
-                apuModel.toUpdateStatement(it)
+                ApuMapper.toUpdateStatement(apuModel, it)
             }
         }
     }

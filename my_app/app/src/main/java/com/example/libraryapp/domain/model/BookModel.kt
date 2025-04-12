@@ -7,6 +7,7 @@ data class BookModel(
     val id: UUID,
     val title: String,
     val annotation: String?,
+    val authors: List<UUID>,
     val publisherId: UUID,
     val publicationYear: Int?,
     val codeISBN: String?,
