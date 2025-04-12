@@ -1,17 +1,16 @@
 package com.example.libraryapp.domain.model
 
 import java.time.Year
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-data class BookModel @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class BookModel(
+    val id: UUID,
     val title: String,
     val annotation: String?,
-    val publisherId: Uuid,
+    val publisherId: UUID,
     val publicationYear: Int?,
     val codeISBN: String?,
-    val bbkId: Uuid,
+    val bbkId: UUID,
     val mediaType: String?,
     val volume: String?,
     val language: String?,

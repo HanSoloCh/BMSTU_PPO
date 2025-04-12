@@ -1,10 +1,9 @@
 package com.example.libraryapp.domain.model
 
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-data class AuthorModel @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class AuthorModel(
+    val id: UUID,
     val name: String,
 ) {
     init {

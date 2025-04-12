@@ -2,43 +2,46 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.domain.model.BookModel
-import kotlin.uuid.ExperimentalUuidApi
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
 object BookMapper {
-    fun toDomain(bookEntity: BookEntity): BookModel {
-        return BookModel(
-            id = bookEntity.id,
-            title = bookEntity.title,
-            annotation = bookEntity.annotation,
-            publisherId = bookEntity.publisherId,
-            publicationYear = bookEntity.publicationYear,
-            codeISBN = bookEntity.codeISBN,
-            bbkId = bookEntity.bbkId,
-            mediaType = bookEntity.mediaType,
-            volume = bookEntity.volume,
-            language = bookEntity.language,
-            originalLanguage = bookEntity.originalLanguage,
-            copies = bookEntity.copies,
-            availableCopies = bookEntity.availableCopies
-        )
+    fun toDomain(row: ResultRow): BookModel {
+        TODO()
     }
 
-    fun toData(bookModel: BookModel): BookEntity {
-        return BookEntity(
-            id = bookModel.id,
-            title = bookModel.title,
-            annotation = bookModel.annotation,
-            publisherId = bookModel.publisherId,
-            publicationYear = bookModel.publicationYear,
-            codeISBN = bookModel.codeISBN,
-            bbkId = bookModel.bbkId,
-            mediaType = bookModel.mediaType,
-            volume = bookModel.volume,
-            language = bookModel.language,
-            originalLanguage = bookModel.originalLanguage,
-            copies = bookModel.copies,
-            availableCopies = bookModel.availableCopies
-        )
+    fun toInsertStatement(bookModel: BookModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[BookEntity.title] = bookModel.title
+            it[BookEntity.annotation] = bookModel.annotation
+            it[BookEntity.publisherId] = bookModel.publisherId
+            it[BookEntity.publicationYear] = bookModel.publicationYear
+            it[BookEntity.codeISBN] = bookModel.codeISBN
+            it[BookEntity.bbkId] = bookModel.bbkId
+            it[BookEntity.mediaType] = bookModel.mediaType
+            it[BookEntity.volume] = bookModel.volume
+            it[BookEntity.language] = bookModel.language
+            it[BookEntity.originalLanguage] = bookModel.originalLanguage
+            it[BookEntity.copies] = bookModel.copies
+            it[BookEntity.availableCopies] = bookModel.availableCopies
+        }
+    }
+
+    fun toUpdateStatement(bookModel: BookModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[BookEntity.title] = bookModel.title
+            it[BookEntity.annotation] = bookModel.annotation
+            it[BookEntity.publisherId] = bookModel.publisherId
+            it[BookEntity.publicationYear] = bookModel.publicationYear
+            it[BookEntity.codeISBN] = bookModel.codeISBN
+            it[BookEntity.bbkId] = bookModel.bbkId
+            it[BookEntity.mediaType] = bookModel.mediaType
+            it[BookEntity.volume] = bookModel.volume
+            it[BookEntity.language] = bookModel.language
+            it[BookEntity.originalLanguage] = bookModel.originalLanguage
+            it[BookEntity.copies] = bookModel.copies
+            it[BookEntity.availableCopies] = bookModel.availableCopies
+        }
     }
 }

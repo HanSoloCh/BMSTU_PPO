@@ -2,6 +2,7 @@ package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.repository.BookRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.uuid.ExperimentalUuidApi
@@ -40,21 +41,9 @@ class MockBookRepository : BookRepository {
         books.removeAll { it.id == bookId }
     }
 
-    override fun query(specification: BookSpecification): Flow<List<BookModel>> {
-        return flow {
-            val (clause, args) = specification.toSqlClause()
-            val filteredBooks = books.filter { book ->
-                when (clause) {
-                    "bbk_id = ?" -> book.bbkId == args[0]
-                    "title LIKE ?" -> book.title.contains(args[0] as String, ignoreCase = true)
-                    "publisher_id = ?" -> book.publisherId == args[0]
-                    else -> true
-                }
-            }
-            emit(filteredBooks)
-        }
+    override fun query(specification: Specification<BookModel>): Flow<List<BookModel>> {
+        TODO()
     }
-
 }
 
 data class BookAuthorRelation @OptIn(ExperimentalUuidApi::class) constructor(

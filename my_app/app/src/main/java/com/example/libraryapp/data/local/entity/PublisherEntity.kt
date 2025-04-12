@@ -1,17 +1,12 @@
 package com.example.libraryapp.data.local.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import org.jetbrains.exposed.dao.id.UUIDTable
 
-@Entity(tableName = "publisher")
-data class PublisherEntity @OptIn(ExperimentalUuidApi::class) constructor(
-    @PrimaryKey val id: Uuid = Uuid.random(),
-    val name: String,
-    val description: String?,
-    @ColumnInfo(name = "foundation_year") val foundationYear: Int?,
-    val email: String?,
-    @ColumnInfo(name = "phone_number") val phoneNumber: String?,
-)
+object PublisherEntity : UUIDTable("publisher") {
+    val name = varchar("name", 255)
+    val description = varchar("description", 255).nullable()
+    val foundationYear = integer("foundation_year").nullable()
+    val email = varchar("email", 50).nullable()
+    val phoneNumber = varchar("phone_number", 20).nullable()
+}
+

@@ -2,33 +2,46 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.UserEntity
 import com.example.libraryapp.domain.model.UserModel
-import kotlin.uuid.ExperimentalUuidApi
+import com.example.libraryapp.domain.util.utils.UserRole
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
 object UserMapper {
-    fun toDomain(userEntity: UserEntity): UserModel {
+    fun toDomain(row: ResultRow): UserModel {
         return UserModel(
-            id = userEntity.id,
-            name = userEntity.name,
-            surname = userEntity.name,
-            secondName = userEntity.secondName,
-            password = userEntity.password,
-            email = userEntity.email,
-            phoneNumber = userEntity.phoneNumber,
-            role = userEntity.role
+            id = row[UserEntity.id].value,
+            name = row[UserEntity.name],
+            surname = row[UserEntity.surname],
+            secondName = row[UserEntity.secondName],
+            password = row[UserEntity.password],
+            email = row[UserEntity.email],
+            phoneNumber = row[UserEntity.phoneNumber],
+            role = UserRole.valueOf(row[UserEntity.role])
         )
     }
 
-    fun toData(userModel: UserModel): UserEntity {
-        return UserEntity(
-            id = userModel.id,
-            name = userModel.name,
-            surname = userModel.name,
-            secondName = userModel.secondName,
-            password = userModel.password,
-            email = userModel.email,
-            phoneNumber = userModel.phoneNumber,
-            role = userModel.role
-        )
+    fun toInsertStatement(userModel: UserModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[UserEntity.name] = userModel.name
+            it[UserEntity.surname] = userModel.surname
+            it[UserEntity.secondName] = userModel.secondName
+            it[UserEntity.password] = userModel.password
+            it[UserEntity.email] = userModel.email
+            it[UserEntity.phoneNumber] = userModel.phoneNumber
+            it[UserEntity.role] = userModel.role.toString()
+        }
+    }
+
+    fun toUpdateStatement(userModel: UserModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[UserEntity.name] = userModel.name
+            it[UserEntity.surname] = userModel.surname
+            it[UserEntity.secondName] = userModel.secondName
+            it[UserEntity.password] = userModel.password
+            it[UserEntity.email] = userModel.email
+            it[UserEntity.phoneNumber] = userModel.phoneNumber
+            it[UserEntity.role] = userModel.role.toString()
+        }
     }
 }

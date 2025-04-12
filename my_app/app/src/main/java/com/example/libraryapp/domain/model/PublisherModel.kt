@@ -1,12 +1,10 @@
 package com.example.libraryapp.domain.model
 
-import android.util.Patterns
 import java.time.Year
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-data class PublisherModel @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class PublisherModel(
+    val id: UUID,
     val name: String,
     val description: String?,
     val foundationYear: Int?,

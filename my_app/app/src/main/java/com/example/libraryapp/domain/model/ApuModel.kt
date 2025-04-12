@@ -1,12 +1,11 @@
 package com.example.libraryapp.domain.model
 
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-data class ApuModel @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class ApuModel(
+    val id: UUID,
     val term: String,
-    val bbkId: Uuid
+    val bbkId: UUID
 ) {
     init {
         require(term.isNotBlank())

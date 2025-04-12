@@ -1,11 +1,10 @@
 package com.example.libraryapp.domain.model
 
 import com.example.libraryapp.domain.util.utils.UserRole
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import java.util.UUID
 
-data class UserModel @OptIn(ExperimentalUuidApi::class) constructor(
-    val id: Uuid,
+data class UserModel(
+    val id: UUID,
     val name: String,
     val surname: String,
     val secondName: String?,

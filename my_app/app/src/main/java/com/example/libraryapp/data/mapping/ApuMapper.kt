@@ -2,23 +2,30 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.ApuEntity
 import com.example.libraryapp.domain.model.ApuModel
-import kotlin.uuid.ExperimentalUuidApi
+import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
-object ApuMapper {
-    fun toDomain(apuEntity: ApuEntity): ApuModel {
-        return ApuModel(
-            id = apuEntity.id,
-            term = apuEntity.term,
-            bbkId = apuEntity.bbkId
-        )
+
+fun ResultRow.toApuModel(): ApuModel {
+    return ApuModel(
+        id = this[ApuEntity.id].value,
+        term = this[ApuEntity.term],
+        bbkId = this[ApuEntity.bbkId].value,
+    )
+}
+
+fun ApuModel.toInsertStatement(statement: InsertStatement<Number>): InsertStatement<Number> {
+    return statement.also {
+        it[ApuEntity.term] = this.term
+        it[ApuEntity.bbkId] = this.bbkId
     }
+}
 
-    fun toData(apuModel: ApuModel): ApuEntity {
-        return ApuEntity(
-            id = apuModel.id,
-            term = apuModel.term,
-            bbkId = apuModel.bbkId
-        )
+fun ApuModel.toUpdateStatement(statement: UpdateStatement): UpdateStatement {
+    return statement.also {
+        it[ApuEntity.term] = this.term
+        it[ApuEntity.bbkId] = this.bbkId
     }
 }

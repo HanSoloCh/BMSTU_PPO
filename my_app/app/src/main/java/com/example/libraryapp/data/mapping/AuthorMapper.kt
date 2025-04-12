@@ -2,21 +2,26 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.AuthorEntity
 import com.example.libraryapp.domain.model.AuthorModel
-import kotlin.uuid.ExperimentalUuidApi
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
+import org.jetbrains.exposed.sql.ResultRow
 
-@OptIn(ExperimentalUuidApi::class)
-object AuthorMapper {
-    fun toDomain(authorEntity: AuthorEntity): AuthorModel {
-        return AuthorModel(
-            id = authorEntity.id,
-            name = authorEntity.name
-        )
+
+fun ResultRow.toAuthorModel(): AuthorModel {
+    return AuthorModel(
+        id = this[AuthorEntity.id].value,
+        name = this[AuthorEntity.name]
+    )
+}
+
+fun AuthorModel.toInsertStatement(statement: InsertStatement<Number>): InsertStatement<Number> {
+    return statement.also {
+        it[AuthorEntity.name] = this.name
     }
+}
 
-    fun toData(authorModel: AuthorModel): AuthorEntity {
-        return AuthorEntity(
-            id = authorModel.id,
-            name = authorModel.name
-        )
+fun AuthorModel.toUpdateStatement(statement: UpdateStatement): UpdateStatement {
+    return statement.also {
+        it[AuthorEntity.name] = this.name
     }
 }

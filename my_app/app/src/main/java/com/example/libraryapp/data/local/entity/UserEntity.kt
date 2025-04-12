@@ -1,20 +1,13 @@
 package com.example.libraryapp.data.local.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
-import com.example.libraryapp.domain.util.utils.UserRole
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import org.jetbrains.exposed.dao.id.UUIDTable
 
-@Entity(tableName = "user")
-data class UserEntity @OptIn(ExperimentalUuidApi::class) constructor(
-    @PrimaryKey val id: Uuid = Uuid.random(),
-    val name: String,
-    val surname: String,
-    @ColumnInfo(name = "second_name") val secondName: String?,
-    val password: String,
-    val email: String,
-    @ColumnInfo(name = "phone_number") val phoneNumber: String,
-    val role: UserRole,
-)
+object UserEntity : UUIDTable("user") {
+    val name = varchar("name", 50)
+    val surname = varchar("surname", 50)
+    val secondName = varchar("second_name", 50).nullable()
+    val email = varchar("email", 50)
+    val password = varchar("password", 50)
+    val phoneNumber = varchar("phone_number", 20)
+    val role = varchar("role", 20)
+}

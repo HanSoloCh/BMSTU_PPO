@@ -1,32 +1,40 @@
 package com.example.libraryapp.data.mapping
 
-import android.util.Patterns
 import com.example.libraryapp.data.local.entity.PublisherEntity
 import com.example.libraryapp.domain.model.PublisherModel
-import java.time.Year
-import kotlin.uuid.ExperimentalUuidApi
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
 object PublisherMapper {
-    fun toDomain(publisherEntity: PublisherEntity): PublisherModel {
+    fun toDomain(row: ResultRow): PublisherModel {
         return PublisherModel(
-            id = publisherEntity.id,
-            name = publisherEntity.name,
-            description = publisherEntity.description,
-            foundationYear = publisherEntity.foundationYear,
-            email = publisherEntity.email,
-            phoneNumber = publisherEntity.phoneNumber
+            id = row[PublisherEntity.id].value,
+            name = row[PublisherEntity.name],
+            description = row[PublisherEntity.name],
+            foundationYear = row[PublisherEntity.foundationYear],
+            email = row[PublisherEntity.email],
+            phoneNumber = row[PublisherEntity.phoneNumber]
         )
     }
 
-    fun toData(publisherModel: PublisherModel): PublisherEntity {
-        return PublisherEntity(
-            id = publisherModel.id,
-            name = publisherModel.name,
-            description = publisherModel.description,
-            foundationYear = publisherModel.foundationYear,
-            email = publisherModel.email,
-            phoneNumber = publisherModel.phoneNumber
-        )
+    fun toInsertStatement(publisherModel: PublisherModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[PublisherEntity.name] = publisherModel.name
+            it[PublisherEntity.description] = publisherModel.description
+            it[PublisherEntity.foundationYear] = publisherModel.foundationYear
+            it[PublisherEntity.email] = publisherModel.email
+            it[PublisherEntity.phoneNumber] = publisherModel.phoneNumber
+        }
+    }
+
+    fun toUpdateStatement(publisherModel: PublisherModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[PublisherEntity.name] = publisherModel.name
+            it[PublisherEntity.description] = publisherModel.description
+            it[PublisherEntity.foundationYear] = publisherModel.foundationYear
+            it[PublisherEntity.email] = publisherModel.email
+            it[PublisherEntity.phoneNumber] = publisherModel.phoneNumber
+        }
     }
 }

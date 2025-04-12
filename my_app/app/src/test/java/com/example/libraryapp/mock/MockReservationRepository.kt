@@ -2,6 +2,7 @@ package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.repository.ReservationRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.uuid.ExperimentalUuidApi
@@ -30,16 +31,7 @@ class MockReservationRepository : ReservationRepository {
         reservations.removeAll { it.id == reservationId }
     }
 
-    override fun query(specification: ReservationSpecification): Flow<List<ReservationModel>> {
-        return flow {
-            val (clause, args) = specification.toSqlClause()
-            val filteredReservations = reservations.filter { reservation ->
-                when (clause) {
-                    "user_id = ?" -> reservation.userId == args[0]
-                    else -> true
-                }
-            }
-            emit(filteredReservations)
-        }
+    override fun query(specification: Specification<ReservationModel>): Flow<List<ReservationModel>> {
+        TODO()
     }
 }

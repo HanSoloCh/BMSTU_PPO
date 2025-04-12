@@ -2,29 +2,38 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.ReservationEntity
 import com.example.libraryapp.domain.model.ReservationModel
-import kotlin.uuid.ExperimentalUuidApi
+import kotlinx.datetime.toJavaLocalDate
+import kotlinx.datetime.toKotlinLocalDate
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
 object ReservationMapper {
-    fun toDomain(reservationEntity: ReservationEntity): ReservationModel {
+    fun toDomain(row: ResultRow): ReservationModel {
         return ReservationModel(
-            id = reservationEntity.id,
-            bookId = reservationEntity.bookId,
-            userId = reservationEntity.userId,
-            reservationDate = reservationEntity.reservationDate,
-            cancelDate = reservationEntity.cancelDate,
-            status = reservationEntity.status
+            bookId = row[ReservationEntity.bookId].value,
+            userId = row[ReservationEntity.userId].value,
+            reservationDate = row[ReservationEntity.reservationDate].toJavaLocalDate(),
+            cancelDate = row[ReservationEntity.cancelDate].toJavaLocalDate(),
         )
     }
 
-    fun toData(reservationModel: ReservationModel): ReservationEntity {
-        return ReservationEntity(
-            id = reservationModel.id,
-            bookId = reservationModel.bookId,
-            userId = reservationModel.userId,
-            reservationDate = reservationModel.reservationDate,
-            cancelDate = reservationModel.cancelDate,
-            status = reservationModel.status
-        )
+    fun toInsertStatement(reservationModel: ReservationModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[ReservationEntity.bookId] = reservationModel.bookId
+            it[ReservationEntity.userId] = reservationModel.userId
+            it[ReservationEntity.reservationDate] = reservationModel.reservationDate.toKotlinLocalDate()
+            it[ReservationEntity.cancelDate] = reservationModel.cancelDate.toKotlinLocalDate()
+        }
     }
+
+    fun toUpdateStatement(reservationModel: ReservationModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[ReservationEntity.bookId] = reservationModel.bookId
+            it[ReservationEntity.userId] = reservationModel.userId
+            it[ReservationEntity.reservationDate] = reservationModel.reservationDate.toKotlinLocalDate()
+            it[ReservationEntity.cancelDate] = reservationModel.cancelDate.toKotlinLocalDate()
+        }
+    }
+
 }

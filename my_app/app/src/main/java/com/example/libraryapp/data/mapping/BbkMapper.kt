@@ -2,23 +2,30 @@ package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.BbkEntity
 import com.example.libraryapp.domain.model.BbkModel
-import kotlin.uuid.ExperimentalUuidApi
+import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import org.jetbrains.exposed.sql.statements.UpdateStatement
 
-@OptIn(ExperimentalUuidApi::class)
 object BbkMapper {
-    fun toDomain(bbkEntity: BbkEntity): BbkModel {
+    fun toDomain(row: ResultRow): BbkModel {
         return BbkModel(
-            id = bbkEntity.id,
-            code = bbkEntity.code,
-            description = bbkEntity.description
+            id = row[BbkEntity.id].value,
+            code = row[BbkEntity.code],
+            description = row[BbkEntity.description],
         )
     }
 
-    fun toData(bbkModel: BbkModel): BbkEntity {
-        return BbkEntity(
-            id = bbkModel.id,
-            code = bbkModel.code,
-            description = bbkModel.description
-        )
+    fun toInsertStatement(bbkModel: BbkModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+        return statement.also {
+            it[BbkEntity.code] = bbkModel.code
+            it[BbkEntity.description] = bbkModel.description
+        }
+    }
+
+    fun toUpdateStatement(bbkModel: BbkModel, statement: UpdateStatement): UpdateStatement {
+        return statement.also {
+            it[BbkEntity.code] = bbkModel.code
+            it[BbkEntity.description] = bbkModel.description
+        }
     }
 }

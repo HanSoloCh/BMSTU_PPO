@@ -1,7 +1,7 @@
 package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.ApuModel
-import com.example.libraryapp.domain.specification.ApuSpecification
+import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.repository.ApuRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -32,16 +32,7 @@ class MockApuRepository : ApuRepository {
         apus.removeAll { it.id == apuId }
     }
 
-    override fun query(specification: ApuSpecification): Flow<List<ApuModel>> {
-        return flow {
-            val (clause, args) = specification.toSqlClause()
-            val filteredBooks = apus.filter { book ->
-                when (clause) {
-                    "term LIKE ?" -> book.term.contains(args[0] as String, ignoreCase = true)
-                    else -> true
-                }
-            }
-            emit(filteredBooks)
-        }
+    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
+        TODO()
     }
 }

@@ -2,6 +2,7 @@ package com.example.libraryapp.mock
 
 import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.repository.IssuanceRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlin.uuid.ExperimentalUuidApi
@@ -32,7 +33,7 @@ class MockIssuanceRepository : IssuanceRepository {
         mockIssuances.toMutableList().removeAll { it.id == issuanceId }
     }
 
-    override fun query(specification: IssuanceSpecification): Flow<List<IssuanceModel>> {
+    override fun query(specification: Specification<IssuanceModel>): Flow<List<IssuanceModel>> {
         return flow { emit(mockIssuances.filter { true }) }
     }
 }

@@ -18,12 +18,12 @@ import com.example.libraryapp.ui.theme.LibraryAppTheme
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    lateinit var appDataBase: AppDataBase
+//    lateinit var appDataBase: AppDataBase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        appDataBase = AppDataBase.getDatabase(this)
-        deleteDatabase("book.db")
+//        deleteDatabase("book.db")
 
         enableEdgeToEdge()
         setContent {
