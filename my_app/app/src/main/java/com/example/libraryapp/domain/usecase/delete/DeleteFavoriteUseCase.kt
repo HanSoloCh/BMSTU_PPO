@@ -1,15 +1,13 @@
 package com.example.libraryapp.domain.usecase.delete
 
 import com.example.libraryapp.domain.repository.UserFavoriteRepository
+import java.util.UUID
 import javax.inject.Inject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 class DeleteFavoriteUseCase @Inject constructor(
     val userFavoriteRepository: UserFavoriteRepository
 ) {
-    suspend fun invoke(userId: Uuid, bookId: Uuid) {
+    suspend fun invoke(userId: UUID, bookId: UUID) {
         userFavoriteRepository.delete(userId, bookId)
     }
 }

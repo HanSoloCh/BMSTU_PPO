@@ -1,12 +1,12 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.BookModel
+import com.example.libraryapp.domain.specification.Specification
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface BookRepository {
     suspend fun readById(bookId: UUID): BookModel?
-
-//    fun readByAuthorId(authorId: Uuid): Flow<List<BookModel>>
 
     suspend fun create(bookModel: BookModel): UUID
 
@@ -14,5 +14,5 @@ interface BookRepository {
 
     suspend fun deleteById(bookId: UUID): Int
 
-//    fun query(specification: Specification<BookModel>): Flow<List<BookModel>>
+    fun query(spec: Specification<BookModel>): Flow<List<BookModel>>
 }

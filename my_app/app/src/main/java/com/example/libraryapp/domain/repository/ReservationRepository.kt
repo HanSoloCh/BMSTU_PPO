@@ -1,16 +1,15 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.ReservationModel
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface ReservationRepository {
-//    suspend fun readById(reservationId: UUID): ReservationModel?
-
     suspend fun create(reservationModel: ReservationModel)
 
     suspend fun update(reservationModel: ReservationModel): Int
 //
     suspend fun deleteById(reservationId: UUID): Int
 
-//    fun query(specification: Specification<ReservationModel>): Flow<List<ReservationModel>>
+    fun readByUserId(userId: UUID): Flow<List<ReservationModel>>
 }

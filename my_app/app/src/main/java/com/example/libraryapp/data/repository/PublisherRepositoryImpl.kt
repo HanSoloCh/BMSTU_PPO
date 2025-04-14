@@ -1,12 +1,20 @@
 package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.local.entity.ApuEntity
+import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.data.local.entity.PublisherEntity
+import com.example.libraryapp.data.mapping.BookMapper
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import com.example.libraryapp.data.mapping.PublisherMapper
+import com.example.libraryapp.data.specification.BookSpecToExpressionMapper
+import com.example.libraryapp.data.specification.PublisherSpecToExpressionMapper
 import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.repository.PublisherRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -48,4 +56,13 @@ class PublisherRepositoryImpl @Inject constructor() : PublisherRepository {
             ApuEntity.deleteWhere { PublisherEntity.id eq publisherId }
         }
     }
+
+    override fun query(spec: Specification<PublisherModel>): Flow<List<PublisherModel>> = flow {
+        val expression = PublisherSpecToExpressionMapper.map(spec)
+
+        val result = transaction {
+            PublisherEntity.selectAll().where { expression }.map { PublisherMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 }

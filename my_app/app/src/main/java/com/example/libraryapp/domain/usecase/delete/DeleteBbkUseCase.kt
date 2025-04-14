@@ -1,15 +1,13 @@
 package com.example.libraryapp.domain.usecase.delete
 
 import com.example.libraryapp.domain.repository.BbkRepository
+import java.util.UUID
 import javax.inject.Inject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
 class DeleteBbkUseCase @Inject constructor(
     private val bbkRepository: BbkRepository
 ) {
-    suspend operator fun invoke(bbkId: Uuid) {
+    suspend operator fun invoke(bbkId: UUID) {
         bbkRepository.deleteById(bbkId)
     }
 }

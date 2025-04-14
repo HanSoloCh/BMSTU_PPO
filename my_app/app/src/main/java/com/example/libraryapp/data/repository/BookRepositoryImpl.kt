@@ -6,10 +6,15 @@ import com.example.libraryapp.data.local.entity.BookAuthorCrossRef
 import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.mapping.BookMapper
+import com.example.libraryapp.data.specification.BookSpecToExpressionMapper
 import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.repository.BookRepository
+import com.example.libraryapp.domain.specification.Specification
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
@@ -44,7 +49,7 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
             bookModel.authors.forEach { author ->
                 BookAuthorCrossRef.insert {
                     it[BookAuthorCrossRef.bookId] = bookId
-                    it[BookAuthorCrossRef.authorId] = authorId
+                    it[BookAuthorCrossRef.authorId] = author
                 }
             }
             bookId
@@ -53,9 +58,18 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
 
     override suspend fun update(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction {
-            BookEntity.update({ BookEntity.id eq bookModel.id }) {
+            val bookId = BookEntity.update({ BookEntity.id eq bookModel.id }) {
                 BookMapper.toUpdateStatement(bookModel, it)
             }
+            BookAuthorCrossRef.deleteWhere { BookEntity.id eq bookModel.id }
+
+            bookModel.authors.forEach { author ->
+                BookAuthorCrossRef.insert {
+                    it[BookAuthorCrossRef.bookId] = bookModel.id
+                    it[BookAuthorCrossRef.authorId] = author
+                }
+            }
+            bookId
         }
     }
 
@@ -64,4 +78,13 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
             ApuEntity.deleteWhere { BookEntity.id eq bookId }
         }
     }
+
+    override fun query(spec: Specification<BookModel>): Flow<List<BookModel>> = flow {
+        val expression = BookSpecToExpressionMapper.map(spec)
+
+        val result = transaction {
+            BookEntity.selectAll().where { expression }.map { BookMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 }

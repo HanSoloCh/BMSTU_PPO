@@ -47,8 +47,4 @@ class BbkRepositoryImpl @Inject constructor() : BbkRepository {
             BbkEntity.deleteWhere { BbkEntity.id eq bbkId }
         }
     }
-
-//    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
-//        TODO("Not yet implemented")
-//    }
 }

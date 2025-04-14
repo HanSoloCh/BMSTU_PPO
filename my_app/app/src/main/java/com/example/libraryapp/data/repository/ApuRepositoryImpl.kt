@@ -2,11 +2,14 @@ package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.local.entity.ApuEntity
 import com.example.libraryapp.data.mapping.ApuMapper
+import com.example.libraryapp.data.specification.ApuSpecToExpressionMapper
 import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.repository.ApuRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -50,7 +53,12 @@ class ApuRepositoryImpl @Inject constructor() : ApuRepository {
         }
     }
 
-    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
-        TODO("Not yet implemented")
-    }
+    override fun query(spec: Specification<ApuModel>): Flow<List<ApuModel>> = flow {
+        val expression = ApuSpecToExpressionMapper.map(spec)
+
+        val result = transaction {
+            ApuEntity.selectAll().where { expression }.map { ApuMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 }

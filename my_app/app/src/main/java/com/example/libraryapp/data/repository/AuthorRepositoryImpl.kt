@@ -48,8 +48,5 @@ class AuthorRepositoryImpl @Inject constructor() : AuthorRepository {
             AuthorEntity.deleteWhere { AuthorEntity.id eq authorId }
         }
     }
-
-//    override fun query(specification: Specification<ApuModel>): Flow<List<ApuModel>> {
-//        TODO("Not yet implemented")
-//    }
+    // TODO(Сделать получение всех книг автора)
 }

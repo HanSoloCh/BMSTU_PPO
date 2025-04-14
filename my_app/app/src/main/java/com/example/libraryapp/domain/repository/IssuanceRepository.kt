@@ -1,6 +1,7 @@
 package com.example.libraryapp.domain.repository
 
 import com.example.libraryapp.domain.model.IssuanceModel
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface IssuanceRepository {
@@ -10,5 +11,5 @@ interface IssuanceRepository {
 
     suspend fun deleteById(issuanceId: UUID): Int
 
-//    fun query(specification: Specification<IssuanceModel>): Flow<List<IssuanceModel>>
+    fun readByUserId(userId: UUID): Flow<List<IssuanceModel>>
 }

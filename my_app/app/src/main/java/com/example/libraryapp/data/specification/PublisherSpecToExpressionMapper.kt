@@ -1,0 +1,11 @@
+package com.example.libraryapp.data.specification
+
+import com.example.libraryapp.domain.model.PublisherModel
+import com.example.libraryapp.domain.specification.Specification
+import org.jetbrains.exposed.sql.Op
+
+object PublisherSpecToExpressionMapper {
+    fun map(spec: Specification<PublisherModel>): Op<Boolean> = when (spec) {
+        else -> throw IllegalArgumentException("Unknown spec")
+    }
+}

@@ -6,9 +6,13 @@ import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.repository.IssuanceRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
@@ -39,4 +43,15 @@ class IssuanceRepositoryImpl @Inject constructor() : IssuanceRepository {
             IssuanceEntity.deleteWhere { IssuanceEntity.id eq issuanceId }
         }
     }
+
+    override fun readByUserId(userId: UUID): Flow<List<IssuanceModel>> = flow {
+        emit(
+            transaction {
+                IssuanceEntity
+                    .selectAll()
+                    .where { IssuanceEntity.userId eq userId }
+                    .map { IssuanceMapper.toDomain(it) }
+            }
+        )
+    }.flowOn(Dispatchers.IO)
 }
