@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class ReservationModel(
+    val id: UUID,
     val bookId: UUID,
     val userId: UUID,
     val reservationDate: LocalDate,

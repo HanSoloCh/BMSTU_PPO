@@ -4,10 +4,12 @@ import com.example.libraryapp.data.local.entity.BbkEntity
 import com.example.libraryapp.data.mapping.BbkMapper
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
@@ -16,7 +18,7 @@ import javax.inject.Inject
 class BbkRepositoryImpl @Inject constructor() : BbkRepository {
     override suspend fun readById(bbkId: UUID): BbkModel? = withContext(Dispatchers.IO) {
         transaction {
-            BbkEntity.select { BbkEntity.id eq bbkId }.firstOrNull()?.let {
+            BbkEntity.selectAll().where { BbkEntity.id eq bbkId }.firstOrNull()?.let {
                 BbkMapper.toDomain(it)
             }
         }

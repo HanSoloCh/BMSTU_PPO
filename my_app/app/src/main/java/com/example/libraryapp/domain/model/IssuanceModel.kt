@@ -4,6 +4,7 @@ import java.time.LocalDate
 import java.util.UUID
 
 data class IssuanceModel(
+    val id: UUID,
     val bookId: UUID,
     val userId: UUID,
     val issuanceDate: LocalDate,

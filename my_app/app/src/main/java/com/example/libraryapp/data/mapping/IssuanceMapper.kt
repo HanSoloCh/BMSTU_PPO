@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.statements.UpdateStatement
 object IssuanceMapper {
     fun toDomain(row: ResultRow): IssuanceModel {
         return IssuanceModel(
+            id = row[IssuanceEntity.id].value,
             bookId = row[IssuanceEntity.bookId].value,
             userId = row[IssuanceEntity.userId].value,
             issuanceDate = row[IssuanceEntity.issuanceDate].toJavaLocalDate(),

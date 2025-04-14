@@ -11,6 +11,7 @@ import org.jetbrains.exposed.sql.statements.UpdateStatement
 object ReservationMapper {
     fun toDomain(row: ResultRow): ReservationModel {
         return ReservationModel(
+            id = row[ReservationEntity.id].value,
             bookId = row[ReservationEntity.bookId].value,
             userId = row[ReservationEntity.userId].value,
             reservationDate = row[ReservationEntity.reservationDate].toJavaLocalDate(),

@@ -1,60 +1,38 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.local.dao.UserFavoriteDao
-import com.example.libraryapp.data.local.entity.ApuEntity
 import com.example.libraryapp.data.local.entity.UserFavoriteCrossRef
-import com.example.libraryapp.data.mapping.BookMapper
-import com.example.libraryapp.data.mapping.toApuModel
-import com.example.libraryapp.data.mapping.toInsertStatement
-import com.example.libraryapp.data.mapping.toUpdateStatement
 import com.example.libraryapp.domain.model.ApuModel
-import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.repository.UserFavoriteRepository
 import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
 import java.util.UUID
 import javax.inject.Inject
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
 
-@OptIn(ExperimentalUuidApi::class)
-class UserFavoriteRepositoryImpl @Inject constructor(
-    private val userFavoriteDao: UserFavoriteDao
-) : UserFavoriteRepository {
-    override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.toApuModel()
-        }
-    }
 
-    override suspend fun create(apuModel: ApuModel) = withContext(Dispatchers.IO) {
+class UserFavoriteRepositoryImpl @Inject constructor() : UserFavoriteRepository {
+    override suspend fun create(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.insert {
-                apuModel.toInsertStatement(it)
-            }
-                .resultedValues?.first()?.toApuModel()?.id
-                ?: throw NoSuchElementException("Error saving apu: $apuModel")
-        }
-    }
-
-    override suspend fun update(apuModel: ApuModel) = withContext(Dispatchers.IO) {
-        transaction {
-            ApuEntity.update({ ApuEntity.id eq apuModel.id }) {
-                apuModel.toUpdateStatement(it)
+            UserFavoriteCrossRef.insert {
+                it[UserFavoriteCrossRef.userId] = userId
+                it[UserFavoriteCrossRef.bookId] = bookId
             }
         }
+        userId to bookId
     }
 
-    override suspend fun deleteById(apuId: UUID) = withContext(Dispatchers.IO) {
+    override suspend fun delete(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.deleteWhere { ApuEntity.id eq apuId }
+            UserFavoriteCrossRef
+                .deleteWhere {
+                    (UserFavoriteCrossRef.userId eq userId) and (UserFavoriteCrossRef.bookId eq bookId)
+                }
         }
     }
 

@@ -1,9 +1,8 @@
 package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.local.entity.ApuEntity
-import com.example.libraryapp.data.local.entity.BbkEntity
 import com.example.libraryapp.data.local.entity.PublisherEntity
-import com.example.libraryapp.data.mapping.BbkMapper
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import com.example.libraryapp.data.mapping.PublisherMapper
 import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.repository.PublisherRepository
@@ -11,6 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class PublisherRepositoryImpl @Inject constructor() : PublisherRepository {
     override suspend fun readById(publisherId: UUID): PublisherModel? = withContext(Dispatchers.IO) {
         transaction {
-            PublisherEntity.select { PublisherEntity.id eq publisherId }.firstOrNull()?.let {
+            PublisherEntity.selectAll().where { PublisherEntity.id eq publisherId }.firstOrNull()?.let {
                 PublisherMapper.toDomain(it)
             }
         }

@@ -11,6 +11,7 @@ import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
@@ -19,7 +20,7 @@ import javax.inject.Inject
 class ApuRepositoryImpl @Inject constructor() : ApuRepository {
     override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.select { ApuEntity.id eq apuId }.firstOrNull()?.let {
+            ApuEntity.selectAll().where { ApuEntity.id eq apuId }.firstOrNull()?.let {
                 ApuMapper.toDomain(it)
             }
         }

@@ -1,15 +1,10 @@
 package com.example.libraryapp.domain.repository
 
-import com.example.libraryapp.domain.model.BookModel
-import kotlinx.coroutines.flow.Flow
-import kotlin.uuid.ExperimentalUuidApi
-import kotlin.uuid.Uuid
+import org.jetbrains.exposed.sql.statements.InsertStatement
+import java.util.UUID
 
-@OptIn(ExperimentalUuidApi::class)
 interface UserFavoriteRepository {
-    suspend fun create(userId: Uuid, bookId: Uuid)
+    suspend fun create(userId: UUID, bookId: UUID): Pair<UUID, UUID>
 
-    suspend fun delete(userId: Uuid, bookId: Uuid)
-
-    fun readByUserId(userId: Uuid): Flow<List<BookModel>>
+    suspend fun delete(userId: UUID, bookId: UUID): Int
 }

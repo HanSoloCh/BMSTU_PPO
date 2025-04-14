@@ -8,7 +8,7 @@ interface IssuanceRepository {
 
     suspend fun update(issuanceModel: IssuanceModel): Int
 
-//    suspend fun deleteById(issuanceId: UUID): Int
+    suspend fun deleteById(issuanceId: UUID): Int
 
 //    fun query(specification: Specification<IssuanceModel>): Flow<List<IssuanceModel>>
 }

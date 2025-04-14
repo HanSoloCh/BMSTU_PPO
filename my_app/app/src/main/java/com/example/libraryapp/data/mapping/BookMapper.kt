@@ -1,14 +1,30 @@
 package com.example.libraryapp.data.mapping
 
 import com.example.libraryapp.data.local.entity.BookEntity
+import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
 
 object BookMapper {
-    fun toDomain(row: ResultRow): BookModel {
-        TODO()
+    fun toDomain(row: ResultRow, authors: List<AuthorModel> = listOf<AuthorModel>()): BookModel {
+        return BookModel(
+            id = row[BookEntity.id].value,
+            title = row[BookEntity.title],
+            annotation = row[BookEntity.annotation],
+            authors = authors.map { it.id },
+            publisherId = row[BookEntity.publisherId].value,
+            publicationYear = row[BookEntity.publicationYear],
+            codeISBN = row[BookEntity.codeISBN],
+            bbkId = row[BookEntity.bbkId].value,
+            mediaType = row[BookEntity.mediaType],
+            volume = row[BookEntity.volume],
+            language = row[BookEntity.language],
+            originalLanguage = row[BookEntity.originalLanguage],
+            copies = row[BookEntity.copies],
+            availableCopies = row[BookEntity.availableCopies]
+        )
     }
 
     fun toInsertStatement(bookModel: BookModel, statement: InsertStatement<Number>): InsertStatement<Number> {

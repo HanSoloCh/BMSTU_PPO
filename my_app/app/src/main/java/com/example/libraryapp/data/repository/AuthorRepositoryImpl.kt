@@ -4,10 +4,12 @@ import com.example.libraryapp.data.local.entity.AuthorEntity
 import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.repository.AuthorRepository
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
@@ -17,7 +19,7 @@ import javax.inject.Inject
 class AuthorRepositoryImpl @Inject constructor() : AuthorRepository {
     override suspend fun readById(authorId: UUID): AuthorModel? = withContext(Dispatchers.IO) {
         transaction {
-            AuthorEntity.select { AuthorEntity.id eq authorId }.firstOrNull()?.let {
+            AuthorEntity.selectAll().where { AuthorEntity.id eq authorId }.firstOrNull()?.let {
                 AuthorMapper.toDomain(it)
             }
         }

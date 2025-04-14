@@ -12,7 +12,7 @@ interface AuthorRepository {
 
     suspend fun update(authorModel: AuthorModel): Int
 
-    suspend fun deleteById(authorId: UUID)
+    suspend fun deleteById(authorId: UUID): Int
 
 //    suspend fun addBookToAuthor(authorId: Uuid, bookId: Uuid)
 }
