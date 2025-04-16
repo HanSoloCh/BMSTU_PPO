@@ -1,11 +1,14 @@
 package com.example.libraryapp.data.mapping
 
+import com.example.libraryapp.data.local.entity.BbkEntity
 import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
+import java.util.UUID
 
 object BookMapper {
     fun toDomain(row: ResultRow, authors: List<AuthorModel> = listOf<AuthorModel>()): BookModel {
@@ -27,8 +30,9 @@ object BookMapper {
         )
     }
 
-    fun toInsertStatement(bookModel: BookModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+    fun toInsertStatement(bookModel: BookModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
         return statement.also {
+            it[BookEntity.id] = bookModel.id
             it[BookEntity.title] = bookModel.title
             it[BookEntity.annotation] = bookModel.annotation
             it[BookEntity.publisherId] = bookModel.publisherId
@@ -46,6 +50,7 @@ object BookMapper {
 
     fun toUpdateStatement(bookModel: BookModel, statement: UpdateStatement): UpdateStatement {
         return statement.also {
+            it[BookEntity.id] = bookModel.id
             it[BookEntity.title] = bookModel.title
             it[BookEntity.annotation] = bookModel.annotation
             it[BookEntity.publisherId] = bookModel.publisherId

@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -27,11 +27,9 @@ class AuthorRepositoryImpl @Inject constructor() : AuthorRepository {
 
     override suspend fun create(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
         transaction {
-            AuthorEntity.insert {
+            AuthorEntity.insertAndGetId {
                 AuthorMapper.toInsertStatement(authorModel, it)
-            }
-                .resultedValues?.first()?.let { AuthorMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving author: $authorModel")
+            }.value
         }
     }
 

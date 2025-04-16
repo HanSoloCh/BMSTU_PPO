@@ -1,6 +1,5 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.local.entity.ApuEntity
 import com.example.libraryapp.data.local.entity.AuthorEntity
 import com.example.libraryapp.data.local.entity.BookAuthorCrossRef
 import com.example.libraryapp.data.local.entity.BookEntity
@@ -18,6 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -40,11 +40,9 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
     override suspend fun create(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction {
             // Create book
-            val bookId = BookEntity.insert {
+            val bookId = BookEntity.insertAndGetId {
                 BookMapper.toInsertStatement(bookModel, it)
-            }
-                .resultedValues?.first()?.let { BookMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving book: $bookModel")
+            }.value
             // Create connections
             bookModel.authors.forEach { author ->
                 BookAuthorCrossRef.insert {
@@ -58,24 +56,26 @@ class BookRepositoryImpl @Inject constructor() : BookRepository {
 
     override suspend fun update(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction {
-            val bookId = BookEntity.update({ BookEntity.id eq bookModel.id }) {
+            val returnValue = BookEntity.update({ BookEntity.id eq bookModel.id }) {
                 BookMapper.toUpdateStatement(bookModel, it)
             }
-            BookAuthorCrossRef.deleteWhere { BookEntity.id eq bookModel.id }
+            if (returnValue > 0) {
+                BookAuthorCrossRef.deleteWhere { BookAuthorCrossRef.bookId eq bookModel.id }
 
-            bookModel.authors.forEach { author ->
-                BookAuthorCrossRef.insert {
-                    it[BookAuthorCrossRef.bookId] = bookModel.id
-                    it[BookAuthorCrossRef.authorId] = author
+                bookModel.authors.forEach { author ->
+                    BookAuthorCrossRef.insert {
+                        it[BookAuthorCrossRef.bookId] = bookModel.id
+                        it[BookAuthorCrossRef.authorId] = author
+                    }
                 }
             }
-            bookId
+            returnValue
         }
     }
 
     override suspend fun deleteById(bookId: UUID) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.deleteWhere { BookEntity.id eq bookId }
+            BookEntity.deleteWhere { BookEntity.id eq bookId }
         }
     }
 

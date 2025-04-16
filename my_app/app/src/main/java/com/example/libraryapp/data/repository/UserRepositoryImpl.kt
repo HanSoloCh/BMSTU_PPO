@@ -9,7 +9,7 @@ import com.example.libraryapp.domain.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -27,11 +27,9 @@ class UserRepositoryImpl @Inject constructor() : UserRepository {
 
     override suspend fun create(userModel: UserModel) = withContext(Dispatchers.IO) {
         transaction {
-            UserEntity.insert {
+            UserEntity.insertAndGetId {
                 UserMapper.toInsertStatement(userModel, it)
-            }
-                .resultedValues?.first()?.let { UserMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving user: $userModel")
+            }.value
         }
     }
 

@@ -1,11 +1,14 @@
 package com.example.libraryapp.data.mapping
 
+import com.example.libraryapp.data.local.entity.ReservationEntity
 import com.example.libraryapp.data.local.entity.UserEntity
 import com.example.libraryapp.domain.model.UserModel
 import com.example.libraryapp.domain.util.utils.UserRole
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
+import java.util.UUID
 
 object UserMapper {
     fun toDomain(row: ResultRow): UserModel {
@@ -21,8 +24,9 @@ object UserMapper {
         )
     }
 
-    fun toInsertStatement(userModel: UserModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+    fun toInsertStatement(userModel: UserModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
         return statement.also {
+            it[UserEntity.id] = userModel.id
             it[UserEntity.name] = userModel.name
             it[UserEntity.surname] = userModel.surname
             it[UserEntity.secondName] = userModel.secondName
@@ -35,6 +39,7 @@ object UserMapper {
 
     fun toUpdateStatement(userModel: UserModel, statement: UpdateStatement): UpdateStatement {
         return statement.also {
+            it[UserEntity.id] = userModel.id
             it[UserEntity.name] = userModel.name
             it[UserEntity.surname] = userModel.surname
             it[UserEntity.secondName] = userModel.secondName

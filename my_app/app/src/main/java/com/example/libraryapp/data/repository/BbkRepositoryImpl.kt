@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -26,11 +26,9 @@ class BbkRepositoryImpl @Inject constructor() : BbkRepository {
 
     override suspend fun create(bbkModel: BbkModel): UUID = withContext(Dispatchers.IO) {
         transaction {
-            BbkEntity.insert {
+            BbkEntity.insertAndGetId {
                 BbkMapper.toInsertStatement(bbkModel, it)
-            }
-                .resultedValues?.first()?.let { BbkMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving bbk: $bbkModel")
+            }.value
         }
     }
 

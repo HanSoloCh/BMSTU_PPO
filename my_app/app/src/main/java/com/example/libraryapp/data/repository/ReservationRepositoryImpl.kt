@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -21,11 +21,9 @@ import javax.inject.Inject
 class ReservationRepositoryImpl @Inject constructor() : ReservationRepository {
     override suspend fun create(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {
         transaction {
-            ReservationEntity.insert {
+            ReservationEntity.insertAndGetId {
                 ReservationMapper.toInsertStatement(reservationModel, it)
-            }
-                .resultedValues?.first()?.let { ReservationMapper.toDomain(it).bookId }
-                ?: throw NoSuchElementException("Error saving reservation: $reservationModel")
+            }.value
             TODO()
         }
     }

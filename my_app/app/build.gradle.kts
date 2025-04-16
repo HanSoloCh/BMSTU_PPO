@@ -79,6 +79,10 @@ dependencies {
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.kotlin.datetime)
-    implementation("org.xerial:sqlite-jdbc:3.42.0.0") // если используешь SQLite
+    implementation(libs.sqlite.jdbc)
 
+    testImplementation(libs.h2)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit)
+    testImplementation(kotlin("test"))
 }

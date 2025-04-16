@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -21,11 +21,9 @@ import javax.inject.Inject
 class IssuanceRepositoryImpl @Inject constructor() : IssuanceRepository {
     override suspend fun create(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {
         transaction {
-            IssuanceEntity.insert {
+            IssuanceEntity.insertAndGetId {
                 IssuanceMapper.toInsertStatement(issuanceModel, it)
-            }
-                .resultedValues?.first()?.let { IssuanceMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving issuance: $issuanceModel")
+            }.value
             TODO()
         }
     }

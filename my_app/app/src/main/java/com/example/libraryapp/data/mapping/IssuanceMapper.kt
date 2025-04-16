@@ -1,12 +1,15 @@
 package com.example.libraryapp.data.mapping
 
+import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.data.local.entity.IssuanceEntity
 import com.example.libraryapp.domain.model.IssuanceModel
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
+import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
+import java.util.UUID
 
 object IssuanceMapper {
     fun toDomain(row: ResultRow): IssuanceModel {
@@ -20,8 +23,9 @@ object IssuanceMapper {
         )
     }
 
-    fun toInsertStatement(issuanceModel: IssuanceModel, statement: InsertStatement<Number>): InsertStatement<Number> {
+    fun toInsertStatement(issuanceModel: IssuanceModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
         return statement.also {
+            it[IssuanceEntity.id] = issuanceModel.id
             it[IssuanceEntity.bookId] = issuanceModel.bookId
             it[IssuanceEntity.userId] = issuanceModel.userId
             it[IssuanceEntity.issuanceDate] = issuanceModel.issuanceDate.toKotlinLocalDate()
@@ -32,6 +36,7 @@ object IssuanceMapper {
 
     fun toUpdateStatement(issuanceModel: IssuanceModel, statement: UpdateStatement): UpdateStatement {
         return statement.also {
+            it[IssuanceEntity.id] = issuanceModel.id
             it[IssuanceEntity.bookId] = issuanceModel.bookId
             it[IssuanceEntity.userId] = issuanceModel.userId
             it[IssuanceEntity.issuanceDate] = issuanceModel.issuanceDate.toKotlinLocalDate()

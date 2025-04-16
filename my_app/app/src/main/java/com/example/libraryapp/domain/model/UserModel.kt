@@ -4,14 +4,14 @@ import com.example.libraryapp.domain.util.utils.UserRole
 import java.util.UUID
 
 data class UserModel(
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
     val name: String,
     val surname: String,
     val secondName: String?,
     val password: String,
     val email: String,
     val phoneNumber: String,
-    val role: UserRole,
+    val role: UserRole = UserRole.READER,
 ) {
     init {
         require(name.isNotBlank())

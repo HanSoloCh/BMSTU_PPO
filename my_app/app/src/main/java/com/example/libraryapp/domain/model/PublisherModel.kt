@@ -4,12 +4,12 @@ import java.time.Year
 import java.util.UUID
 
 data class PublisherModel(
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
     val name: String,
-    val description: String?,
-    val foundationYear: Int?,
-    val email: String?,
-    val phoneNumber: String?,
+    val description: String? = null,
+    val foundationYear: Int? = null,
+    val email: String? = null,
+    val phoneNumber: String? = null,
 ) {
     init {
         require(name.isNotBlank())

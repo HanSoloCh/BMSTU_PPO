@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface ApuRepository {
-    suspend fun readById(apuId: UUID): ApuModel?
+    suspend fun readById(apuId: UUID?): ApuModel?
 
     suspend fun create(apuModel: ApuModel): UUID?
 

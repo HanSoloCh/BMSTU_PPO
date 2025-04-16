@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -21,7 +21,7 @@ import java.util.UUID
 import javax.inject.Inject
 
 class ApuRepositoryImpl @Inject constructor() : ApuRepository {
-    override suspend fun readById(apuId: UUID): ApuModel? = withContext(Dispatchers.IO) {
+    override suspend fun readById(apuId: UUID?): ApuModel? = withContext(Dispatchers.IO) {
         transaction {
             ApuEntity.selectAll().where { ApuEntity.id eq apuId }.firstOrNull()?.let {
                 ApuMapper.toDomain(it)
@@ -31,11 +31,9 @@ class ApuRepositoryImpl @Inject constructor() : ApuRepository {
 
     override suspend fun create(apuModel: ApuModel) = withContext(Dispatchers.IO) {
         transaction {
-            ApuEntity.insert {
+            ApuEntity.insertAndGetId {
                 ApuMapper.toInsertStatement(apuModel, it)
-            }
-                .resultedValues?.first()?.let { ApuMapper.toDomain(it).id }
-                ?: throw NoSuchElementException("Error saving apu: $apuModel")
+            }.value
         }
     }
 

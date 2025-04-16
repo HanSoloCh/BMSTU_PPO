@@ -4,7 +4,7 @@ import java.util.UUID
 
 
 data class BbkModel(
-    val id: UUID,
+    val id: UUID = UUID.randomUUID(),
     val code: String,
     val description: String,
 ) {
