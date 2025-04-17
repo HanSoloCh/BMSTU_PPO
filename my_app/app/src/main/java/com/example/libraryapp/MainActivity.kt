@@ -1,11 +1,9 @@
 package com.example.libraryapp
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.libraryapp.data.DatabaseInitializer
 import com.example.libraryapp.ui.theme.LibraryAppTheme
 
 class MainActivity : ComponentActivity() {

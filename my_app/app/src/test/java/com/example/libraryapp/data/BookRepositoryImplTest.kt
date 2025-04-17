@@ -1,17 +1,11 @@
-package com.example.libraryapp
+package com.example.libraryapp.data
 
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.libraryapp.data.local.entity.AuthorEntity
 import com.example.libraryapp.data.local.entity.BbkEntity
-import com.example.libraryapp.data.local.entity.BookAuthorCrossRef
-import com.example.libraryapp.data.local.entity.BookEntity
 import com.example.libraryapp.data.local.entity.PublisherEntity
 import com.example.libraryapp.data.repository.BookRepositoryImpl
 import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.repository.BookRepository
 import kotlinx.coroutines.test.runTest
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.After
@@ -19,28 +13,18 @@ import org.junit.Before
 import org.junit.Test
 import java.util.UUID
 import org.junit.Assert.*
-import org.junit.runner.RunWith
 
-@RunWith(AndroidJUnit4::class)
-class BookRepositoryImplTest {
+class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
-    private lateinit var repository: BookRepository
+    private val repository = BookRepositoryImpl()
     private lateinit var authorId: UUID
     private lateinit var publisherId: UUID
     private lateinit var bbkId: UUID
 
     @Before
-    fun setup() {
-        Database.connect("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;", driver = "org.h2.Driver")
-        transaction {
-            SchemaUtils.create(
-                BookEntity,
-                AuthorEntity,
-                BookAuthorCrossRef,
-                PublisherEntity,
-                BbkEntity
-            )
-
+    fun setupTest() {
+        setUpDatabase()
+        transaction(db) {
             authorId = AuthorEntity.insertAndGetId {
                 it[name] = "Test Author"
             }.value
@@ -52,22 +36,12 @@ class BookRepositoryImplTest {
                 it[description] = "Test desc"
             }.value
         }
-
-        repository = BookRepositoryImpl()
     }
 
 
     @After
     fun tearDown() {
-        transaction {
-            SchemaUtils.drop(
-                BookEntity,
-                AuthorEntity,
-                BookAuthorCrossRef,
-                PublisherEntity,
-                BbkEntity
-            )
-        }
+        tearDownDatabase()
     }
 
     @Test

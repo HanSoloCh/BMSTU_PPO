@@ -58,11 +58,13 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)  // Если используете Compose
 
-    // https://mvnrepository.com/artifact/androidx.room/room-runtime
-    implementation(libs.androidx.room.runtime)
-    implementation(libs.androidx.room.common)
-    implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
+
+    // Exposed
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.sqlite.jdbc)
 
     // Зависимости для тестирования
     testImplementation(libs.junit)
@@ -73,16 +75,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.kotlinx.coroutines.test)
-
-    // Exposed
-    implementation(libs.exposed.core)
-    implementation(libs.exposed.dao)
-    implementation(libs.exposed.jdbc)
-    implementation(libs.exposed.kotlin.datetime)
-    implementation(libs.sqlite.jdbc)
-
-    testImplementation(libs.h2)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.junit)
     testImplementation(kotlin("test"))
+    testImplementation(libs.postgresql)
+    testImplementation(libs.testcontainers)
+    testImplementation(libs.testcontainers.postgresql)
 }

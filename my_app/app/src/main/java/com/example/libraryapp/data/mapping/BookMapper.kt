@@ -17,7 +17,7 @@ object BookMapper {
             title = row[BookEntity.title],
             annotation = row[BookEntity.annotation],
             authors = authors.map { it.id },
-            publisherId = row[BookEntity.publisherId].value,
+            publisherId = row[BookEntity.publisherId]?.value,
             publicationYear = row[BookEntity.publicationYear],
             codeISBN = row[BookEntity.codeISBN],
             bbkId = row[BookEntity.bbkId].value,
