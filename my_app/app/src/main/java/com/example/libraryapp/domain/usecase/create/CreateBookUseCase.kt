@@ -11,5 +11,4 @@ class CreateBookUseCase @Inject constructor(
     private val authorRepository: AuthorRepository,
     private val bbkRepository: BbkRepository,
     private val publisherRepository: PublisherRepository
-) {
-}
+)

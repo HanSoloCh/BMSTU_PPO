@@ -1,14 +1,15 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.local.entity.UserFavoriteCrossRef
+import com.example.libraryapp.data.entity.UserFavoriteCrossRef
 import com.example.libraryapp.domain.repository.UserFavoriteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
-import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
@@ -17,9 +18,11 @@ import java.util.UUID
 import javax.inject.Inject
 
 
-class UserFavoriteRepositoryImpl @Inject constructor() : UserFavoriteRepository {
+class UserFavoriteRepositoryImpl @Inject constructor(
+    private val db: Database
+) : UserFavoriteRepository {
     override suspend fun create(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
-        transaction {
+        transaction(db) {
             UserFavoriteCrossRef.insert {
                 it[UserFavoriteCrossRef.userId] = userId
                 it[UserFavoriteCrossRef.bookId] = bookId
@@ -29,7 +32,7 @@ class UserFavoriteRepositoryImpl @Inject constructor() : UserFavoriteRepository 
     }
 
     override suspend fun delete(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {
-        transaction {
+        transaction(db) {
             UserFavoriteCrossRef
                 .deleteWhere {
                     (UserFavoriteCrossRef.userId eq userId) and (UserFavoriteCrossRef.bookId eq bookId)
@@ -39,7 +42,7 @@ class UserFavoriteRepositoryImpl @Inject constructor() : UserFavoriteRepository 
 
     override fun readByUserId(userId: UUID): Flow<List<UUID>> = flow {
         emit(
-            transaction {
+            transaction(db) {
                 UserFavoriteCrossRef
                     .selectAll()
                     .where { UserFavoriteCrossRef.userId eq userId }

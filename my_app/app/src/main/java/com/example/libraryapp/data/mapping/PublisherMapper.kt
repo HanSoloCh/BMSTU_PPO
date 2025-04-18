@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.IssuanceEntity
-import com.example.libraryapp.data.local.entity.PublisherEntity
+import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.domain.model.PublisherModel
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
@@ -21,7 +20,10 @@ object PublisherMapper {
         )
     }
 
-    fun toInsertStatement(publisherModel: PublisherModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        publisherModel: PublisherModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[PublisherEntity.id] = publisherModel.id
             it[PublisherEntity.name] = publisherModel.name
@@ -32,7 +34,10 @@ object PublisherMapper {
         }
     }
 
-    fun toUpdateStatement(publisherModel: PublisherModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        publisherModel: PublisherModel,
+        statement: UpdateStatement
+    ): UpdateStatement {
         return statement.also {
             it[PublisherEntity.id] = publisherModel.id
             it[PublisherEntity.name] = publisherModel.name

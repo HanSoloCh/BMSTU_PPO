@@ -14,5 +14,7 @@ interface BookRepository {
 
     suspend fun deleteById(bookId: UUID): Int
 
+    suspend fun isContain(bookId: UUID): Boolean
+
     fun query(spec: Specification<BookModel>): Flow<List<BookModel>>
 }

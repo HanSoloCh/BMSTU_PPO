@@ -14,5 +14,7 @@ interface ApuRepository {
 
     suspend fun deleteById(apuId: UUID): Int
 
+    suspend fun isContain(apuId: UUID): Boolean
+
     fun query(spec: Specification<ApuModel>): Flow<List<ApuModel>>
 }

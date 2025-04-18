@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteAuthorUseCase @Inject constructor(
     private val authorRepository: AuthorRepository
 ) {
-    suspend operator fun invoke(authorId : UUID) {
+    suspend operator fun invoke(authorId: UUID) {
         authorRepository.deleteById(authorId)
     }
 }

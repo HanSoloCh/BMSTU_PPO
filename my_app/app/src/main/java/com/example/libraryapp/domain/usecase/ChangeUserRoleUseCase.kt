@@ -1,4 +1,3 @@
 package com.example.libraryapp.domain.usecase
 
-class ChangeUserRoleUseCase {
-}
+class ChangeUserRoleUseCase

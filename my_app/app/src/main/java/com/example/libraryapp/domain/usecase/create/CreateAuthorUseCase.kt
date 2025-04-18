@@ -7,7 +7,7 @@ import javax.inject.Inject
 class CreateAuthorUseCase @Inject constructor(
     private val authorRepository: AuthorRepository
 ) {
-    suspend operator fun invoke(author : AuthorModel) {
+    suspend operator fun invoke(author: AuthorModel) {
         authorRepository.create(author)
     }
 }

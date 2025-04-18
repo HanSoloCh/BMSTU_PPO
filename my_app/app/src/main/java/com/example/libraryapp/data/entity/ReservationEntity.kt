@@ -1,14 +1,12 @@
-package com.example.libraryapp.data.local.entity
+package com.example.libraryapp.data.entity
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.ReferenceOption
 import org.jetbrains.exposed.sql.kotlin.datetime.date
 
-
-object IssuanceEntity : UUIDTable("issuance") {
+object ReservationEntity : UUIDTable("reservation") {
     val bookId = reference("book_id", BookEntity, onDelete = ReferenceOption.CASCADE)
     val userId = reference("user_id", UserEntity, onDelete = ReferenceOption.CASCADE)
-    val issuanceDate = date("issuance_date")
-    val returnDate = date("return_date")
-    val extensionsCount = integer("extensions_count").default(3)
+    val reservationDate = date("reservation_date")
+    val cancelDate = date("cancel_date")
 }

@@ -1,23 +1,23 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.local.entity.ApuEntity
-import com.example.libraryapp.data.local.entity.AuthorEntity
-import com.example.libraryapp.data.local.entity.BbkEntity
-import com.example.libraryapp.data.local.entity.BookAuthorCrossRef
-import com.example.libraryapp.data.local.entity.BookEntity
-import com.example.libraryapp.data.local.entity.IssuanceEntity
-import com.example.libraryapp.data.local.entity.PublisherEntity
-import com.example.libraryapp.data.local.entity.ReservationEntity
-import com.example.libraryapp.data.local.entity.UserEntity
-import com.example.libraryapp.data.local.entity.UserFavoriteCrossRef
+import com.example.libraryapp.data.entity.ApuEntity
+import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.BookAuthorCrossRef
+import com.example.libraryapp.data.entity.BookEntity
+import com.example.libraryapp.data.entity.IssuanceEntity
+import com.example.libraryapp.data.entity.PublisherEntity
+import com.example.libraryapp.data.entity.ReservationEntity
+import com.example.libraryapp.data.entity.UserEntity
+import com.example.libraryapp.data.entity.UserFavoriteCrossRef
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
+import org.junit.After
 import org.testcontainers.containers.PostgreSQLContainer
 
 abstract class BasePostgresIntegrationTest {
-
     companion object {
         val container = PostgreSQLContainer<Nothing>("postgres:16").apply {
             withDatabaseName("testdb")
@@ -27,16 +27,15 @@ abstract class BasePostgresIntegrationTest {
         }
     }
 
-    protected lateinit var db: Database
+    protected var db = Database.connect(
+        url = container.jdbcUrl,
+        driver = "org.postgresql.Driver",
+        user = container.username,
+        password = container.password
+    )
 
-    fun setUpDatabase() {
-        db = Database.connect(
-            url = container.jdbcUrl,
-            driver = "org.postgresql.Driver",
-            user = container.username,
-            password = container.password
-        )
-
+    // Создаем БД
+    init {
         transaction(db) {
             SchemaUtils.createMissingTablesAndColumns(
                 ApuEntity,
@@ -53,6 +52,8 @@ abstract class BasePostgresIntegrationTest {
         }
     }
 
+    // Чистим БД после каждого теста
+    @After
     fun tearDownDatabase() {
         transaction(db) {
             ReservationEntity.deleteAll()

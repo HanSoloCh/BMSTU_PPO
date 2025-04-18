@@ -5,7 +5,7 @@ import com.example.libraryapp.domain.repository.ApuRepository
 import javax.inject.Inject
 
 class CreateApuUseCase @Inject constructor(
-  private val apuRepository: ApuRepository
+    private val apuRepository: ApuRepository
 ) {
     suspend operator fun invoke(apuModel: ApuModel) {
         apuRepository.create(apuModel)

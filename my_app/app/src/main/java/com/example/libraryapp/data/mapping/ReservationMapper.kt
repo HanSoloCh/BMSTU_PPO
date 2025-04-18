@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.PublisherEntity
-import com.example.libraryapp.data.local.entity.ReservationEntity
+import com.example.libraryapp.data.entity.ReservationEntity
 import com.example.libraryapp.domain.model.ReservationModel
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
@@ -22,22 +21,30 @@ object ReservationMapper {
         )
     }
 
-    fun toInsertStatement(reservationModel: ReservationModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        reservationModel: ReservationModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[ReservationEntity.id] = reservationModel.id
             it[ReservationEntity.bookId] = reservationModel.bookId
             it[ReservationEntity.userId] = reservationModel.userId
-            it[ReservationEntity.reservationDate] = reservationModel.reservationDate.toKotlinLocalDate()
+            it[ReservationEntity.reservationDate] =
+                reservationModel.reservationDate.toKotlinLocalDate()
             it[ReservationEntity.cancelDate] = reservationModel.cancelDate.toKotlinLocalDate()
         }
     }
 
-    fun toUpdateStatement(reservationModel: ReservationModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        reservationModel: ReservationModel,
+        statement: UpdateStatement
+    ): UpdateStatement {
         return statement.also {
             it[ReservationEntity.id] = reservationModel.id
             it[ReservationEntity.bookId] = reservationModel.bookId
             it[ReservationEntity.userId] = reservationModel.userId
-            it[ReservationEntity.reservationDate] = reservationModel.reservationDate.toKotlinLocalDate()
+            it[ReservationEntity.reservationDate] =
+                reservationModel.reservationDate.toKotlinLocalDate()
             it[ReservationEntity.cancelDate] = reservationModel.cancelDate.toKotlinLocalDate()
         }
     }

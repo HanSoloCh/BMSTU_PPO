@@ -1,6 +1,6 @@
 package com.example.libraryapp.data.specification
 
-import com.example.libraryapp.data.local.entity.ApuEntity
+import com.example.libraryapp.data.entity.ApuEntity
 import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.specification.apu.ApuTermSpecification

@@ -11,4 +11,6 @@ interface AuthorRepository {
     suspend fun update(authorModel: AuthorModel): Int
 
     suspend fun deleteById(authorId: UUID): Int
+
+    suspend fun isContain(authorId: UUID): Boolean
 }

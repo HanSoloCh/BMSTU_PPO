@@ -1,4 +1,4 @@
-package com.example.libraryapp.data.local.entity
+package com.example.libraryapp.data.entity
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 

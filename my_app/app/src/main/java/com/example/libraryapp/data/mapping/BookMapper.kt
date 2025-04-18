@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.BbkEntity
-import com.example.libraryapp.data.local.entity.BookEntity
+import com.example.libraryapp.data.entity.BookEntity
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
 import org.jetbrains.exposed.dao.id.EntityID
@@ -30,7 +29,10 @@ object BookMapper {
         )
     }
 
-    fun toInsertStatement(bookModel: BookModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        bookModel: BookModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[BookEntity.id] = bookModel.id
             it[BookEntity.title] = bookModel.title

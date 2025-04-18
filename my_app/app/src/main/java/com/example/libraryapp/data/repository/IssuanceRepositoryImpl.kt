@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.repository
 
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import com.example.libraryapp.data.local.entity.IssuanceEntity
+import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.repository.IssuanceRepository
@@ -10,6 +9,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
@@ -18,9 +19,11 @@ import org.jetbrains.exposed.sql.update
 import java.util.UUID
 import javax.inject.Inject
 
-class IssuanceRepositoryImpl @Inject constructor() : IssuanceRepository {
+class IssuanceRepositoryImpl @Inject constructor(
+    private val db: Database
+) : IssuanceRepository {
     override suspend fun create(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {
-        transaction {
+        transaction(db) {
             IssuanceEntity.insertAndGetId {
                 IssuanceMapper.toInsertStatement(issuanceModel, it)
             }.value
@@ -29,7 +32,7 @@ class IssuanceRepositoryImpl @Inject constructor() : IssuanceRepository {
     }
 
     override suspend fun update(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {
-        transaction {
+        transaction(db) {
             IssuanceEntity.update({ IssuanceEntity.id eq issuanceModel.id }) {
                 IssuanceMapper.toUpdateStatement(issuanceModel, it)
             }
@@ -37,14 +40,14 @@ class IssuanceRepositoryImpl @Inject constructor() : IssuanceRepository {
     }
 
     override suspend fun deleteById(issuanceId: UUID) = withContext(Dispatchers.IO) {
-        transaction {
-            IssuanceEntity.deleteWhere { IssuanceEntity.id eq issuanceId }
+        transaction(db) {
+            IssuanceEntity.deleteWhere { id eq issuanceId }
         }
     }
 
     override fun readByUserId(userId: UUID): Flow<List<IssuanceModel>> = flow {
         emit(
-            transaction {
+            transaction(db) {
                 IssuanceEntity
                     .selectAll()
                     .where { IssuanceEntity.userId eq userId }

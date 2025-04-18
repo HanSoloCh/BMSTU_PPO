@@ -11,4 +11,6 @@ interface BbkRepository {
     suspend fun update(bbkModel: BbkModel): Int
 
     suspend fun deleteById(bbkId: UUID): Int
+
+    suspend fun isContain(bbk: UUID): Boolean
 }

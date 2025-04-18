@@ -67,16 +67,11 @@ dependencies {
     implementation(libs.sqlite.jdbc)
 
     // Зависимости для тестирования
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(kotlin("test"))
     testImplementation(libs.postgresql)
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.postgresql)
+
+    implementation(libs.logback.classic)
 }

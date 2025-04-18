@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeleteUserUseCase @Inject constructor(
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(userId : UUID) {
+    suspend operator fun invoke(userId: UUID) {
         userRepository.deleteById(userId)
     }
 }

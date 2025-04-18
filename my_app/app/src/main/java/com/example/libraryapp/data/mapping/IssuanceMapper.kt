@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.BookEntity
-import com.example.libraryapp.data.local.entity.IssuanceEntity
+import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.domain.model.IssuanceModel
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
@@ -23,7 +22,10 @@ object IssuanceMapper {
         )
     }
 
-    fun toInsertStatement(issuanceModel: IssuanceModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        issuanceModel: IssuanceModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[IssuanceEntity.id] = issuanceModel.id
             it[IssuanceEntity.bookId] = issuanceModel.bookId
@@ -34,7 +36,10 @@ object IssuanceMapper {
         }
     }
 
-    fun toUpdateStatement(issuanceModel: IssuanceModel, statement: UpdateStatement): UpdateStatement {
+    fun toUpdateStatement(
+        issuanceModel: IssuanceModel,
+        statement: UpdateStatement
+    ): UpdateStatement {
         return statement.also {
             it[IssuanceEntity.id] = issuanceModel.id
             it[IssuanceEntity.bookId] = issuanceModel.bookId

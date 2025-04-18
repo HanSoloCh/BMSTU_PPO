@@ -1,14 +1,13 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.local.entity.AuthorEntity
-import com.example.libraryapp.data.local.entity.BbkEntity
-import com.example.libraryapp.data.local.entity.PublisherEntity
+import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.data.repository.BookRepositoryImpl
 import com.example.libraryapp.domain.model.BookModel
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.util.UUID
@@ -16,14 +15,13 @@ import org.junit.Assert.*
 
 class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
-    private val repository = BookRepositoryImpl()
+    private val repository = BookRepositoryImpl(db)
     private lateinit var authorId: UUID
     private lateinit var publisherId: UUID
     private lateinit var bbkId: UUID
 
     @Before
     fun setupTest() {
-        setUpDatabase()
         transaction(db) {
             authorId = AuthorEntity.insertAndGetId {
                 it[name] = "Test Author"
@@ -36,12 +34,6 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
                 it[description] = "Test desc"
             }.value
         }
-    }
-
-
-    @After
-    fun tearDown() {
-        tearDownDatabase()
     }
 
     @Test
@@ -75,7 +67,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
         repository.create(originalBook)
 
         // Новый автор
-        val newAuthorId = transaction {
+        val newAuthorId = transaction(db) {
             AuthorEntity.insertAndGetId {
                 it[name] = "Second Author"
             }.value

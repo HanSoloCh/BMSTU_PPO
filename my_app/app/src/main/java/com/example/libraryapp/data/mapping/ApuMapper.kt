@@ -1,6 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.ApuEntity
+import com.example.libraryapp.data.entity.ApuEntity
 import com.example.libraryapp.domain.model.ApuModel
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
@@ -18,7 +18,10 @@ object ApuMapper {
         )
     }
 
-    fun toInsertStatement(apuModel: ApuModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        apuModel: ApuModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[ApuEntity.id] = apuModel.id
             it[ApuEntity.term] = apuModel.term

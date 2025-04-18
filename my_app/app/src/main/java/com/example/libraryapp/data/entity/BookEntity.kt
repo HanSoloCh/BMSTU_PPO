@@ -1,4 +1,4 @@
-package com.example.libraryapp.data.local.entity
+package com.example.libraryapp.data.entity
 
 import org.jetbrains.exposed.dao.id.UUIDTable
 import org.jetbrains.exposed.sql.ReferenceOption
@@ -6,7 +6,8 @@ import org.jetbrains.exposed.sql.ReferenceOption
 object BookEntity : UUIDTable("book") {
     val title = text("title")
     val annotation = text("annotation").nullable()
-    val publisherId = reference("publisher_id", PublisherEntity, onDelete = ReferenceOption.CASCADE).nullable()
+    val publisherId =
+        reference("publisher_id", PublisherEntity, onDelete = ReferenceOption.CASCADE).nullable()
     val publicationYear = integer("publication_year").nullable()
     val codeISBN = varchar("ISBN", 50).nullable()
     val bbkId = reference("bbk_id", BbkEntity, onDelete = ReferenceOption.RESTRICT)

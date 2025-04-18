@@ -1,12 +1,11 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.ApuEntity
-import com.example.libraryapp.data.local.entity.AuthorEntity
+import com.example.libraryapp.data.entity.AuthorEntity
 import com.example.libraryapp.domain.model.AuthorModel
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
-import org.jetbrains.exposed.sql.ResultRow
 import java.util.UUID
 
 object AuthorMapper {
@@ -17,7 +16,10 @@ object AuthorMapper {
         )
     }
 
-    fun toInsertStatement(author: AuthorModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        author: AuthorModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[AuthorEntity.id] = author.id
             it[AuthorEntity.name] = author.name

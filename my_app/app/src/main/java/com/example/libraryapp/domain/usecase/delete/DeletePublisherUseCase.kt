@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DeletePublisherUseCase @Inject constructor(
     private val publisherRepository: PublisherRepository
 ) {
-    suspend operator fun invoke(publisherId : UUID) {
+    suspend operator fun invoke(publisherId: UUID) {
         publisherRepository.deleteById(publisherId)
     }
 }

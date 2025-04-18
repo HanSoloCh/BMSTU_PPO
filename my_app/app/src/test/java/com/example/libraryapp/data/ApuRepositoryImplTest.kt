@@ -1,6 +1,6 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.local.entity.BbkEntity
+import com.example.libraryapp.data.entity.BbkEntity
 import com.example.libraryapp.data.repository.ApuRepositoryImpl
 import com.example.libraryapp.data.repository.BbkRepositoryImpl
 import com.example.libraryapp.domain.model.ApuModel
@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import java.util.UUID
@@ -17,23 +16,17 @@ import org.junit.Assert.*
 
 class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
 
-    private val repository = ApuRepositoryImpl()
+    private var repository = ApuRepositoryImpl(db)
     private lateinit var bbkId: UUID
 
     @Before
     fun setupTest() {
-        setUpDatabase()
         transaction(db) {
             bbkId = BbkEntity.insertAndGetId {
                 it[code] = "Test Code"
                 it[description] = "Test Description"
             }.value
         }
-    }
-
-    @After
-    fun endTest() {
-        tearDownDatabase()
     }
 
     @Test
@@ -80,7 +73,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
 
         repository.create(apu)
 
-        BbkRepositoryImpl().deleteById(bbkId)
+        BbkRepositoryImpl(db).deleteById(bbkId)
 
         val found = repository.readById(newApu)
         assertNull(found)

@@ -12,5 +12,7 @@ interface UserRepository {
 
     suspend fun deleteById(userId: UUID): Int
 
+    suspend fun isContain(userId: UUID): Boolean
+
     suspend fun login(email: String, password: String): UserModel?
 }

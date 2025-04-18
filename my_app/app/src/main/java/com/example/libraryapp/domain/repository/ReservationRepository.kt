@@ -8,7 +8,8 @@ interface ReservationRepository {
     suspend fun create(reservationModel: ReservationModel)
 
     suspend fun update(reservationModel: ReservationModel): Int
-//
+
+    //
     suspend fun deleteById(reservationId: UUID): Int
 
     fun readByUserId(userId: UUID): Flow<List<ReservationModel>>

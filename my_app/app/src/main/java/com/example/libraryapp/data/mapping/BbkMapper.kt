@@ -1,7 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.local.entity.AuthorEntity
-import com.example.libraryapp.data.local.entity.BbkEntity
+import com.example.libraryapp.data.entity.BbkEntity
 import com.example.libraryapp.domain.model.BbkModel
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
@@ -18,7 +17,10 @@ object BbkMapper {
         )
     }
 
-    fun toInsertStatement(bbkModel: BbkModel, statement: InsertStatement<EntityID<UUID>>): InsertStatement<EntityID<UUID>> {
+    fun toInsertStatement(
+        bbkModel: BbkModel,
+        statement: InsertStatement<EntityID<UUID>>
+    ): InsertStatement<EntityID<UUID>> {
         return statement.also {
             it[BbkEntity.id] = bbkModel.id
             it[BbkEntity.code] = bbkModel.code
