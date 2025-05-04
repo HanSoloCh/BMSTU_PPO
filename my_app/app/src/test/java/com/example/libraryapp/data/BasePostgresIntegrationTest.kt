@@ -1,19 +1,19 @@
 package com.example.libraryapp.data
 
 import com.example.libraryapp.data.entity.ApuEntity
-import com.example.libraryapp.data.entity.AuthorEntity
-import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.AuthorTable
+import com.example.libraryapp.data.entity.BbkTable
 import com.example.libraryapp.data.entity.BookAuthorCrossRef
-import com.example.libraryapp.data.entity.BookEntity
+import com.example.libraryapp.data.entity.BookTable
 import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.data.entity.ReservationEntity
 import com.example.libraryapp.data.entity.UserEntity
 import com.example.libraryapp.data.entity.UserFavoriteCrossRef
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.deleteAll
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.After
 import org.testcontainers.containers.PostgreSQLContainer
 
@@ -39,10 +39,10 @@ abstract class BasePostgresIntegrationTest {
         transaction(db) {
             SchemaUtils.createMissingTablesAndColumns(
                 ApuEntity,
-                AuthorEntity,
-                BbkEntity,
+                AuthorTable,
+                BbkTable,
                 BookAuthorCrossRef,
-                BookEntity,
+                BookTable,
                 IssuanceEntity,
                 PublisherEntity,
                 ReservationEntity,
@@ -60,12 +60,12 @@ abstract class BasePostgresIntegrationTest {
             IssuanceEntity.deleteAll()
             UserFavoriteCrossRef.deleteAll()
             UserEntity.deleteAll()
-            AuthorEntity.deleteAll()
-            BookEntity.deleteAll()
+            AuthorTable.deleteAll()
+            BookTable.deleteAll()
             BookAuthorCrossRef.deleteAll()
             PublisherEntity.deleteAll()
             ApuEntity.deleteAll()
-            BbkEntity.deleteAll()
+            BbkTable.deleteAll()
         }
     }
 }

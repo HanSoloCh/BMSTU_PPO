@@ -1,8 +1,8 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.AuthorTable
 import com.example.libraryapp.data.entity.BookAuthorCrossRef
-import com.example.libraryapp.data.entity.BookEntity
+import com.example.libraryapp.data.entity.BookTable
 import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.mapping.BookMapper
 import com.example.libraryapp.data.specification.BookSpecToExpressionMapper
@@ -30,11 +30,11 @@ class BookRepositoryImpl @Inject constructor(
 ) : BookRepository {
     override suspend fun readById(bookId: UUID): BookModel? = withContext(Dispatchers.IO) {
         transaction(db) {
-            val authors = (AuthorEntity innerJoin BookAuthorCrossRef)
+            val authors = (AuthorTable innerJoin BookAuthorCrossRef)
                 .selectAll().where { BookAuthorCrossRef.bookId eq bookId }
                 .map { AuthorMapper.toDomain(it) }
 
-            BookEntity.selectAll().where { BookEntity.id eq bookId }.firstOrNull()?.let {
+            BookTable.selectAll().where { BookTable.id eq bookId }.firstOrNull()?.let {
                 BookMapper.toDomain(it, authors)
             }
         }
@@ -43,7 +43,7 @@ class BookRepositoryImpl @Inject constructor(
     override suspend fun create(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction(db) {
             // Create book
-            val bookId = BookEntity.insertAndGetId {
+            val bookId = BookTable.insertAndGetId {
                 BookMapper.toInsertStatement(bookModel, it)
             }.value
             // Create connections
@@ -59,7 +59,7 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun update(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction(db) {
-            val returnValue = BookEntity.update({ BookEntity.id eq bookModel.id }) {
+            val returnValue = BookTable.update({ BookTable.id eq bookModel.id }) {
                 BookMapper.toUpdateStatement(bookModel, it)
             }
             if (returnValue > 0) {
@@ -78,13 +78,13 @@ class BookRepositoryImpl @Inject constructor(
 
     override suspend fun deleteById(bookId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            BookEntity.deleteWhere { id eq bookId }
+            BookTable.deleteWhere { id eq bookId }
         }
     }
 
     override suspend fun isContain(bookId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            BookEntity.selectAll().where { BookEntity.id eq bookId }.empty().not()
+            BookTable.selectAll().where { BookTable.id eq bookId }.empty().not()
         }
     }
 
@@ -92,7 +92,7 @@ class BookRepositoryImpl @Inject constructor(
         val expression = BookSpecToExpressionMapper.map(spec)
 
         val result = transaction(db) {
-            BookEntity.selectAll().where { expression }.map { BookMapper.toDomain(it) }
+            BookTable.selectAll().where { expression }.map { BookMapper.toDomain(it) }
         }
         emit(result)
     }.flowOn(Dispatchers.IO)

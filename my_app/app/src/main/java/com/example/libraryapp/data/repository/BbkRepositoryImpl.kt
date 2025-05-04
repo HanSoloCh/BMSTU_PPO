@@ -1,13 +1,12 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.BbkTable
 import com.example.libraryapp.data.mapping.BbkMapper
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
@@ -21,7 +20,7 @@ class BbkRepositoryImpl @Inject constructor(
 ) : BbkRepository {
     override suspend fun readById(bbkId: UUID): BbkModel? = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkEntity.selectAll().where { BbkEntity.id eq bbkId }.firstOrNull()?.let {
+            BbkTable.selectAll().where { BbkTable.id eq bbkId }.firstOrNull()?.let {
                 BbkMapper.toDomain(it)
             }
         }
@@ -29,7 +28,7 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun create(bbkModel: BbkModel): UUID = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkEntity.insertAndGetId {
+            BbkTable.insertAndGetId {
                 BbkMapper.toInsertStatement(bbkModel, it)
             }.value
         }
@@ -37,7 +36,7 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun update(bbkModel: BbkModel): Int = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkEntity.update({ BbkEntity.id eq bbkModel.id }) {
+            BbkTable.update({ BbkTable.id eq bbkModel.id }) {
                 BbkMapper.toUpdateStatement(bbkModel, it)
             }
         }
@@ -45,13 +44,13 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun deleteById(bbkId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkEntity.deleteWhere { id eq bbkId }
+            BbkTable.deleteWhere { id eq bbkId }
         }
     }
 
     override suspend fun isContain(bbkId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkEntity.selectAll().where { BbkEntity.id eq bbkId }.empty().not()
+            BbkTable.selectAll().where { BbkTable.id eq bbkId }.empty().not()
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.BbkTable
 import com.example.libraryapp.data.repository.ApuRepositoryImpl
 import com.example.libraryapp.data.repository.BbkRepositoryImpl
 import com.example.libraryapp.domain.model.ApuModel
@@ -9,10 +9,12 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import java.util.UUID
-import org.junit.Assert.*
 
 class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
 
@@ -22,7 +24,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     @Before
     fun setupTest() {
         transaction(db) {
-            bbkId = BbkEntity.insertAndGetId {
+            bbkId = BbkTable.insertAndGetId {
                 it[code] = "Test Code"
                 it[description] = "Test Description"
             }.value

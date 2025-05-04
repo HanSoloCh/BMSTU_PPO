@@ -1,6 +1,6 @@
 package com.example.libraryapp.data.mapping
 
-import com.example.libraryapp.data.entity.BookEntity
+import com.example.libraryapp.data.entity.BookTable
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
 import org.jetbrains.exposed.dao.id.EntityID
@@ -12,20 +12,20 @@ import java.util.UUID
 object BookMapper {
     fun toDomain(row: ResultRow, authors: List<AuthorModel> = listOf<AuthorModel>()): BookModel {
         return BookModel(
-            id = row[BookEntity.id].value,
-            title = row[BookEntity.title],
-            annotation = row[BookEntity.annotation],
+            id = row[BookTable.id].value,
+            title = row[BookTable.title],
+            annotation = row[BookTable.annotation],
             authors = authors.map { it.id },
-            publisherId = row[BookEntity.publisherId]?.value,
-            publicationYear = row[BookEntity.publicationYear],
-            codeISBN = row[BookEntity.codeISBN],
-            bbkId = row[BookEntity.bbkId].value,
-            mediaType = row[BookEntity.mediaType],
-            volume = row[BookEntity.volume],
-            language = row[BookEntity.language],
-            originalLanguage = row[BookEntity.originalLanguage],
-            copies = row[BookEntity.copies],
-            availableCopies = row[BookEntity.availableCopies]
+            publisherId = row[BookTable.publisherId]?.value,
+            publicationYear = row[BookTable.publicationYear],
+            codeISBN = row[BookTable.codeISBN],
+            bbkId = row[BookTable.bbkId].value,
+            mediaType = row[BookTable.mediaType],
+            volume = row[BookTable.volume],
+            language = row[BookTable.language],
+            originalLanguage = row[BookTable.originalLanguage],
+            copies = row[BookTable.copies],
+            availableCopies = row[BookTable.availableCopies]
         )
     }
 
@@ -34,37 +34,37 @@ object BookMapper {
         statement: InsertStatement<EntityID<UUID>>
     ): InsertStatement<EntityID<UUID>> {
         return statement.also {
-            it[BookEntity.id] = bookModel.id
-            it[BookEntity.title] = bookModel.title
-            it[BookEntity.annotation] = bookModel.annotation
-            it[BookEntity.publisherId] = bookModel.publisherId
-            it[BookEntity.publicationYear] = bookModel.publicationYear
-            it[BookEntity.codeISBN] = bookModel.codeISBN
-            it[BookEntity.bbkId] = bookModel.bbkId
-            it[BookEntity.mediaType] = bookModel.mediaType
-            it[BookEntity.volume] = bookModel.volume
-            it[BookEntity.language] = bookModel.language
-            it[BookEntity.originalLanguage] = bookModel.originalLanguage
-            it[BookEntity.copies] = bookModel.copies
-            it[BookEntity.availableCopies] = bookModel.availableCopies
+            it[BookTable.id] = bookModel.id
+            it[BookTable.title] = bookModel.title
+            it[BookTable.annotation] = bookModel.annotation
+            it[BookTable.publisherId] = bookModel.publisherId
+            it[BookTable.publicationYear] = bookModel.publicationYear
+            it[BookTable.codeISBN] = bookModel.codeISBN
+            it[BookTable.bbkId] = bookModel.bbkId
+            it[BookTable.mediaType] = bookModel.mediaType
+            it[BookTable.volume] = bookModel.volume
+            it[BookTable.language] = bookModel.language
+            it[BookTable.originalLanguage] = bookModel.originalLanguage
+            it[BookTable.copies] = bookModel.copies
+            it[BookTable.availableCopies] = bookModel.availableCopies
         }
     }
 
     fun toUpdateStatement(bookModel: BookModel, statement: UpdateStatement): UpdateStatement {
         return statement.also {
-            it[BookEntity.id] = bookModel.id
-            it[BookEntity.title] = bookModel.title
-            it[BookEntity.annotation] = bookModel.annotation
-            it[BookEntity.publisherId] = bookModel.publisherId
-            it[BookEntity.publicationYear] = bookModel.publicationYear
-            it[BookEntity.codeISBN] = bookModel.codeISBN
-            it[BookEntity.bbkId] = bookModel.bbkId
-            it[BookEntity.mediaType] = bookModel.mediaType
-            it[BookEntity.volume] = bookModel.volume
-            it[BookEntity.language] = bookModel.language
-            it[BookEntity.originalLanguage] = bookModel.originalLanguage
-            it[BookEntity.copies] = bookModel.copies
-            it[BookEntity.availableCopies] = bookModel.availableCopies
+            it[BookTable.id] = bookModel.id
+            it[BookTable.title] = bookModel.title
+            it[BookTable.annotation] = bookModel.annotation
+            it[BookTable.publisherId] = bookModel.publisherId
+            it[BookTable.publicationYear] = bookModel.publicationYear
+            it[BookTable.codeISBN] = bookModel.codeISBN
+            it[BookTable.bbkId] = bookModel.bbkId
+            it[BookTable.mediaType] = bookModel.mediaType
+            it[BookTable.volume] = bookModel.volume
+            it[BookTable.language] = bookModel.language
+            it[BookTable.originalLanguage] = bookModel.originalLanguage
+            it[BookTable.copies] = bookModel.copies
+            it[BookTable.availableCopies] = bookModel.availableCopies
         }
     }
 }

@@ -1,17 +1,19 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.entity.AuthorEntity
-import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.AuthorTable
+import com.example.libraryapp.data.entity.BbkTable
 import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.data.repository.BookRepositoryImpl
 import com.example.libraryapp.domain.model.BookModel
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import java.util.UUID
-import org.junit.Assert.*
 
 class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
@@ -23,13 +25,13 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     @Before
     fun setupTest() {
         transaction(db) {
-            authorId = AuthorEntity.insertAndGetId {
+            authorId = AuthorTable.insertAndGetId {
                 it[name] = "Test Author"
             }.value
             publisherId = PublisherEntity.insertAndGetId {
                 it[name] = "Test Publisher"
             }.value
-            bbkId = BbkEntity.insertAndGetId {
+            bbkId = BbkTable.insertAndGetId {
                 it[code] = "Test code bbk"
                 it[description] = "Test desc"
             }.value
@@ -68,7 +70,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
         // Новый автор
         val newAuthorId = transaction(db) {
-            AuthorEntity.insertAndGetId {
+            AuthorTable.insertAndGetId {
                 it[name] = "Second Author"
             }.value
         }
