@@ -1,10 +1,20 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.BbkTable
+import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.mapping.BbkMapper
+import com.example.libraryapp.data.specification.AuthorSpecToExpressionMapper
+import com.example.libraryapp.data.specification.BbkSpecToExpressionMapper
+import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.deleteWhere
@@ -20,7 +30,7 @@ class BbkRepositoryImpl @Inject constructor(
 ) : BbkRepository {
     override suspend fun readById(bbkId: UUID): BbkModel? = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkTable.selectAll().where { BbkTable.id eq bbkId }.firstOrNull()?.let {
+            BbkEntity.selectAll().where { BbkEntity.id eq bbkId }.firstOrNull()?.let {
                 BbkMapper.toDomain(it)
             }
         }
@@ -28,7 +38,7 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun create(bbkModel: BbkModel): UUID = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkTable.insertAndGetId {
+            BbkEntity.insertAndGetId {
                 BbkMapper.toInsertStatement(bbkModel, it)
             }.value
         }
@@ -36,7 +46,7 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun update(bbkModel: BbkModel): Int = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkTable.update({ BbkTable.id eq bbkModel.id }) {
+            BbkEntity.update({ BbkEntity.id eq bbkModel.id }) {
                 BbkMapper.toUpdateStatement(bbkModel, it)
             }
         }
@@ -44,13 +54,20 @@ class BbkRepositoryImpl @Inject constructor(
 
     override suspend fun deleteById(bbkId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            BbkTable.deleteWhere { id eq bbkId }
+            BbkEntity.deleteWhere { id eq bbkId }
         }
     }
 
-    override suspend fun isContain(bbkId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            BbkTable.selectAll().where { BbkTable.id eq bbkId }.empty().not()
-        }
+    override suspend fun isContain(spec: Specification<BbkModel>) = withContext(Dispatchers.IO) {
+        query(spec).first().isNotEmpty()
     }
+
+    override fun query(spec: Specification<BbkModel>): Flow<List<BbkModel>> = flow {
+        val expression = BbkSpecToExpressionMapper.map(spec)
+
+        val result = transaction(db) {
+            BbkEntity.selectAll().where { expression }.map { BbkMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 }

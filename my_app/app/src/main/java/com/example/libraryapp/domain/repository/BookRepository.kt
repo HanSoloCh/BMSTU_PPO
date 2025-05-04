@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.repository
 
+import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +15,7 @@ interface BookRepository {
 
     suspend fun deleteById(bookId: UUID): Int
 
-    suspend fun isContain(bookId: UUID): Boolean
+    suspend fun isContain(spec: Specification<BookModel>): Boolean
 
     fun query(spec: Specification<BookModel>): Flow<List<BookModel>>
 }

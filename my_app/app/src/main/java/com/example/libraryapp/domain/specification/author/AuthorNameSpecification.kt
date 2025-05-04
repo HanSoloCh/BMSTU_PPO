@@ -1,0 +1,9 @@
+package com.example.libraryapp.domain.specification.author
+
+import com.example.libraryapp.domain.model.AuthorModel
+import com.example.libraryapp.domain.specification.Specification
+
+class AuthorNameSpecification(val name: String) : Specification<AuthorModel> {
+    override fun specified(candidate: AuthorModel): Boolean =
+        candidate.name.equals(name, ignoreCase = true)
+}

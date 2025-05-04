@@ -1,6 +1,10 @@
 package com.example.libraryapp.domain.repository
 
+import com.example.libraryapp.domain.model.AuthorModel
+import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.model.UserModel
+import com.example.libraryapp.domain.specification.Specification
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface UserRepository {
@@ -12,7 +16,9 @@ interface UserRepository {
 
     suspend fun deleteById(userId: UUID): Int
 
-    suspend fun isContain(userId: UUID): Boolean
+    suspend fun isContain(spec: Specification<UserModel>): Boolean
+
+    fun query(spec: Specification<UserModel>): Flow<List<UserModel>>
 
     suspend fun login(email: String, password: String): UserModel?
 }

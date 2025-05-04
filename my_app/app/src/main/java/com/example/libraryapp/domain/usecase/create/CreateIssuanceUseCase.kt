@@ -1,14 +1,32 @@
 package com.example.libraryapp.domain.usecase.create
 
+import com.example.libraryapp.domain.exception.ModelDuplicateException
+import com.example.libraryapp.domain.exception.ModelNotFoundException
 import com.example.libraryapp.domain.model.IssuanceModel
+import com.example.libraryapp.domain.repository.BookRepository
 import com.example.libraryapp.domain.repository.IssuanceRepository
+import com.example.libraryapp.domain.repository.UserRepository
+import com.example.libraryapp.domain.specification.book.BookIdSpecification
+import com.example.libraryapp.domain.specification.issuance.IssuanceIdSpecification
+import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import java.util.UUID
 import javax.inject.Inject
 
 class CreateIssuanceUseCase @Inject constructor(
-    private val issuanceRepository: IssuanceRepository
+    private val issuanceRepository: IssuanceRepository,
+    private val userRepository: UserRepository,
+    private val bookRepository: BookRepository
 ) {
-    suspend operator fun invoke(issuanceModel: IssuanceModel) {
-        TODO("Add book and user check")
-        issuanceRepository.create(issuanceModel)
+    suspend operator fun invoke(issuanceModel: IssuanceModel): UUID {
+        if (issuanceRepository.isContain(IssuanceIdSpecification(issuanceModel.id)))
+            throw ModelDuplicateException("Issuance", issuanceModel.id)
+
+        if (!userRepository.isContain(UserIdSpecification(issuanceModel.userId)))
+            throw ModelNotFoundException("User", issuanceModel.userId)
+
+        if (!bookRepository.isContain(BookIdSpecification(issuanceModel.bookId)))
+            throw ModelNotFoundException("Book", issuanceModel.bookId)
+
+        return issuanceRepository.create(issuanceModel)
     }
 }

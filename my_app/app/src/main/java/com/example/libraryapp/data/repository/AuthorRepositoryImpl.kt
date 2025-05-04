@@ -1,13 +1,15 @@
 package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.entity.ApuEntity
-import com.example.libraryapp.data.entity.AuthorTable
+import com.example.libraryapp.data.entity.AuthorEntity
 import com.example.libraryapp.data.mapping.ApuMapper
 import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.specification.ApuSpecToExpressionMapper
+import com.example.libraryapp.data.specification.AuthorSpecToExpressionMapper
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.repository.AuthorRepository
 import com.example.libraryapp.domain.specification.Specification
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -29,7 +31,7 @@ class AuthorRepositoryImpl @Inject constructor(
 ) : AuthorRepository {
     override suspend fun readById(authorId: UUID): AuthorModel? = withContext(Dispatchers.IO) {
         transaction(db) {
-            AuthorTable.selectAll().where { AuthorTable.id eq authorId }.firstOrNull()?.let {
+            AuthorEntity.selectAll().where { AuthorEntity.id eq authorId }.firstOrNull()?.let {
                 AuthorMapper.toDomain(it)
             }
         }
@@ -37,7 +39,7 @@ class AuthorRepositoryImpl @Inject constructor(
 
     override suspend fun create(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
         transaction(db) {
-            AuthorTable.insertAndGetId {
+            AuthorEntity.insertAndGetId {
                 AuthorMapper.toInsertStatement(authorModel, it)
             }.value
         }
@@ -45,7 +47,7 @@ class AuthorRepositoryImpl @Inject constructor(
 
     override suspend fun update(authorModel: AuthorModel) = withContext(Dispatchers.IO) {
         transaction(db) {
-            AuthorTable.update({ AuthorTable.id eq authorModel.id }) {
+            AuthorEntity.update({ AuthorEntity.id eq authorModel.id }) {
                 AuthorMapper.toUpdateStatement(authorModel, it)
             }
         }
@@ -53,13 +55,7 @@ class AuthorRepositoryImpl @Inject constructor(
 
     override suspend fun deleteById(authorId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            AuthorTable.deleteWhere { id eq authorId }
-        }
-    }
-
-    override suspend fun isContain(authorId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            AuthorTable.selectAll().where { AuthorTable.id eq authorId }.empty().not()
+            AuthorEntity.deleteWhere { id eq authorId }
         }
     }
 
@@ -68,10 +64,10 @@ class AuthorRepositoryImpl @Inject constructor(
     }
 
     override fun query(spec: Specification<AuthorModel>): Flow<List<AuthorModel>> = flow {
-        val expression = ApuSpecToExpressionMapper.map(spec)
+        val expression = AuthorSpecToExpressionMapper.map(spec)
 
         val result = transaction(db) {
-            ApuEntity.selectAll().where { expression }.map { ApuMapper.toDomain(it) }
+            AuthorEntity.selectAll().where { expression }.map { AuthorMapper.toDomain(it) }
         }
         emit(result)
     }.flowOn(Dispatchers.IO)

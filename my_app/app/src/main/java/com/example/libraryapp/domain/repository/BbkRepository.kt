@@ -1,6 +1,9 @@
 package com.example.libraryapp.domain.repository
 
+import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BbkModel
+import com.example.libraryapp.domain.specification.Specification
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 
 interface BbkRepository {
@@ -12,5 +15,7 @@ interface BbkRepository {
 
     suspend fun deleteById(bbkId: UUID): Int
 
-    suspend fun isContain(bbk: UUID): Boolean
+    suspend fun isContain(spec: Specification<BbkModel>): Boolean
+
+    fun query(spec: Specification<BbkModel>): Flow<List<BbkModel>>
 }

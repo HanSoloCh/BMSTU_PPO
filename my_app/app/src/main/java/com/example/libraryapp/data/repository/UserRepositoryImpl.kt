@@ -1,10 +1,20 @@
 package com.example.libraryapp.data.repository
 
+import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.UserEntity
+import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.data.mapping.UserMapper
+import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
+import com.example.libraryapp.data.specification.UserSpecToExpressionMapper
+import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.model.UserModel
 import com.example.libraryapp.domain.repository.UserRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -50,11 +60,18 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isContain(userId: UUID) = withContext(Dispatchers.IO) {
-        transaction(db) {
-            UserEntity.selectAll().where { UserEntity.id eq userId }.empty().not()
-        }
+    override suspend fun isContain(spec: Specification<UserModel>) = withContext(Dispatchers.IO) {
+        query(spec).first().isNotEmpty()
     }
+
+    override fun query(spec: Specification<UserModel>): Flow<List<UserModel>> = flow {
+        val expression = UserSpecToExpressionMapper.map(spec)
+
+        val result = transaction(db) {
+            UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
 
     override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
         transaction(db) {

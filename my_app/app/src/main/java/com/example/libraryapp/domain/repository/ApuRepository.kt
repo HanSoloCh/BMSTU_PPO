@@ -8,7 +8,7 @@ import java.util.UUID
 interface ApuRepository {
     suspend fun readById(apuId: UUID?): ApuModel?
 
-    suspend fun create(apuModel: ApuModel): UUID?
+    suspend fun create(apuModel: ApuModel): UUID
 
     suspend fun update(apuModel: ApuModel): Int
 

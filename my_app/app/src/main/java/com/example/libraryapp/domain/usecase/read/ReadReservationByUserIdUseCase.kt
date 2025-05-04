@@ -1,11 +1,16 @@
 package com.example.libraryapp.domain.usecase.read
 
+import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.repository.ReservationRepository
+import com.example.libraryapp.domain.specification.reservation.ReservationUserIdSpecification
+import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 import javax.inject.Inject
 
 class ReadReservationByUserIdUseCase @Inject constructor(
     private val reservationRepository: ReservationRepository
 ) {
-    operator fun invoke(userId: UUID) = reservationRepository.readByUserId(userId)
+    operator fun invoke(userId: UUID): Flow<List<ReservationModel>> {
+        return reservationRepository.query(ReservationUserIdSpecification(userId))
+    }
 }

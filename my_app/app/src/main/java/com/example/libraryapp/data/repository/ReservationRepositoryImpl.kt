@@ -1,11 +1,18 @@
 package com.example.libraryapp.data.repository
 
+import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.ReservationEntity
+import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.data.mapping.ReservationMapper
+import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
+import com.example.libraryapp.data.specification.ReservationSpecToExpressionMapper
+import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.repository.ReservationRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -27,7 +34,7 @@ class ReservationRepositoryImpl @Inject constructor(
             ReservationEntity.insertAndGetId {
                 ReservationMapper.toInsertStatement(reservationModel, it)
             }.value
-            TODO()
+            TODO("Нужно убавлять число книг")
         }
     }
 
@@ -45,14 +52,16 @@ class ReservationRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun readByUserId(userId: UUID): Flow<List<ReservationModel>> = flow {
-        emit(
-            transaction(db) {
-                ReservationEntity
-                    .selectAll()
-                    .where { ReservationEntity.id eq userId }
-                    .map { ReservationMapper.toDomain(it) }
-            }
-        )
+    override suspend fun isContain(spec: Specification<ReservationModel>) = withContext(Dispatchers.IO) {
+        query(spec).first().isNotEmpty()
+    }
+
+    override fun query(spec: Specification<ReservationModel>): Flow<List<ReservationModel>> = flow {
+        val expression = ReservationSpecToExpressionMapper.map(spec)
+
+        val result = transaction(db) {
+            ReservationEntity.selectAll().where { expression }.map { ReservationMapper.toDomain(it) }
+        }
+        emit(result)
     }.flowOn(Dispatchers.IO)
 }

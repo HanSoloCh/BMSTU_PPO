@@ -1,14 +1,26 @@
 package com.example.libraryapp.domain.usecase.create
 
+import com.example.libraryapp.domain.exception.ModelNotFoundException
+import com.example.libraryapp.domain.repository.BookRepository
 import com.example.libraryapp.domain.repository.UserFavoriteRepository
+import com.example.libraryapp.domain.repository.UserRepository
+import com.example.libraryapp.domain.specification.book.BookIdSpecification
+import com.example.libraryapp.domain.specification.user.UserIdSpecification
 import java.util.UUID
 import javax.inject.Inject
 
 class CreateFavoriteUseCase @Inject constructor(
-    private val userFavoriteRepository: UserFavoriteRepository
+    private val userFavoriteRepository: UserFavoriteRepository,
+    private val userRepository: UserRepository,
+    private val bookRepository: BookRepository
 ) {
-    suspend operator fun invoke(userId: UUID, bookId: UUID) {
-        TODO("Add book and user check")
-        userFavoriteRepository.create(userId, bookId)
+    suspend operator fun invoke(userId: UUID, bookId: UUID): Pair<UUID, UUID> {
+        if (!userRepository.isContain(UserIdSpecification(userId)))
+            throw ModelNotFoundException("User", userId)
+
+        if (!bookRepository.isContain(BookIdSpecification(bookId)))
+            throw ModelNotFoundException("Book", bookId)
+
+        return userFavoriteRepository.create(userId, bookId)
     }
 }

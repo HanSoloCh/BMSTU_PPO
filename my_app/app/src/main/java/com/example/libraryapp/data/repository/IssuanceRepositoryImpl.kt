@@ -2,10 +2,13 @@ package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.mapping.IssuanceMapper
+import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
 import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.repository.IssuanceRepository
+import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
@@ -27,7 +30,7 @@ class IssuanceRepositoryImpl @Inject constructor(
             IssuanceEntity.insertAndGetId {
                 IssuanceMapper.toInsertStatement(issuanceModel, it)
             }.value
-            TODO()
+            TODO("Сделать вызов функции по уменьшению общего числа книг")
         }
     }
 
@@ -45,14 +48,16 @@ class IssuanceRepositoryImpl @Inject constructor(
         }
     }
 
-    override fun readByUserId(userId: UUID): Flow<List<IssuanceModel>> = flow {
-        emit(
-            transaction(db) {
-                IssuanceEntity
-                    .selectAll()
-                    .where { IssuanceEntity.userId eq userId }
-                    .map { IssuanceMapper.toDomain(it) }
-            }
-        )
+    override suspend fun isContain(spec: Specification<IssuanceModel>) = withContext(Dispatchers.IO) {
+        query(spec).first().isNotEmpty()
+    }
+
+    override fun query(spec: Specification<IssuanceModel>): Flow<List<IssuanceModel>> = flow {
+        val expression = IssuanceSpecToExpressionMapper.map(spec)
+
+        val result = transaction(db) {
+            IssuanceEntity.selectAll().where { expression }.map { IssuanceMapper.toDomain(it) }
+        }
+        emit(result)
     }.flowOn(Dispatchers.IO)
 }

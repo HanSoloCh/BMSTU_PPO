@@ -16,7 +16,6 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
@@ -64,7 +63,7 @@ class ApuRepositoryImpl @Inject constructor(
         val expression = ApuSpecToExpressionMapper.map(spec)
 
         val result = transaction(db) {
-            ApuEntity.select(expression).map { ApuMapper.toDomain(it) }
+            ApuEntity.selectAll().where(expression).map { ApuMapper.toDomain(it) }
         }
         emit(result)
     }.flowOn(Dispatchers.IO)
