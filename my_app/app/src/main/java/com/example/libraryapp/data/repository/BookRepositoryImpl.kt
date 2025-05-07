@@ -6,6 +6,7 @@ import com.example.libraryapp.data.entity.BookEntity
 import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.mapping.BookMapper
 import com.example.libraryapp.data.specification.BookSpecToExpressionMapper
+import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.repository.BookRepository
 import com.example.libraryapp.domain.specification.Specification
@@ -25,21 +26,31 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import java.util.UUID
 import javax.inject.Inject
+import kotlin.math.exp
 
 class BookRepositoryImpl @Inject constructor(
     private val db: Database
 ) : BookRepository {
     override suspend fun readById(bookId: UUID): BookModel? = withContext(Dispatchers.IO) {
         transaction(db) {
-            val authors = (AuthorEntity innerJoin BookAuthorCrossRef)
-                .selectAll().where { BookAuthorCrossRef.bookId eq bookId }
-                .map { AuthorMapper.toDomain(it) }
-
             BookEntity.selectAll().where { BookEntity.id eq bookId }.firstOrNull()?.let {
-                BookMapper.toDomain(it, authors)
+                BookMapper.toDomain(it, getAuthorsByBookId(bookId))
             }
         }
     }
+
+    override fun readByAuthorId(authorId: UUID): Flow<List<BookModel>> = flow {
+        val result = transaction(db) {
+            val books = (BookEntity innerJoin BookAuthorCrossRef)
+                .select(BookEntity.columns)
+                .where { BookAuthorCrossRef.authorId eq authorId }
+                .toList()
+            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
+
 
     override suspend fun create(bookModel: BookModel) = withContext(Dispatchers.IO) {
         transaction(db) {
@@ -91,8 +102,25 @@ class BookRepositoryImpl @Inject constructor(
         val expression = BookSpecToExpressionMapper.map(spec)
 
         val result = transaction(db) {
-            BookEntity.selectAll().where { expression }.map { BookMapper.toDomain(it) }
+            val books = (BookEntity innerJoin BookAuthorCrossRef)
+                .select(BookEntity.columns)
+                .where { expression }
+                .toList()
+            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
         }
         emit(result)
     }.flowOn(Dispatchers.IO)
+
+    private fun getAuthorsByBookId(bookId: UUID): List<AuthorModel> = transaction {
+        getAuthorsByBookId(listOf(bookId))[bookId].orEmpty()
+    }
+
+    private fun getAuthorsByBookId(bookIds: List<UUID>): Map<UUID, List<AuthorModel>> = transaction {
+            (AuthorEntity innerJoin BookAuthorCrossRef)
+                .selectAll()
+                .where { BookAuthorCrossRef.bookId inList bookIds }
+                .map { row -> row[BookAuthorCrossRef.bookId].value to AuthorMapper.toDomain(row) }
+                .groupBy({ it.first }, { it.second })
+    }
 }

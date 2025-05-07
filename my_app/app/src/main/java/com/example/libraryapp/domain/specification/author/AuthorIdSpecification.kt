@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.specification.author
 
-import com.example.libraryapp.domain.model.ApuModel
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.specification.Specification
 import java.util.UUID

@@ -1,12 +1,8 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.AuthorEntity
 import com.example.libraryapp.data.entity.BbkEntity
-import com.example.libraryapp.data.mapping.AuthorMapper
 import com.example.libraryapp.data.mapping.BbkMapper
-import com.example.libraryapp.data.specification.AuthorSpecToExpressionMapper
 import com.example.libraryapp.data.specification.BbkSpecToExpressionMapper
-import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
 import com.example.libraryapp.domain.specification.Specification
@@ -17,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll

@@ -1,6 +1,6 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.entity.BbkTable
+import com.example.libraryapp.data.entity.BbkEntity
 import com.example.libraryapp.data.repository.ApuRepositoryImpl
 import com.example.libraryapp.data.repository.BbkRepositoryImpl
 import com.example.libraryapp.domain.model.ApuModel
@@ -24,7 +24,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     @Before
     fun setupTest() {
         transaction(db) {
-            bbkId = BbkTable.insertAndGetId {
+            bbkId = BbkEntity.insertAndGetId {
                 it[code] = "Test Code"
                 it[description] = "Test Description"
             }.value

@@ -1,10 +1,10 @@
 package com.example.libraryapp.data
 
 import com.example.libraryapp.data.entity.ApuEntity
-import com.example.libraryapp.data.entity.AuthorTable
-import com.example.libraryapp.data.entity.BbkTable
+import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.BbkEntity
 import com.example.libraryapp.data.entity.BookAuthorCrossRef
-import com.example.libraryapp.data.entity.BookTable
+import com.example.libraryapp.data.entity.BookEntity
 import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.data.entity.ReservationEntity
@@ -39,10 +39,10 @@ abstract class BasePostgresIntegrationTest {
         transaction(db) {
             SchemaUtils.createMissingTablesAndColumns(
                 ApuEntity,
-                AuthorTable,
-                BbkTable,
+                AuthorEntity,
+                BbkEntity,
                 BookAuthorCrossRef,
-                BookTable,
+                BookEntity,
                 IssuanceEntity,
                 PublisherEntity,
                 ReservationEntity,
@@ -60,12 +60,12 @@ abstract class BasePostgresIntegrationTest {
             IssuanceEntity.deleteAll()
             UserFavoriteCrossRef.deleteAll()
             UserEntity.deleteAll()
-            AuthorTable.deleteAll()
-            BookTable.deleteAll()
+            AuthorEntity.deleteAll()
+            BookEntity.deleteAll()
             BookAuthorCrossRef.deleteAll()
             PublisherEntity.deleteAll()
             ApuEntity.deleteAll()
-            BbkTable.deleteAll()
+            BbkEntity.deleteAll()
         }
     }
 }

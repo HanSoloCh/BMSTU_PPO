@@ -1,15 +1,11 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.ApuEntity
 import com.example.libraryapp.data.entity.AuthorEntity
-import com.example.libraryapp.data.mapping.ApuMapper
 import com.example.libraryapp.data.mapping.AuthorMapper
-import com.example.libraryapp.data.specification.ApuSpecToExpressionMapper
 import com.example.libraryapp.data.specification.AuthorSpecToExpressionMapper
 import com.example.libraryapp.domain.model.AuthorModel
 import com.example.libraryapp.domain.repository.AuthorRepository
 import com.example.libraryapp.domain.specification.Specification
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -17,6 +13,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll

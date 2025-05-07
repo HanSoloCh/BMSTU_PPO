@@ -1,13 +1,9 @@
 package com.example.libraryapp.data.repository
 
 import com.example.libraryapp.data.entity.ApuEntity
-import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.PublisherEntity
-import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.data.mapping.PublisherMapper
-import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
 import com.example.libraryapp.data.specification.PublisherSpecToExpressionMapper
-import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.repository.PublisherRepository
 import com.example.libraryapp.domain.specification.Specification
@@ -35,8 +31,8 @@ class PublisherRepositoryImpl @Inject constructor(
             transaction(db) {
                 PublisherEntity.selectAll().where { PublisherEntity.id eq publisherId }
                     .firstOrNull()?.let {
-                    PublisherMapper.toDomain(it)
-                }
+                        PublisherMapper.toDomain(it)
+                    }
             }
         }
 
@@ -62,9 +58,10 @@ class PublisherRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isContain(spec: Specification<PublisherModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
-    }
+    override suspend fun isContain(spec: Specification<PublisherModel>) =
+        withContext(Dispatchers.IO) {
+            query(spec).first().isNotEmpty()
+        }
 
     override fun query(spec: Specification<PublisherModel>): Flow<List<PublisherModel>> = flow {
         val expression = PublisherSpecToExpressionMapper.map(spec)

@@ -48,9 +48,10 @@ class IssuanceRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isContain(spec: Specification<IssuanceModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
-    }
+    override suspend fun isContain(spec: Specification<IssuanceModel>) =
+        withContext(Dispatchers.IO) {
+            query(spec).first().isNotEmpty()
+        }
 
     override fun query(spec: Specification<IssuanceModel>): Flow<List<IssuanceModel>> = flow {
         val expression = IssuanceSpecToExpressionMapper.map(spec)

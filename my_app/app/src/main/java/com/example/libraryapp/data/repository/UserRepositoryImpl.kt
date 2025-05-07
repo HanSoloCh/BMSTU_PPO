@@ -1,12 +1,8 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.UserEntity
-import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.data.mapping.UserMapper
-import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
 import com.example.libraryapp.data.specification.UserSpecToExpressionMapper
-import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.model.UserModel
 import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.Specification

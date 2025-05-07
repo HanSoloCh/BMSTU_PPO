@@ -2,7 +2,6 @@ package com.example.libraryapp.domain.usecase.create
 
 import com.example.libraryapp.domain.exception.ModelDuplicateException
 import com.example.libraryapp.domain.exception.ModelNotFoundException
-import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.model.BookModel
 import com.example.libraryapp.domain.repository.AuthorRepository
 import com.example.libraryapp.domain.repository.BbkRepository
@@ -28,7 +27,12 @@ class CreateBookUseCase @Inject constructor(
         if (!bbkRepository.isContain(BbkIdSpecification(bookModel.bbkId)))
             throw ModelNotFoundException("Bbk", bookModel.bbkId)
 
-        if (bookModel.publisherId != null && !publisherRepository.isContain(PublisherIdSpecification(bookModel.publisherId)))
+        if (bookModel.publisherId != null && !publisherRepository.isContain(
+                PublisherIdSpecification(
+                    bookModel.publisherId
+                )
+            )
+        )
             throw ModelNotFoundException("Publisher", bookModel.publisherId)
 
         for (author in bookModel.authors) {

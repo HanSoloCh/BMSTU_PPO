@@ -1,11 +1,14 @@
 package com.example.libraryapp.data
 
-import com.example.libraryapp.data.entity.AuthorTable
-import com.example.libraryapp.data.entity.BbkTable
+import com.example.libraryapp.data.entity.AuthorEntity
+import com.example.libraryapp.data.entity.BbkEntity
+import com.example.libraryapp.data.entity.BookEntity
 import com.example.libraryapp.data.entity.PublisherEntity
 import com.example.libraryapp.data.repository.BookRepositoryImpl
 import com.example.libraryapp.domain.model.BookModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.junit.Assert.assertEquals
@@ -25,13 +28,13 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     @Before
     fun setupTest() {
         transaction(db) {
-            authorId = AuthorTable.insertAndGetId {
+            authorId = AuthorEntity.insertAndGetId {
                 it[name] = "Test Author"
             }.value
             publisherId = PublisherEntity.insertAndGetId {
                 it[name] = "Test Publisher"
             }.value
-            bbkId = BbkTable.insertAndGetId {
+            bbkId = BbkEntity.insertAndGetId {
                 it[code] = "Test code bbk"
                 it[description] = "Test desc"
             }.value
@@ -70,7 +73,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
         // Новый автор
         val newAuthorId = transaction(db) {
-            AuthorTable.insertAndGetId {
+            AuthorEntity.insertAndGetId {
                 it[name] = "Second Author"
             }.value
         }
@@ -101,6 +104,37 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
         val result = repository.readById(book.id)
         assertNull(result)
+    }
+
+    @Test
+    fun getAuthorBooks() = runTest {
+        val book = BookModel(
+            id = UUID.randomUUID(),
+            title = "Test Book",
+            authors = listOf(authorId),
+            publisherId = publisherId,
+            bbkId = bbkId,
+        )
+        repository.create(book)
+        lateinit var anotherAuthorId: UUID
+        transaction(db) {
+            anotherAuthorId = AuthorEntity.insertAndGetId {
+                it[name] = "Test Author 2"
+            }.value
+        }
+
+        val anotherBook = BookModel(
+            id = UUID.randomUUID(),
+            title = "Test Book 2",
+            authors = listOf(anotherAuthorId),
+            publisherId = publisherId,
+            bbkId = bbkId,
+        )
+        repository.create(anotherBook)
+
+        val result = repository.readByAuthorId(authorId).first()
+
+        assertEquals(result, listOf<BookModel>(book))
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.libraryapp.domain.usecase.create
 
+import com.example.libraryapp.domain.exception.BookNoAvailableCopiesException
 import com.example.libraryapp.domain.exception.ModelDuplicateException
 import com.example.libraryapp.domain.exception.ModelNotFoundException
 import com.example.libraryapp.domain.model.ReservationModel
@@ -7,9 +8,9 @@ import com.example.libraryapp.domain.repository.BookRepository
 import com.example.libraryapp.domain.repository.ReservationRepository
 import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
-import com.example.libraryapp.domain.specification.issuance.IssuanceIdSpecification
 import com.example.libraryapp.domain.specification.reservation.ReservationIdSpecification
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import kotlinx.coroutines.flow.first
 import java.util.UUID
 import javax.inject.Inject
 
@@ -30,6 +31,11 @@ class CreateReservationUseCase @Inject constructor(
 
         if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId)))
             throw ModelNotFoundException("Book", reservationModel.bookId)
+
+        if (bookRepository.query(BookIdSpecification(reservationModel.bookId)).first()
+                .first().availableCopies <= 0
+        )
+            throw BookNoAvailableCopiesException(reservationModel.bookId)
 
         return reservationRepository.create(reservationModel)
     }

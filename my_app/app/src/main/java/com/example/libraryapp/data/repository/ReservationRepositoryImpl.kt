@@ -1,12 +1,8 @@
 package com.example.libraryapp.data.repository
 
-import com.example.libraryapp.data.entity.IssuanceEntity
 import com.example.libraryapp.data.entity.ReservationEntity
-import com.example.libraryapp.data.mapping.IssuanceMapper
 import com.example.libraryapp.data.mapping.ReservationMapper
-import com.example.libraryapp.data.specification.IssuanceSpecToExpressionMapper
 import com.example.libraryapp.data.specification.ReservationSpecToExpressionMapper
-import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.repository.ReservationRepository
 import com.example.libraryapp.domain.specification.Specification
@@ -52,15 +48,17 @@ class ReservationRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun isContain(spec: Specification<ReservationModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
-    }
+    override suspend fun isContain(spec: Specification<ReservationModel>) =
+        withContext(Dispatchers.IO) {
+            query(spec).first().isNotEmpty()
+        }
 
     override fun query(spec: Specification<ReservationModel>): Flow<List<ReservationModel>> = flow {
         val expression = ReservationSpecToExpressionMapper.map(spec)
 
         val result = transaction(db) {
-            ReservationEntity.selectAll().where { expression }.map { ReservationMapper.toDomain(it) }
+            ReservationEntity.selectAll().where { expression }
+                .map { ReservationMapper.toDomain(it) }
         }
         emit(result)
     }.flowOn(Dispatchers.IO)

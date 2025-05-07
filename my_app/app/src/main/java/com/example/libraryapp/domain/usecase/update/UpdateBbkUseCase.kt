@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.usecase.update
 
-import com.example.libraryapp.domain.exception.ModelDuplicateException
 import com.example.libraryapp.domain.exception.ModelNotFoundException
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository

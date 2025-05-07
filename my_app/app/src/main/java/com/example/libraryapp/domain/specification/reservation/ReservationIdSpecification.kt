@@ -1,6 +1,5 @@
 package com.example.libraryapp.domain.specification.reservation
 
-import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.model.ReservationModel
 import com.example.libraryapp.domain.specification.Specification
 import java.util.UUID
