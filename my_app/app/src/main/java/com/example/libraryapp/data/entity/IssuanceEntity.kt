@@ -10,5 +10,4 @@ object IssuanceEntity : UUIDTable("issuance") {
     val userId = reference("user_id", UserEntity, onDelete = ReferenceOption.CASCADE)
     val issuanceDate = date("issuance_date")
     val returnDate = date("return_date")
-    val extensionsCount = integer("extensions_count").default(3)
 }

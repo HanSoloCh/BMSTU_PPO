@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.model
 
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 data class ReservationModel(
     val id: UUID = UUID.randomUUID(),

@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.model
 
 import com.example.libraryapp.domain.util.utils.UserRole
-import java.util.UUID
+import java.util.*
 
 data class UserModel(
     val id: UUID = UUID.randomUUID(),

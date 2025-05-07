@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.model
 
 import java.time.LocalDate
-import java.util.UUID
+import java.util.*
 
 data class IssuanceModel(
     val id: UUID = UUID.randomUUID(),
@@ -9,11 +9,9 @@ data class IssuanceModel(
     val userId: UUID,
     val issuanceDate: LocalDate,
     val returnDate: LocalDate,
-    val extensionsCount: Int = 3,
 ) {
     init {
         require(issuanceDate <= LocalDate.now())
         require(returnDate > issuanceDate)
-        require(extensionsCount >= 0)
     }
 }

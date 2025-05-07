@@ -6,8 +6,8 @@ import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.specification.apu.ApuIdSpecification
 import com.example.libraryapp.domain.specification.apu.ApuTermSpecification
 import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 
 object ApuSpecToExpressionMapper {
     fun map(spec: Specification<ApuModel>): Op<Boolean> = when (spec) {

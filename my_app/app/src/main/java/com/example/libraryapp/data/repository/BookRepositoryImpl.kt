@@ -16,17 +16,11 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.Database
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
-import kotlin.math.exp
 
 class BookRepositoryImpl @Inject constructor(
     private val db: Database
@@ -117,10 +111,10 @@ class BookRepositoryImpl @Inject constructor(
     }
 
     private fun getAuthorsByBookId(bookIds: List<UUID>): Map<UUID, List<AuthorModel>> = transaction {
-            (AuthorEntity innerJoin BookAuthorCrossRef)
-                .selectAll()
-                .where { BookAuthorCrossRef.bookId inList bookIds }
-                .map { row -> row[BookAuthorCrossRef.bookId].value to AuthorMapper.toDomain(row) }
-                .groupBy({ it.first }, { it.second })
+        (AuthorEntity innerJoin BookAuthorCrossRef)
+            .selectAll()
+            .where { BookAuthorCrossRef.bookId inList bookIds }
+            .map { row -> row[BookAuthorCrossRef.bookId].value to AuthorMapper.toDomain(row) }
+            .groupBy({ it.first }, { it.second })
     }
 }

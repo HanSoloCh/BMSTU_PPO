@@ -2,7 +2,7 @@ package com.example.libraryapp.data.entity
 
 import org.jetbrains.exposed.dao.id.IdTable
 import org.jetbrains.exposed.sql.ReferenceOption
-import java.util.UUID
+import java.util.*
 
 object ApuEntity : IdTable<UUID>("apu") {
     override val id = uuid("id").entityId()

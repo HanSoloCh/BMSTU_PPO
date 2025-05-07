@@ -6,7 +6,7 @@ import com.example.libraryapp.domain.repository.UserFavoriteRepository
 import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 class CreateFavoriteUseCase @Inject constructor(

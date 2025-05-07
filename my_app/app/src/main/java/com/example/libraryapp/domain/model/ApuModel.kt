@@ -1,6 +1,6 @@
 package com.example.libraryapp.domain.model
 
-import java.util.UUID
+import java.util.*
 
 data class ApuModel(
     val id: UUID = UUID.randomUUID(),

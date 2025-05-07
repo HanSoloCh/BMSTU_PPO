@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.repository
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import java.util.*
 
 interface BbkRepository {
     suspend fun readById(bbkId: UUID): BbkModel?

@@ -3,7 +3,7 @@ package com.example.libraryapp.domain.repository
 import com.example.libraryapp.domain.model.IssuanceModel
 import com.example.libraryapp.domain.specification.Specification
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import java.util.*
 
 interface IssuanceRepository {
     suspend fun create(issuanceModel: IssuanceModel): UUID

@@ -6,8 +6,8 @@ import com.example.libraryapp.domain.specification.Specification
 import com.example.libraryapp.domain.specification.bbk.BbkCodeSpecification
 import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
 import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 
 object BbkSpecToExpressionMapper {
     fun map(spec: Specification<BbkModel>): Op<Boolean> = when (spec) {
