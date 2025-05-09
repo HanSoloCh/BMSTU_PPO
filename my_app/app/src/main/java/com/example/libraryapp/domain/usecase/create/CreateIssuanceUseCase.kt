@@ -15,9 +15,8 @@ import com.example.libraryapp.domain.specification.reservation.ReservationUserId
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
 import kotlinx.coroutines.flow.first
 import java.util.*
-import javax.inject.Inject
 
-class CreateIssuanceUseCase @Inject constructor(
+class CreateIssuanceUseCase(
     private val issuanceRepository: IssuanceRepository,
     private val userRepository: UserRepository,
     private val bookRepository: BookRepository,

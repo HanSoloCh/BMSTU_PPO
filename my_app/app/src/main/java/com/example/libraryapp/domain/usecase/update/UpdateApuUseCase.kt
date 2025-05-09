@@ -6,9 +6,8 @@ import com.example.libraryapp.domain.repository.ApuRepository
 import com.example.libraryapp.domain.repository.BbkRepository
 import com.example.libraryapp.domain.specification.apu.ApuIdSpecification
 import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
-import javax.inject.Inject
 
-class UpdateApuUseCase @Inject constructor(
+class UpdateApuUseCase(
     private val apuRepository: ApuRepository,
     private val bbkRepository: BbkRepository
 ) {

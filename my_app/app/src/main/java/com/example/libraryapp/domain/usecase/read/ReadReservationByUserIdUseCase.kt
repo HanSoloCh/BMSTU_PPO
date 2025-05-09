@@ -5,9 +5,8 @@ import com.example.libraryapp.domain.repository.ReservationRepository
 import com.example.libraryapp.domain.specification.reservation.ReservationUserIdSpecification
 import kotlinx.coroutines.flow.Flow
 import java.util.*
-import javax.inject.Inject
 
-class ReadReservationByUserIdUseCase @Inject constructor(
+class ReadReservationByUserIdUseCase(
     private val reservationRepository: ReservationRepository
 ) {
     operator fun invoke(userId: UUID): Flow<List<ReservationModel>> {

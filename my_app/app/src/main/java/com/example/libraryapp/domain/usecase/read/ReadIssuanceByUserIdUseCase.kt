@@ -5,9 +5,8 @@ import com.example.libraryapp.domain.repository.IssuanceRepository
 import com.example.libraryapp.domain.specification.issuance.IssuanceUserIdSpecification
 import kotlinx.coroutines.flow.Flow
 import java.util.*
-import javax.inject.Inject
 
-class ReadIssuanceByUserIdUseCase @Inject constructor(
+class ReadIssuanceByUserIdUseCase(
     private val issuanceRepository: IssuanceRepository
 ) {
     operator fun invoke(userId: UUID): Flow<List<IssuanceModel>> {

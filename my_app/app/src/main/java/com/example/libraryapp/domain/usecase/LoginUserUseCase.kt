@@ -2,9 +2,8 @@ package com.example.libraryapp.domain.usecase
 
 import com.example.libraryapp.domain.model.UserModel
 import com.example.libraryapp.domain.repository.UserRepository
-import javax.inject.Inject
 
-class LoginUserUseCase @Inject constructor(
+class LoginUserUseCase(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(email: String, password: String): UserModel? {

@@ -7,9 +7,8 @@ import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
 import java.util.*
-import javax.inject.Inject
 
-class CreateFavoriteUseCase @Inject constructor(
+class CreateFavoriteUseCase(
     private val userFavoriteRepository: UserFavoriteRepository,
     private val userRepository: UserRepository,
     private val bookRepository: BookRepository

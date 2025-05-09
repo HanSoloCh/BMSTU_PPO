@@ -8,9 +8,8 @@ import com.example.libraryapp.domain.specification.book.BookBbkIdSpecification
 import com.example.libraryapp.domain.specification.book.BookTitleSpecification
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import javax.inject.Inject
 
-class ReadBookBySentenceUseCase @Inject constructor(
+class ReadBookBySentenceUseCase(
     private val apuRepository: ApuRepository,
     private val bookRepository: BookRepository
 ) {

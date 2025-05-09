@@ -1,17 +1,20 @@
 package com.example.libraryapp.domain.model
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import java.time.Year
 import java.util.*
 
+@Serializable
 data class BookModel(
-    val id: UUID = UUID.randomUUID(),
+    val id: @Contextual UUID = UUID.randomUUID(),
     val title: String,
     val annotation: String? = null,
-    val authors: List<UUID>,
-    val publisherId: UUID?,
+    val authors: List<@Contextual UUID>,
+    val publisherId: @Contextual UUID?,
     val publicationYear: Int? = null,
     val codeISBN: String? = null,
-    val bbkId: UUID,
+    val bbkId: @Contextual UUID,
     val mediaType: String? = null,
     val volume: String? = null,
     val language: String? = null,

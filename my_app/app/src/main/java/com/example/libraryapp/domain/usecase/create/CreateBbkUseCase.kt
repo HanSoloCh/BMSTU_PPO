@@ -5,9 +5,8 @@ import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
 import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
 import java.util.*
-import javax.inject.Inject
 
-class CreateBbkUseCase @Inject constructor(
+class CreateBbkUseCase(
     private val bbkRepository: BbkRepository
 ) {
     suspend operator fun invoke(bbkModel: BbkModel): UUID {

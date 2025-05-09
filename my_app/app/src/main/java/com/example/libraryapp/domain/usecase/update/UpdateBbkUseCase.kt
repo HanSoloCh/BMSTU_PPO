@@ -4,9 +4,8 @@ import com.example.libraryapp.domain.exception.ModelNotFoundException
 import com.example.libraryapp.domain.model.BbkModel
 import com.example.libraryapp.domain.repository.BbkRepository
 import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
-import javax.inject.Inject
 
-class UpdateBbkUseCase @Inject constructor(
+class UpdateBbkUseCase(
     private val bbkRepository: BbkRepository
 ) {
     suspend operator fun invoke(bbkModel: BbkModel) {

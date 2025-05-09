@@ -16,9 +16,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class ReservationRepositoryImpl @Inject constructor(
+class ReservationRepositoryImpl(
     private val db: Database
 ) : ReservationRepository {
     override suspend fun create(reservationModel: ReservationModel) = withContext(Dispatchers.IO) {

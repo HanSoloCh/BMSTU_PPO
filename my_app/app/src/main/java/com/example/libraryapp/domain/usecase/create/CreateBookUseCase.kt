@@ -12,9 +12,8 @@ import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
 import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
 import java.util.*
-import javax.inject.Inject
 
-class CreateBookUseCase @Inject constructor(
+class CreateBookUseCase(
     private val bookRepository: BookRepository,
     private val authorRepository: AuthorRepository,
     private val bbkRepository: BbkRepository,

@@ -16,9 +16,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(
+class UserRepositoryImpl(
     private val db: Database
 ) : UserRepository {
     override suspend fun readById(userId: UUID): UserModel? = withContext(Dispatchers.IO) {

@@ -4,9 +4,8 @@ import com.example.libraryapp.domain.exception.ModelNotFoundException
 import com.example.libraryapp.domain.model.PublisherModel
 import com.example.libraryapp.domain.repository.PublisherRepository
 import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
-import javax.inject.Inject
 
-class UpdatePublisherUseCase @Inject constructor(
+class UpdatePublisherUseCase(
     private val publisherRepository: PublisherRepository
 ) {
     suspend operator fun invoke(publisherModel: PublisherModel) {

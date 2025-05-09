@@ -16,9 +16,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class ApuRepositoryImpl @Inject constructor(
+class ApuRepositoryImpl(
     private val db: Database
 ) : ApuRepository {
     override suspend fun readById(apuId: UUID?): ApuModel? = withContext(Dispatchers.IO) {

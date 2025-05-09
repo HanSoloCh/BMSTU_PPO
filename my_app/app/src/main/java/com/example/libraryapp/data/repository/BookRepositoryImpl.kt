@@ -20,9 +20,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class BookRepositoryImpl @Inject constructor(
+class BookRepositoryImpl(
     private val db: Database
 ) : BookRepository {
     override suspend fun readById(bookId: UUID): BookModel? = withContext(Dispatchers.IO) {

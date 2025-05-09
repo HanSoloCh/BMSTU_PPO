@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 
     id("com.google.devtools.ksp") version "2.1.10-1.0.31"
-    id("com.google.dagger.hilt.android") version "2.51"
     kotlin("kapt")
+    kotlin("plugin.serialization") version "1.9.0"  // Serialization plugin
 }
 
 android {
@@ -54,11 +54,6 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)  // Если используете Compose
-
-
     // Exposed
     implementation(libs.exposed.core)
     implementation(libs.exposed.dao)
@@ -75,9 +70,18 @@ dependencies {
 
     implementation(libs.logback.classic)
 
+    // Для Postgres
+    implementation(libs.postgresql) // или последняя версия
+
+
     // Для ktor
-    implementation("io.ktor:ktor-server-core:2.3.7")
-    implementation("io.ktor:ktor-server-netty:2.3.7")
-    implementation("io.ktor:ktor-server-content-negotiation:2.3.7")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.7") // Для сериализации
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json) // Для сериализации
+
+    // Для Koin
+    implementation(libs.koin.ktor)
+    implementation(libs.koin.logger.slf4j) // Логирование
+
 }

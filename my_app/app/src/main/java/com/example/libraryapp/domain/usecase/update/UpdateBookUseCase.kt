@@ -10,9 +10,8 @@ import com.example.libraryapp.domain.specification.author.AuthorIdSpecification
 import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
 import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
-import javax.inject.Inject
 
-class UpdateBookUseCase @Inject constructor(
+class UpdateBookUseCase(
     private val bookRepository: BookRepository,
     private val authorRepository: AuthorRepository,
     private val bbkRepository: BbkRepository,

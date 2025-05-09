@@ -8,9 +8,8 @@ import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.book.BookIdSpecification
 import com.example.libraryapp.domain.specification.reservation.ReservationIdSpecification
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
-import javax.inject.Inject
 
-class UpdateReservationUseCase @Inject constructor(
+class UpdateReservationUseCase(
     private val reservationRepository: ReservationRepository,
     private val userRepository: UserRepository,
     private val bookRepository: BookRepository

@@ -5,9 +5,8 @@ import com.example.libraryapp.domain.repository.BookRepository
 import com.example.libraryapp.domain.specification.book.BookBbkIdSpecification
 import kotlinx.coroutines.flow.Flow
 import java.util.*
-import javax.inject.Inject
 
-class ReadBooksByBbkUseCase @Inject constructor(
+class ReadBooksByBbkUseCase(
     private val bookRepository: BookRepository
 ) {
     operator fun invoke(bbkId: UUID): Flow<List<BookModel>> {

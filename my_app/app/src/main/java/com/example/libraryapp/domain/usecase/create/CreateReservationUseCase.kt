@@ -12,12 +12,11 @@ import com.example.libraryapp.domain.specification.reservation.ReservationIdSpec
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
 import kotlinx.coroutines.flow.first
 import java.util.*
-import javax.inject.Inject
 
 /**
  * Create reservation must decrement available copies
  */
-class CreateReservationUseCase @Inject constructor(
+class CreateReservationUseCase(
     private val reservationRepository: ReservationRepository,
     private val userRepository: UserRepository,
     private val bookRepository: BookRepository

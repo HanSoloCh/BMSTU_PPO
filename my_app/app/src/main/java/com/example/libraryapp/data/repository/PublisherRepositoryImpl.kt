@@ -17,9 +17,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class PublisherRepositoryImpl @Inject constructor(
+class PublisherRepositoryImpl(
     private val db: Database
 ) : PublisherRepository {
     override suspend fun readById(publisherId: UUID): PublisherModel? =

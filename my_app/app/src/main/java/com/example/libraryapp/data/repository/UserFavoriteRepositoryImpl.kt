@@ -11,10 +11,9 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
 
-class UserFavoriteRepositoryImpl @Inject constructor(
+class UserFavoriteRepositoryImpl(
     private val db: Database
 ) : UserFavoriteRepository {
     override suspend fun create(userId: UUID, bookId: UUID) = withContext(Dispatchers.IO) {

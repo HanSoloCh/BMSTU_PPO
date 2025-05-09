@@ -1,10 +1,13 @@
 package com.example.libraryapp.domain.model
 
 import com.example.libraryapp.domain.util.utils.UserRole
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import java.util.*
 
+@Serializable
 data class UserModel(
-    val id: UUID = UUID.randomUUID(),
+    val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
     val surname: String,
     val secondName: String?,

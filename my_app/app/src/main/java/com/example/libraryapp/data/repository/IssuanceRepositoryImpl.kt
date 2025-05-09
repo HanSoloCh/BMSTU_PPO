@@ -16,9 +16,8 @@ import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import javax.inject.Inject
 
-class IssuanceRepositoryImpl @Inject constructor(
+class IssuanceRepositoryImpl(
     private val db: Database
 ) : IssuanceRepository {
     override suspend fun create(issuanceModel: IssuanceModel) = withContext(Dispatchers.IO) {

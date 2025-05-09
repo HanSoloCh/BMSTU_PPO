@@ -1,16 +1,22 @@
 [versions]
 agp = "8.9.1"
 exposedCore = "0.49.0"
+koinKtor = "3.5.0"
+koinLoggerSlf4j = "3.5.0"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
 kotlinxCoroutinesTest = "1.7.3"
+ktorSerializationKotlinxJson = "2.3.7"
+ktorServerContentNegotiation = "2.3.7"
+ktorServerCore = "2.3.7"
+ktorServerNetty = "2.3.7"
 lifecycleRuntimeKtx = "2.8.7"
 activityCompose = "1.10.1"
 composeBom = "2025.03.01"
 logbackClassic = "1.4.14"
 postgresql = "42.5.1"
+postgresqlPostgresql = "42.3.3"
 postgresqlVersion = "1.19.3"
-hilt = "2.51"
 sqliteJdbc = "3.42.0.0"
 testcontainers = "1.19.3"
 
@@ -28,12 +34,16 @@ androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 # Hilt Core
-hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version = "1.2.0" }
+koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koinKtor" }
+koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koinLoggerSlf4j" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
+ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "ktorServerContentNegotiation" }
+ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "ktorServerCore" }
+ktor-server-netty = { module = "io.ktor:ktor-server-netty", version.ref = "ktorServerNetty" }
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+postgresql-v4233 = { module = "org.postgresql:postgresql", version.ref = "postgresqlPostgresql" }
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqliteJdbc" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "postgresqlVersion" }

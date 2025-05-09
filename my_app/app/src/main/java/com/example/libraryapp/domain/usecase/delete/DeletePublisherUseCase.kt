@@ -2,9 +2,8 @@ package com.example.libraryapp.domain.usecase.delete
 
 import com.example.libraryapp.domain.repository.PublisherRepository
 import java.util.*
-import javax.inject.Inject
 
-class DeletePublisherUseCase @Inject constructor(
+class DeletePublisherUseCase(
     private val publisherRepository: PublisherRepository
 ) {
     suspend operator fun invoke(publisherId: UUID) {

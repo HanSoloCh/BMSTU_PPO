@@ -1,9 +1,12 @@
 package com.example.libraryapp.domain.model
 
+import kotlinx.serialization.Contextual
+import kotlinx.serialization.Serializable
 import java.util.*
 
+@Serializable
 data class AuthorModel(
-    val id: UUID = UUID.randomUUID(),
+    val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
 ) {
     init {

@@ -4,9 +4,8 @@ import com.example.libraryapp.domain.exception.ModelDuplicateException
 import com.example.libraryapp.domain.model.UserModel
 import com.example.libraryapp.domain.repository.UserRepository
 import com.example.libraryapp.domain.specification.user.UserIdSpecification
-import javax.inject.Inject
 
-class CreateUserUseCase @Inject constructor(
+class CreateUserUseCase(
     private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(userModel: UserModel) {
