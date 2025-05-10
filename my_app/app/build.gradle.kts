@@ -80,6 +80,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json) // Для сериализации
 
+    implementation(libs.ktor.ktor.server.status.pages)
     // Для Koin
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j) // Логирование

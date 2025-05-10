@@ -10,9 +10,9 @@ import java.util.*
 
 fun Route.authorRoutes() {
     val readAuthorByIdUseCase: ReadAuthorByIdUseCase by inject()
-    route("/author/{authorId}") {
-        get {
-            val idParam = call.parameters["authorId"]
+    route("/author") {
+        get("/{id}") {
+            val idParam = call.parameters["id"]
             if (idParam == null) {
                 call.respond(HttpStatusCode.BadRequest, "Missing authorId")
                 return@get
@@ -32,5 +32,7 @@ fun Route.authorRoutes() {
                 call.respond(author)
             }
         }
+
     }
 }
+
