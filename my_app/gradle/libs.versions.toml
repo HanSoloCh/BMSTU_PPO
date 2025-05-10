@@ -5,6 +5,7 @@ koinKtor = "3.5.0"
 koinLoggerSlf4j = "3.5.0"
 kotlin = "2.1.10"
 coreKtx = "1.15.0"
+kotlinxCoroutinesCore = "1.8.0"
 kotlinxCoroutinesTest = "1.7.3"
 ktorSerializationKotlinxJson = "2.3.7"
 ktorServerContentNegotiation = "2.3.7"
@@ -16,15 +17,9 @@ activityCompose = "1.10.1"
 composeBom = "2025.03.01"
 logbackClassic = "1.4.14"
 postgresql = "42.5.1"
-postgresqlPostgresql = "42.3.3"
 postgresqlVersion = "1.19.3"
 sqliteJdbc = "3.42.0.0"
 testcontainers = "1.19.3"
-junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-appcompat = "1.6.1"
-material = "1.10.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -42,6 +37,7 @@ androidx-material3 = { group = "androidx.compose.material3", name = "material3" 
 # Hilt Core
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koinKtor" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koinLoggerSlf4j" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 ktor-ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "ktorServerStatusPages" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJson" }
@@ -53,11 +49,6 @@ postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" 
 sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqliteJdbc" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "postgresqlVersion" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
-material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
 
 [plugins]

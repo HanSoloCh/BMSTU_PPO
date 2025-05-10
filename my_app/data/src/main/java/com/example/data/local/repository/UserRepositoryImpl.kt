@@ -1,0 +1,76 @@
+package com.example.data.local.repository
+
+import com.example.data.local.entity.UserEntity
+import com.example.data.local.mapping.UserMapper
+import com.example.data.local.specification.UserSpecToExpressionMapper
+import com.example.libraryapp.domain.model.UserModel
+import com.example.libraryapp.domain.repository.UserRepository
+import com.example.libraryapp.domain.specification.Specification
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.transactions.transaction
+import java.util.*
+
+class UserRepositoryImpl(
+    private val db: Database
+) : UserRepository {
+    override suspend fun readById(userId: UUID): UserModel? = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserEntity.selectAll().where { UserEntity.id eq userId }.firstOrNull()?.let {
+                UserMapper.toDomain(it)
+            }
+        }
+    }
+
+    override suspend fun create(userModel: UserModel) = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserEntity.insertAndGetId {
+                UserMapper.toInsertStatement(userModel, it)
+            }.value
+        }
+    }
+
+    override suspend fun update(userModel: UserModel) = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserEntity.update({ UserEntity.id eq userModel.id }) {
+                UserMapper.toUpdateStatement(userModel, it)
+            }
+        }
+    }
+
+    override suspend fun deleteById(userId: UUID) = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserEntity.deleteWhere { id eq userId }
+        }
+    }
+
+    override suspend fun isContain(spec: Specification<UserModel>) = withContext(Dispatchers.IO) {
+        query(spec).first().isNotEmpty()
+    }
+
+    override fun query(spec: Specification<UserModel>): Flow<List<UserModel>> = flow {
+        val expression = UserSpecToExpressionMapper.map(spec)
+
+        val result = transaction(db) {
+            UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
+        }
+        emit(result)
+    }.flowOn(Dispatchers.IO)
+
+    override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserEntity
+                .selectAll()
+                .where {
+                    (UserEntity.email eq email) and (UserEntity.password eq password)
+                }
+                .firstOrNull()?.let { UserMapper.toDomain(it) }
+        }
+    }
+}

@@ -1,0 +1,23 @@
+package com.example.data.local.specification
+
+import com.example.data.local.entity.BookEntity
+import com.example.libraryapp.domain.model.BookModel
+import com.example.libraryapp.domain.specification.Specification
+import com.example.libraryapp.domain.specification.book.BookBbkIdSpecification
+import com.example.libraryapp.domain.specification.book.BookIdSpecification
+import com.example.libraryapp.domain.specification.book.BookPublisherIdSpecification
+import com.example.libraryapp.domain.specification.book.BookTitleSpecification
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
+
+object BookSpecToExpressionMapper {
+    fun map(spec: Specification<BookModel>): Op<Boolean> = when (spec) {
+        is BookIdSpecification -> BookEntity.id eq spec.id
+        is BookBbkIdSpecification -> BookEntity.bbkId eq spec.bbkId
+        is BookPublisherIdSpecification -> BookEntity.publisherId eq spec.publisherId
+        is BookTitleSpecification -> BookEntity.title like spec.title
+
+        else -> throw IllegalArgumentException("Unknown spec")
+    }
+}
