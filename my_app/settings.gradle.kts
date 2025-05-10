@@ -21,3 +21,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "library app"
 include(":app")
+include(":domain")
+include(":data")
