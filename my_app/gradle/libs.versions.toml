@@ -4,7 +4,6 @@ exposedCore = "0.49.0"
 koinKtor = "3.5.0"
 koinLoggerSlf4j = "3.5.0"
 kotlin = "2.1.10"
-coreKtx = "1.15.0"
 kotlinxCoroutinesCore = "1.8.0"
 kotlinxCoroutinesTest = "1.7.3"
 ktorSerializationKotlinxJson = "2.3.7"
@@ -12,9 +11,6 @@ ktorServerContentNegotiation = "2.3.7"
 ktorServerCore = "2.3.7"
 ktorServerNetty = "2.3.7"
 ktorServerStatusPages = "2.3.7"
-lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.10.1"
-composeBom = "2025.03.01"
 logbackClassic = "1.4.14"
 postgresql = "42.5.1"
 postgresqlVersion = "1.19.3"
@@ -22,18 +18,10 @@ sqliteJdbc = "3.42.0.0"
 testcontainers = "1.19.3"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposedCore" }
 exposed-dao = { module = "org.jetbrains.exposed:exposed-dao", version.ref = "exposedCore" }
 exposed-jdbc = { module = "org.jetbrains.exposed:exposed-jdbc", version.ref = "exposedCore" }
 exposed-kotlin-datetime = { module = "org.jetbrains.exposed:exposed-kotlin-datetime", version.ref = "exposedCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
-androidx-ui = { group = "androidx.compose.ui", name = "ui" }
-androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
-androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
-androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 # Hilt Core
 koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "koinKtor" }
 koin-logger-slf4j = { module = "io.insert-koin:koin-logger-slf4j", version.ref = "koinLoggerSlf4j" }
