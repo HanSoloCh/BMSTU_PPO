@@ -4,17 +4,14 @@ import com.example.data.local.entity.AuthorEntity
 import com.example.data.local.entity.BbkEntity
 import com.example.data.local.entity.PublisherEntity
 import com.example.data.local.repository.BookRepositoryImpl
-import com.example.libraryapp.domain.model.BookModel
-import kotlinx.coroutines.flow.first
+import com.example.domain.model.BookModel
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 
 class BookRepositoryImplTest : BasePostgresIntegrationTest() {
 
@@ -130,9 +127,9 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
         )
         repository.create(anotherBook)
 
-        val result = repository.readByAuthorId(authorId).first()
+        val result = repository.readByAuthorId(authorId)
 
-        assertEquals(result, listOf<BookModel>(book))
+        assertEquals(result, listOf(book))
     }
 
 }

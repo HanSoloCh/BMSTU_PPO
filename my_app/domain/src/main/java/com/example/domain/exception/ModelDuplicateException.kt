@@ -1,6 +1,6 @@
-package com.example.libraryapp.domain.exception
+package com.example.domain.exception
 
-import java.util.UUID
+import java.util.*
 
 class ModelDuplicateException(modelName: String, modelId: UUID) :
-    RuntimeException("$modelName with id $modelId already exists")
+    BaseDomainException("$modelName with id $modelId already exists")

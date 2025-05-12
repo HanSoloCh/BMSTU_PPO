@@ -1,9 +1,8 @@
-package com.example.libraryapp.domain.repository
+package com.example.domain.repository
 
-import com.example.libraryapp.domain.model.BbkModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import com.example.domain.model.BbkModel
+import com.example.domain.specification.Specification
+import java.util.*
 
 interface BbkRepository {
     suspend fun readById(bbkId: UUID): BbkModel?
@@ -16,5 +15,5 @@ interface BbkRepository {
 
     suspend fun isContain(spec: Specification<BbkModel>): Boolean
 
-    fun query(spec: Specification<BbkModel>): Flow<List<BbkModel>>
+    suspend fun query(spec: Specification<BbkModel>): List<BbkModel>
 }

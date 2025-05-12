@@ -1,11 +1,8 @@
 package com.example.data.local.repository
 
 import com.example.data.local.entity.UserFavoriteCrossRef
-import com.example.libraryapp.domain.repository.UserFavoriteRepository
+import com.example.domain.repository.UserFavoriteRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -35,14 +32,12 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
-    override fun readByUserId(userId: UUID): Flow<List<UUID>> = flow {
-        emit(
-            transaction(db) {
-                UserFavoriteCrossRef
-                    .selectAll()
-                    .where { UserFavoriteCrossRef.userId eq userId }
-                    .map { it[UserFavoriteCrossRef.bookId].value }
-            }
-        )
-    }.flowOn(Dispatchers.IO)
+    override suspend fun readByUserId(userId: UUID): List<UUID> = withContext(Dispatchers.IO) {
+        transaction(db) {
+            UserFavoriteCrossRef
+                .selectAll()
+                .where { UserFavoriteCrossRef.userId eq userId }
+                .map { it[UserFavoriteCrossRef.bookId].value }
+        }
+    }
 }

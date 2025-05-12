@@ -1,7 +1,7 @@
 package com.example.data.local.mapping
 
 import com.example.data.local.entity.ReservationEntity
-import com.example.libraryapp.domain.model.ReservationModel
+import com.example.domain.model.ReservationModel
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import org.jetbrains.exposed.dao.id.EntityID

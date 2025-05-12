@@ -1,7 +1,7 @@
 package com.example.libraryapp.domain.specification.book
 
-import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.model.BookModel
+import com.example.domain.specification.Specification
 
 class BookTitleSpecification(val title: String) : Specification<BookModel> {
     override fun specified(candidate: BookModel): Boolean =

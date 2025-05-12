@@ -1,9 +1,8 @@
-package com.example.libraryapp.domain.repository
+package com.example.domain.repository
 
-import com.example.libraryapp.domain.model.AuthorModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import com.example.domain.model.AuthorModel
+import com.example.domain.specification.Specification
+import java.util.*
 
 interface AuthorRepository {
     suspend fun readById(authorId: UUID): AuthorModel?
@@ -16,5 +15,5 @@ interface AuthorRepository {
 
     suspend fun isContain(spec: Specification<AuthorModel>): Boolean
 
-    fun query(spec: Specification<AuthorModel>): Flow<List<AuthorModel>>
+    suspend fun query(spec: Specification<AuthorModel>): List<AuthorModel>
 }

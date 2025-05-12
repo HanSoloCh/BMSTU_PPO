@@ -5,16 +5,13 @@ import com.example.data.local.repository.ApuRepositoryImpl
 import com.example.data.local.repository.BbkRepositoryImpl
 import com.example.domain.model.ApuModel
 import com.example.libraryapp.domain.specification.apu.ApuTermSpecification
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertNull
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 
 class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
 
@@ -61,7 +58,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
         )
 
         val result = repository.query(ApuTermSpecification("Test"))
-        assertEquals(apu, result.firstOrNull()?.firstOrNull())
+        assertEquals(apu, result.firstOrNull())
     }
 
     @Test

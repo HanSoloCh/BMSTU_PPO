@@ -25,5 +25,4 @@ dependencies {
     testImplementation(libs.testcontainers.postgresql)
 
     implementation(libs.logback.classic)
-
 }

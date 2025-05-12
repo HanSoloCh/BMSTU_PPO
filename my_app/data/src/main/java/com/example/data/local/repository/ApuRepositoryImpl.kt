@@ -4,13 +4,9 @@ import com.example.data.local.entity.ApuEntity
 import com.example.data.local.mapping.ApuMapper
 import com.example.data.local.specification.ApuSpecToExpressionMapper
 import com.example.domain.model.ApuModel
-import com.example.libraryapp.domain.repository.ApuRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.ApuRepository
+import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -51,15 +47,13 @@ class ApuRepositoryImpl(
     }
 
     override suspend fun isContain(spec: Specification<ApuModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
+        query(spec).isNotEmpty()
     }
 
-    override fun query(spec: Specification<ApuModel>): Flow<List<ApuModel>> = flow {
+    override suspend fun query(spec: Specification<ApuModel>): List<ApuModel> = withContext(Dispatchers.IO) {
         val expression = ApuSpecToExpressionMapper.map(spec)
-
-        val result = transaction(db) {
+        transaction(db) {
             ApuEntity.selectAll().where(expression).map { ApuMapper.toDomain(it) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+    }
 }

@@ -1,9 +1,8 @@
-package com.example.libraryapp.domain.repository
+package com.example.domain.repository
 
-import com.example.libraryapp.domain.model.PublisherModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import com.example.domain.model.PublisherModel
+import com.example.domain.specification.Specification
+import java.util.*
 
 interface PublisherRepository {
     suspend fun readById(publisherId: UUID): PublisherModel?
@@ -16,5 +15,5 @@ interface PublisherRepository {
 
     suspend fun isContain(spec: Specification<PublisherModel>): Boolean
 
-    fun query(spec: Specification<PublisherModel>): Flow<List<PublisherModel>>
+    suspend fun query(spec: Specification<PublisherModel>): List<PublisherModel>
 }

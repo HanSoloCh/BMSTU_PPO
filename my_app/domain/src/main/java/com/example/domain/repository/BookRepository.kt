@@ -1,14 +1,13 @@
-package com.example.libraryapp.domain.repository
+package com.example.domain.repository
 
-import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import com.example.domain.model.BookModel
+import com.example.domain.specification.Specification
+import java.util.*
 
 interface BookRepository {
     suspend fun readById(bookId: UUID): BookModel?
 
-    fun readByAuthorId(authorId: UUID): Flow<List<BookModel>>
+    suspend fun readByAuthorId(authorId: UUID): List<BookModel>
 
     suspend fun create(bookModel: BookModel): UUID
 
@@ -18,5 +17,5 @@ interface BookRepository {
 
     suspend fun isContain(spec: Specification<BookModel>): Boolean
 
-    fun query(spec: Specification<BookModel>): Flow<List<BookModel>>
+    suspend fun query(spec: Specification<BookModel>): List<BookModel>
 }

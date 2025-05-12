@@ -1,6 +1,6 @@
-package com.example.libraryapp.domain.exception
+package com.example.domain.exception
 
-import java.util.UUID
+import java.util.*
 
 class BookNoAvailableCopiesException(bookId: UUID) :
-    RuntimeException("book with id $bookId is run out")
+    BaseDomainException("book with id $bookId is run out")

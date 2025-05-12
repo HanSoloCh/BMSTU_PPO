@@ -3,14 +3,10 @@ package com.example.data.local.repository
 import com.example.data.local.entity.UserEntity
 import com.example.data.local.mapping.UserMapper
 import com.example.data.local.specification.UserSpecToExpressionMapper
-import com.example.libraryapp.domain.model.UserModel
-import com.example.libraryapp.domain.repository.UserRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.UserRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.UserModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -51,17 +47,17 @@ class UserRepositoryImpl(
     }
 
     override suspend fun isContain(spec: Specification<UserModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
+        query(spec).isNotEmpty()
     }
 
-    override fun query(spec: Specification<UserModel>): Flow<List<UserModel>> = flow {
+    override suspend fun query(spec: Specification<UserModel>): List<UserModel> = withContext(Dispatchers.IO) {
         val expression = UserSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
+        transaction(db) {
             UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+
+    }
 
     override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
         transaction(db) {

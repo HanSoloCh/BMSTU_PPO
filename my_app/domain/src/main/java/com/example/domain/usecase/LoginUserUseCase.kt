@@ -1,7 +1,7 @@
 package com.example.domain.usecase
 
-import com.example.libraryapp.domain.model.UserModel
-import com.example.libraryapp.domain.repository.UserRepository
+import com.example.domain.model.UserModel
+import com.example.domain.repository.UserRepository
 
 class LoginUserUseCase(
     private val userRepository: UserRepository

@@ -3,14 +3,10 @@ package com.example.data.local.repository
 import com.example.data.local.entity.IssuanceEntity
 import com.example.data.local.mapping.IssuanceMapper
 import com.example.data.local.specification.IssuanceSpecToExpressionMapper
-import com.example.libraryapp.domain.model.IssuanceModel
-import com.example.libraryapp.domain.repository.IssuanceRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.IssuanceRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.IssuanceModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -45,15 +41,14 @@ class IssuanceRepositoryImpl(
 
     override suspend fun isContain(spec: Specification<IssuanceModel>) =
         withContext(Dispatchers.IO) {
-            query(spec).first().isNotEmpty()
+            query(spec).isNotEmpty()
         }
 
-    override fun query(spec: Specification<IssuanceModel>): Flow<List<IssuanceModel>> = flow {
+    override suspend fun query(spec: Specification<IssuanceModel>): List<IssuanceModel> = withContext(Dispatchers.IO) {
         val expression = IssuanceSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
+        transaction(db) {
             IssuanceEntity.selectAll().where { expression }.map { IssuanceMapper.toDomain(it) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+    }
 }

@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.model
+package com.example.domain.model
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable

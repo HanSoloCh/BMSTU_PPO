@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.model
+package com.example.domain.model
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
@@ -31,5 +31,4 @@ data class PublisherModel(
         val phoneRegex = "^\\+?[78][0-9]{10}$".toRegex()
         return phone.matches(phoneRegex)
     }
-
 }

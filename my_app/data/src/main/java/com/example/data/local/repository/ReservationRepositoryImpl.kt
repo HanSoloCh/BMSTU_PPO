@@ -3,14 +3,10 @@ package com.example.data.local.repository
 import com.example.data.local.entity.ReservationEntity
 import com.example.data.local.mapping.ReservationMapper
 import com.example.data.local.specification.ReservationSpecToExpressionMapper
-import com.example.libraryapp.domain.model.ReservationModel
-import com.example.libraryapp.domain.repository.ReservationRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.ReservationRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.ReservationModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -45,16 +41,16 @@ class ReservationRepositoryImpl(
 
     override suspend fun isContain(spec: Specification<ReservationModel>) =
         withContext(Dispatchers.IO) {
-            query(spec).first().isNotEmpty()
+            query(spec).isNotEmpty()
         }
 
-    override fun query(spec: Specification<ReservationModel>): Flow<List<ReservationModel>> = flow {
-        val expression = ReservationSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<ReservationModel>): List<ReservationModel> =
+        withContext(Dispatchers.IO) {
+            val expression = ReservationSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
-            ReservationEntity.selectAll().where { expression }
-                .map { ReservationMapper.toDomain(it) }
+            transaction(db) {
+                ReservationEntity.selectAll().where { expression }
+                    .map { ReservationMapper.toDomain(it) }
+            }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
 }

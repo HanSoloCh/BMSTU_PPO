@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.model
+package com.example.domain.model
 
 import com.example.libraryapp.domain.util.utils.UserRole
 import kotlinx.serialization.Contextual

@@ -1,9 +1,8 @@
-package com.example.libraryapp.domain.repository
+package com.example.domain.repository
 
-import com.example.libraryapp.domain.model.ReservationModel
-import com.example.libraryapp.domain.specification.Specification
-import kotlinx.coroutines.flow.Flow
-import java.util.UUID
+import com.example.domain.model.ReservationModel
+import com.example.domain.specification.Specification
+import java.util.*
 
 interface ReservationRepository {
     suspend fun create(reservationModel: ReservationModel): UUID
@@ -14,5 +13,5 @@ interface ReservationRepository {
 
     suspend fun isContain(spec: Specification<ReservationModel>): Boolean
 
-    fun query(spec: Specification<ReservationModel>): Flow<List<ReservationModel>>
+    suspend fun query(spec: Specification<ReservationModel>): List<ReservationModel>
 }

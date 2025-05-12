@@ -1,8 +1,8 @@
 package com.example.data.local.mapping
 
 import com.example.data.local.entity.BookEntity
-import com.example.libraryapp.domain.model.AuthorModel
-import com.example.libraryapp.domain.model.BookModel
+import com.example.domain.model.AuthorModel
+import com.example.domain.model.BookModel
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement

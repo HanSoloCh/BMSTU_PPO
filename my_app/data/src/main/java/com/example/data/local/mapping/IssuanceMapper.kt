@@ -1,7 +1,7 @@
 package com.example.data.local.mapping
 
 import com.example.data.local.entity.IssuanceEntity
-import com.example.libraryapp.domain.model.IssuanceModel
+import com.example.domain.model.IssuanceModel
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toKotlinLocalDate
 import org.jetbrains.exposed.dao.id.EntityID

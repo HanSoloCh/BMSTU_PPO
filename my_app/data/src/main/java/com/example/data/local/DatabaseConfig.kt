@@ -1,13 +1,4 @@
-import com.example.data.local.entity.ApuEntity
-import com.example.data.local.entity.AuthorEntity
-import com.example.data.local.entity.BbkEntity
-import com.example.data.local.entity.BookAuthorCrossRef
-import com.example.data.local.entity.BookEntity
-import com.example.data.local.entity.IssuanceEntity
-import com.example.data.local.entity.PublisherEntity
-import com.example.data.local.entity.ReservationEntity
-import com.example.data.local.entity.UserEntity
-import com.example.data.local.entity.UserFavoriteCrossRef
+import com.example.data.local.entity.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

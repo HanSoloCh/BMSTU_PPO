@@ -3,14 +3,10 @@ package com.example.data.local.repository
 import com.example.data.local.entity.BbkEntity
 import com.example.data.local.mapping.BbkMapper
 import com.example.data.local.specification.BbkSpecToExpressionMapper
-import com.example.libraryapp.domain.model.BbkModel
-import com.example.libraryapp.domain.repository.BbkRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.BbkRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.BbkModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -51,15 +47,14 @@ class BbkRepositoryImpl(
     }
 
     override suspend fun isContain(spec: Specification<BbkModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
+        query(spec).isNotEmpty()
     }
 
-    override fun query(spec: Specification<BbkModel>): Flow<List<BbkModel>> = flow {
+    override suspend fun query(spec: Specification<BbkModel>): List<BbkModel> = withContext(Dispatchers.IO) {
         val expression = BbkSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
+        transaction(db) {
             BbkEntity.selectAll().where { expression }.map { BbkMapper.toDomain(it) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+    }
 }

@@ -6,21 +6,16 @@ import com.example.data.local.entity.BookEntity
 import com.example.data.local.mapping.AuthorMapper
 import com.example.data.local.mapping.BookMapper
 import com.example.data.local.specification.BookSpecToExpressionMapper
-import com.example.libraryapp.domain.model.AuthorModel
-import com.example.libraryapp.domain.model.BookModel
-import com.example.libraryapp.domain.repository.BookRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.BookRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.AuthorModel
+import com.example.domain.model.BookModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
-import kotlin.collections.orEmpty
 
 class BookRepositoryImpl(
     private val db: Database
@@ -33,8 +28,8 @@ class BookRepositoryImpl(
         }
     }
 
-    override fun readByAuthorId(authorId: UUID): Flow<List<BookModel>> = flow {
-        val result = transaction(db) {
+    override suspend fun readByAuthorId(authorId: UUID): List<BookModel> = withContext(Dispatchers.IO) {
+        transaction(db) {
             val books = (BookEntity innerJoin BookAuthorCrossRef)
                 .select(BookEntity.columns)
                 .where { BookAuthorCrossRef.authorId eq authorId }
@@ -42,8 +37,7 @@ class BookRepositoryImpl(
             val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
             books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+    }
 
 
     override suspend fun create(bookModel: BookModel) = withContext(Dispatchers.IO) {
@@ -89,13 +83,13 @@ class BookRepositoryImpl(
     }
 
     override suspend fun isContain(spec: Specification<BookModel>) = withContext(Dispatchers.IO) {
-        query(spec).first().isNotEmpty()
+        query(spec).isNotEmpty()
     }
 
-    override fun query(spec: Specification<BookModel>): Flow<List<BookModel>> = flow {
+    override suspend fun query(spec: Specification<BookModel>): List<BookModel> = withContext(Dispatchers.IO) {
         val expression = BookSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
+        transaction(db) {
             val books = (BookEntity innerJoin BookAuthorCrossRef)
                 .select(BookEntity.columns)
                 .where { expression }
@@ -103,8 +97,7 @@ class BookRepositoryImpl(
             val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
             books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
+    }
 
     private fun getAuthorsByBookId(bookId: UUID): List<AuthorModel> = transaction {
         getAuthorsByBookId(listOf(bookId))[bookId].orEmpty()

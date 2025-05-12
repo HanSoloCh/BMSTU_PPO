@@ -4,14 +4,10 @@ import com.example.data.local.entity.ApuEntity
 import com.example.data.local.entity.PublisherEntity
 import com.example.data.local.mapping.PublisherMapper
 import com.example.data.local.specification.PublisherSpecToExpressionMapper
-import com.example.libraryapp.domain.model.PublisherModel
-import com.example.libraryapp.domain.repository.PublisherRepository
-import com.example.libraryapp.domain.specification.Specification
+import com.example.domain.repository.PublisherRepository
+import com.example.domain.specification.Specification
+import com.example.domain.model.PublisherModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -55,15 +51,15 @@ class PublisherRepositoryImpl(
 
     override suspend fun isContain(spec: Specification<PublisherModel>) =
         withContext(Dispatchers.IO) {
-            query(spec).first().isNotEmpty()
+            query(spec).isNotEmpty()
         }
 
-    override fun query(spec: Specification<PublisherModel>): Flow<List<PublisherModel>> = flow {
-        val expression = PublisherSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<PublisherModel>): List<PublisherModel> =
+        withContext(Dispatchers.IO) {
+            val expression = PublisherSpecToExpressionMapper.map(spec)
 
-        val result = transaction(db) {
-            PublisherEntity.selectAll().where { expression }.map { PublisherMapper.toDomain(it) }
+            transaction(db) {
+                PublisherEntity.selectAll().where { expression }.map { PublisherMapper.toDomain(it) }
+            }
         }
-        emit(result)
-    }.flowOn(Dispatchers.IO)
 }
