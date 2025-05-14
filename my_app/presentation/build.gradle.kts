@@ -20,12 +20,12 @@ dependencies {
     implementation(libs.ktor.server.netty)
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.ktor.server.status.pages)
+    implementation(libs.ktor.server.cors) // Для CORS
 
     // Для Koin
     implementation(libs.koin.ktor)
+    implementation(libs.koin.logger.slf4j) // Logger для Koin
 
     // Exposed
     implementation(libs.exposed.core)
-
-    implementation("io.ktor:ktor-server-cors:2.3.7")
 }

@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "library app"
+rootProject.name = "library_app"
 include(":domain")
 include(":data")
 include(":presentation")
