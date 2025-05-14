@@ -1,5 +1,7 @@
 package com.example.domain.usecase.apu
 
+import com.example.domain.exception.ModelDuplicateException
+import com.example.domain.exception.ModelNotFoundException
 import com.example.domain.model.ApuModel
 import com.example.domain.model.TestApu
 import com.example.domain.repository.ApuRepository
@@ -17,6 +19,7 @@ import org.junit.Before
 import org.junit.Test
 import java.util.UUID
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 
 class CreateApuUseCaseTest {
     private val apuRepository: ApuRepository = mockk()
@@ -33,17 +36,38 @@ class CreateApuUseCaseTest {
 
     @Test
     fun `simple create apu test`() = runTest {
-
-        coEvery { apuRepository.isContain(ApuIdSpecification(testApu.id)) } returns false
-        coEvery { bbkRepository.isContain(BbkIdSpecification(testApu.id)) } returns true
+        coEvery { apuRepository.isContain(any()) } returns false
+        coEvery { bbkRepository.isContain(any()) } returns true
         coEvery { apuRepository.create(testApu) } returns testApu.id
 
         val createdId = createUseCase(testApu)
 
         assertEquals(testApu.id, createdId)
 
-        coVerify { apuRepository.isContain(ApuIdSpecification(testApu.id)) }
-        coVerify { bbkRepository.isContain(BbkIdSpecification(testApu.id)) }
+        coVerify { apuRepository.isContain(any()) }
+        coVerify { bbkRepository.isContain(any()) }
         coVerify { apuRepository.create(testApu) }
+    }
+
+    @Test
+    fun `create duplicate apu`() = runTest {
+        coEvery { apuRepository.isContain(any()) } returns true
+        coEvery { bbkRepository.isContain(any()) } returns true
+
+        assertFailsWith<ModelDuplicateException> { createUseCase(testApu) }
+        coVerify { apuRepository.isContain(any()) }
+        coVerify(exactly = 0) { apuRepository.create(any()) }
+    }
+
+    @Test
+    fun `create apu with unknown bbkId`() = runTest {
+        coEvery { apuRepository.isContain(any()) } returns false
+        coEvery { bbkRepository.isContain(any()) } returns false
+
+        assertFailsWith<ModelNotFoundException> { createUseCase(testApu) }
+
+        coVerify { bbkRepository.isContain(any()) }
+        coVerify(exactly = 0) { apuRepository.create(any()) }
+
     }
 }

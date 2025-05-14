@@ -21,7 +21,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     private lateinit var bbkId: UUID
 
     @Before
-    fun setupTest() {
+    fun setup() {
         transaction(db) {
             authorId = AuthorEntity.insertAndGetId {
                 it[name] = "Test Author"
@@ -37,7 +37,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun createBookTest() = runTest {
+    fun `simple create book test`() = runTest {
         val newBookId = UUID.randomUUID()
         val book = BookModel(
             id = newBookId,
@@ -56,7 +56,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun updateBookTest() = runTest {
+    fun `update book test`() = runTest {
         val originalBook = BookModel(
             id = UUID.randomUUID(),
             title = "Original Title",
@@ -85,7 +85,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun deleteBookTest() = runTest {
+    fun `delete book test`() = runTest {
         val book = BookModel(
             id = UUID.randomUUID(),
             title = "Test Book",
@@ -102,7 +102,7 @@ class BookRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun getAuthorBooks() = runTest {
+    fun `get books by author`() = runTest {
         val book = BookModel(
             id = UUID.randomUUID(),
             title = "Test Book",

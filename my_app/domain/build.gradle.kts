@@ -14,6 +14,7 @@ dependencies {
     // Tests
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.13.4")
-    testImplementation("org.slf4j:slf4j-simple:1.7.36")
+    testImplementation(libs.mockk)
+    testImplementation(libs.slf4j.simple)
+    testImplementation(libs.logback.classic)
 }

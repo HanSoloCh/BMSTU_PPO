@@ -13,10 +13,8 @@ import io.ktor.server.routing.*
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
-fun main() {
-    embeddedServer(Netty, port = 8080, module = Application::module).start(wait = true)
-}
 
 fun Application.module() {
     install(CORS) {
@@ -31,8 +29,8 @@ fun Application.module() {
         slf4jLogger()
         modules(appModule)
     }
-    configureSerialization()
-    configureStatusPages()
+//    configureSerialization()
+//    configureStatusPages()
     routing {
         apuRoutes()
         authorRoutes()

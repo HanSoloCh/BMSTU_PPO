@@ -11,6 +11,9 @@ postgresql = "42.7.2"
 postgresqlVersion = "1.19.3"
 sqliteJdbc = "3.42.0.0"
 testcontainers = "1.19.3"
+logbackClassic = "1.4.14"
+mockk = "1.13.8"
+loggerSlf4j = "1.7.36"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposedCore" }
@@ -32,6 +35,9 @@ sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqliteJdbc" }
 testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
 testcontainers-postgresql = { module = "org.testcontainers:postgresql", version.ref = "postgresqlVersion" }
 ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorVersion" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "loggerSlf4j" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

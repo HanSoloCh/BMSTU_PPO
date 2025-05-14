@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    kotlin("plugin.serialization") version "1.9.0"  // Serialization plugin
 }
 
 dependencies {
@@ -25,6 +24,7 @@ dependencies {
     // Для Koin
     implementation(libs.koin.ktor)
     implementation(libs.koin.logger.slf4j) // Logger для Koin
+    implementation(libs.logback.classic)
 
     // Exposed
     implementation(libs.exposed.core)

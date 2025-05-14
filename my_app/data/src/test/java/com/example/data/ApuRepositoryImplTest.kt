@@ -19,7 +19,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     private lateinit var bbkId: UUID
 
     @Before
-    fun setupTest() {
+    fun setup() {
         transaction(db) {
             bbkId = BbkEntity.insertAndGetId {
                 it[code] = "Test Code"
@@ -29,8 +29,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun createApuTest() = runTest {
-
+    fun `simple create apu test`() = runTest {
         val apu = ApuModel(UUID.randomUUID(), "Test", bbkId)
         val id = repository.create(apu)
         assertEquals(apu.id, id)
@@ -41,7 +40,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun readWithSpecTest() = runTest {
+    fun `read with specification test`() = runTest {
         val apu = ApuModel(
             id = UUID.randomUUID(),
             term = "Test",
@@ -62,7 +61,7 @@ class ApuRepositoryImplTest : BasePostgresIntegrationTest() {
     }
 
     @Test
-    fun deleteApuTest() = runTest {
+    fun `delete apu test`() = runTest {
         val newApu = UUID.randomUUID()
         val apu = ApuModel(
             id = newApu,
