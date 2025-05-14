@@ -1,10 +1,10 @@
 package com.example.data.local.specification
 
 import com.example.data.local.entity.UserEntity
+import com.example.domain.model.UserModel
 import com.example.domain.specification.AndSpecification
 import com.example.domain.specification.Specification
-import com.example.domain.model.UserModel
-import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import com.example.domain.specification.user.UserIdSpecification
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and

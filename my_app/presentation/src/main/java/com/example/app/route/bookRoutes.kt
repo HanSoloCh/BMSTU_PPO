@@ -1,15 +1,8 @@
 package com.example.app.route
 
 import com.example.app.util.getParam
-import com.example.domain.usecase.book.CreateBookUseCase
 import com.example.domain.model.BookModel
-import com.example.domain.usecase.book.DeleteBookUseCase
-import com.example.domain.usecase.book.ReadBookByAuthorUseCase
-import com.example.domain.usecase.book.ReadBookByBbkUseCase
-import com.example.domain.usecase.book.ReadBookByIdUseCase
-import com.example.domain.usecase.book.ReadBookBySentenceUseCase
-import com.example.domain.usecase.book.ReadBookByPublisherUseCase
-import com.example.domain.usecase.book.UpdateBookUseCase
+import com.example.domain.usecase.book.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

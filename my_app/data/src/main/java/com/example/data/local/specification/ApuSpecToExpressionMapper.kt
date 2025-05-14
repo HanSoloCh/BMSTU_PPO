@@ -5,7 +5,7 @@ import com.example.domain.model.ApuModel
 import com.example.domain.specification.AndSpecification
 import com.example.domain.specification.Specification
 import com.example.domain.specification.apu.ApuIdSpecification
-import com.example.libraryapp.domain.specification.apu.ApuTermSpecification
+import com.example.domain.specification.apu.ApuTermSpecification
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like

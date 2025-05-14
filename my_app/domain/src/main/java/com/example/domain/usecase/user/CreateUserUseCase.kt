@@ -3,15 +3,16 @@ package com.example.domain.usecase.user
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.UserModel
 import com.example.domain.repository.UserRepository
-import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import com.example.domain.specification.user.UserIdSpecification
+import java.util.*
 
 class CreateUserUseCase(
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(userModel: UserModel) {
+    suspend operator fun invoke(userModel: UserModel): UUID {
         if (userRepository.isContain(UserIdSpecification(userModel.id)))
             throw ModelDuplicateException("User", userModel.id)
 
-        userRepository.create(userModel)
+        return userRepository.create(userModel)
     }
 }

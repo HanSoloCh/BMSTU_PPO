@@ -5,9 +5,9 @@ import com.example.domain.model.ReservationModel
 import com.example.domain.repository.BookRepository
 import com.example.domain.repository.ReservationRepository
 import com.example.domain.repository.UserRepository
-import com.example.libraryapp.domain.specification.book.BookIdSpecification
-import com.example.libraryapp.domain.specification.reservation.ReservationIdSpecification
-import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import com.example.domain.specification.book.BookIdSpecification
+import com.example.domain.specification.reservation.ReservationIdSpecification
+import com.example.domain.specification.user.UserIdSpecification
 
 class UpdateReservationUseCase(
     private val reservationRepository: ReservationRepository,

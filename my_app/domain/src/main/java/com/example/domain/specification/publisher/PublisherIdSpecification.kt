@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.publicher
+package com.example.domain.specification.publisher
 
 import com.example.domain.model.PublisherModel
 import com.example.domain.specification.Specification

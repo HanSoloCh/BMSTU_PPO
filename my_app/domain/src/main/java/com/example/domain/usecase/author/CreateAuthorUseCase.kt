@@ -3,7 +3,7 @@ package com.example.domain.usecase.author
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.AuthorModel
 import com.example.domain.repository.AuthorRepository
-import com.example.libraryapp.domain.specification.author.AuthorIdSpecification
+import com.example.domain.specification.author.AuthorIdSpecification
 import java.util.*
 
 class CreateAuthorUseCase(

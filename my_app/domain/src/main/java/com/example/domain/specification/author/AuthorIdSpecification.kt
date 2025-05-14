@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.author
+package com.example.domain.specification.author
 
 import com.example.domain.model.AuthorModel
 import com.example.domain.specification.Specification

@@ -5,7 +5,7 @@ import com.example.domain.model.ApuModel
 import com.example.domain.repository.ApuRepository
 import com.example.domain.repository.BbkRepository
 import com.example.domain.specification.apu.ApuIdSpecification
-import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
+import com.example.domain.specification.bbk.BbkIdSpecification
 
 class UpdateApuUseCase(
     private val apuRepository: ApuRepository,

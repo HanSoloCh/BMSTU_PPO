@@ -5,9 +5,9 @@ import com.example.domain.model.IssuanceModel
 import com.example.domain.repository.BookRepository
 import com.example.domain.repository.IssuanceRepository
 import com.example.domain.repository.UserRepository
-import com.example.libraryapp.domain.specification.book.BookIdSpecification
-import com.example.libraryapp.domain.specification.issuance.IssuanceIdSpecification
-import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import com.example.domain.specification.book.BookIdSpecification
+import com.example.domain.specification.issuance.IssuanceIdSpecification
+import com.example.domain.specification.user.UserIdSpecification
 
 class UpdateIssuanceUseCase(
     private val issuanceRepository: IssuanceRepository,

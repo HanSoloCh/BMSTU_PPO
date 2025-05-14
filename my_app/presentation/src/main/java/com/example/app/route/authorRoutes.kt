@@ -1,10 +1,10 @@
 package com.example.app.route
 
 import com.example.app.util.getParam
-import com.example.domain.usecase.author.CreateAuthorUseCase
-import com.example.domain.usecase.author.ReadAuthorByIdUseCase
 import com.example.domain.model.AuthorModel
+import com.example.domain.usecase.author.CreateAuthorUseCase
 import com.example.domain.usecase.author.DeleteAuthorUseCase
+import com.example.domain.usecase.author.ReadAuthorByIdUseCase
 import com.example.domain.usecase.author.UpdateAuthorUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*

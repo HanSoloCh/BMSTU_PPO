@@ -3,15 +3,16 @@ package com.example.domain.usecase.publisher
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.PublisherModel
 import com.example.domain.repository.PublisherRepository
-import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
+import com.example.domain.specification.publisher.PublisherIdSpecification
+import java.util.*
 
 class CreatePublisherUseCase(
     private val publisherRepository: PublisherRepository
 ) {
-    suspend operator fun invoke(publisherModel: PublisherModel) {
+    suspend operator fun invoke(publisherModel: PublisherModel): UUID {
         if (publisherRepository.isContain(PublisherIdSpecification(publisherModel.id)))
             throw ModelDuplicateException("Publisher", publisherModel.id)
 
-        publisherRepository.create(publisherModel)
+        return publisherRepository.create(publisherModel)
     }
 }

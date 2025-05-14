@@ -10,7 +10,7 @@ data class UserModel(
     val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
     val surname: String,
-    val secondName: String?,
+    val secondName: String? = null,
     val password: String,
     val email: String,
     val phoneNumber: String,

@@ -3,9 +3,9 @@ package com.example.data.local.repository
 import com.example.data.local.entity.UserEntity
 import com.example.data.local.mapping.UserMapper
 import com.example.data.local.specification.UserSpecToExpressionMapper
+import com.example.domain.model.UserModel
 import com.example.domain.repository.UserRepository
 import com.example.domain.specification.Specification
-import com.example.domain.model.UserModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*

@@ -4,7 +4,7 @@ import com.example.data.local.entity.BbkEntity
 import com.example.data.local.repository.ApuRepositoryImpl
 import com.example.data.local.repository.BbkRepositoryImpl
 import com.example.domain.model.ApuModel
-import com.example.libraryapp.domain.specification.apu.ApuTermSpecification
+import com.example.domain.specification.apu.ApuTermSpecification
 import kotlinx.coroutines.test.runTest
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.transactions.transaction

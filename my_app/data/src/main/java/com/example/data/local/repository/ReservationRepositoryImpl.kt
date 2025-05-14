@@ -3,9 +3,9 @@ package com.example.data.local.repository
 import com.example.data.local.entity.ReservationEntity
 import com.example.data.local.mapping.ReservationMapper
 import com.example.data.local.specification.ReservationSpecToExpressionMapper
+import com.example.domain.model.ReservationModel
 import com.example.domain.repository.ReservationRepository
 import com.example.domain.specification.Specification
-import com.example.domain.model.ReservationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*

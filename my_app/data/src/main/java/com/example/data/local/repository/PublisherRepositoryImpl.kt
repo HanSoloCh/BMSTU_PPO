@@ -4,9 +4,9 @@ import com.example.data.local.entity.ApuEntity
 import com.example.data.local.entity.PublisherEntity
 import com.example.data.local.mapping.PublisherMapper
 import com.example.data.local.specification.PublisherSpecToExpressionMapper
+import com.example.domain.model.PublisherModel
 import com.example.domain.repository.PublisherRepository
 import com.example.domain.specification.Specification
-import com.example.domain.model.PublisherModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*

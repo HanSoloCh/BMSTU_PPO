@@ -1,11 +1,11 @@
 package com.example.app.route
 
 import com.example.app.util.getParam
-import com.example.domain.usecase.publisher.UpdatePublisherUseCase
 import com.example.domain.model.PublisherModel
 import com.example.domain.usecase.publisher.CreatePublisherUseCase
 import com.example.domain.usecase.publisher.DeletePublisherUseCase
 import com.example.domain.usecase.publisher.ReadPublisherByIdUseCase
+import com.example.domain.usecase.publisher.UpdatePublisherUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*

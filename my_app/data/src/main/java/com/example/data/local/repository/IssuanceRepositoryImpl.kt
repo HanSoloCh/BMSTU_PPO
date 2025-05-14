@@ -3,9 +3,9 @@ package com.example.data.local.repository
 import com.example.data.local.entity.IssuanceEntity
 import com.example.data.local.mapping.IssuanceMapper
 import com.example.data.local.specification.IssuanceSpecToExpressionMapper
+import com.example.domain.model.IssuanceModel
 import com.example.domain.repository.IssuanceRepository
 import com.example.domain.specification.Specification
-import com.example.domain.model.IssuanceModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*

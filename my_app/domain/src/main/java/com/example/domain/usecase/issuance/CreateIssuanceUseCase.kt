@@ -9,10 +9,10 @@ import com.example.domain.repository.BookRepository
 import com.example.domain.repository.IssuanceRepository
 import com.example.domain.repository.ReservationRepository
 import com.example.domain.repository.UserRepository
-import com.example.libraryapp.domain.specification.book.BookIdSpecification
-import com.example.libraryapp.domain.specification.issuance.IssuanceIdSpecification
-import com.example.libraryapp.domain.specification.reservation.ReservationUserIdSpecification
-import com.example.libraryapp.domain.specification.user.UserIdSpecification
+import com.example.domain.specification.book.BookIdSpecification
+import com.example.domain.specification.issuance.IssuanceIdSpecification
+import com.example.domain.specification.reservation.ReservationUserIdSpecification
+import com.example.domain.specification.user.UserIdSpecification
 import java.util.*
 
 class CreateIssuanceUseCase(
@@ -44,13 +44,16 @@ class CreateIssuanceUseCase(
         val reservations = reservationRepository
             .query(ReservationUserIdSpecification(issuanceModel.userId))
 
+        // Проверить есть ли у пользователя такая бронь на книгу
         val reservation = reservations.find { it.bookId == issuanceModel.bookId }
 
+        // Если есть, то удалить бронь и создать выдачу
         if (reservation != null) {
             reservationRepository.deleteById(reservation.id)
             return issuanceRepository.create(issuanceModel)
         }
 
+        // Иначе выдать только при количестве экземпляров > 0
         if (book.availableCopies <= 0) {
             throw BookNoAvailableCopiesException(book.id)
         }

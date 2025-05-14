@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.reservation
+package com.example.domain.specification.reservation
 
 import com.example.domain.model.ReservationModel
 import com.example.domain.specification.Specification

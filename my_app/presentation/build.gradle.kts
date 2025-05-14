@@ -28,4 +28,5 @@ dependencies {
     // Exposed
     implementation(libs.exposed.core)
 
+    implementation("io.ktor:ktor-server-cors:2.3.7")
 }

@@ -6,7 +6,7 @@ import java.util.*
 class DeleteFavoriteUseCase(
     val userFavoriteRepository: UserFavoriteRepository
 ) {
-    suspend fun invoke(userId: UUID, bookId: UUID) {
+    suspend operator fun invoke(userId: UUID, bookId: UUID) {
         userFavoriteRepository.delete(userId, bookId)
     }
 }

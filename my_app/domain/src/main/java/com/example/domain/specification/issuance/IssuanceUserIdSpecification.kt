@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.issuance
+package com.example.domain.specification.issuance
 
 import com.example.domain.model.IssuanceModel
 import com.example.domain.specification.Specification

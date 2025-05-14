@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.user
+package com.example.domain.specification.user
 
 import com.example.domain.model.UserModel
 import com.example.domain.specification.Specification

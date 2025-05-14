@@ -3,7 +3,7 @@ package com.example.domain.usecase.bbk
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.BbkModel
 import com.example.domain.repository.BbkRepository
-import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
+import com.example.domain.specification.bbk.BbkIdSpecification
 import java.util.*
 
 class CreateBbkUseCase(

@@ -3,9 +3,9 @@ package com.example.data.local.repository
 import com.example.data.local.entity.BbkEntity
 import com.example.data.local.mapping.BbkMapper
 import com.example.data.local.specification.BbkSpecToExpressionMapper
+import com.example.domain.model.BbkModel
 import com.example.domain.repository.BbkRepository
 import com.example.domain.specification.Specification
-import com.example.domain.model.BbkModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.jetbrains.exposed.sql.*

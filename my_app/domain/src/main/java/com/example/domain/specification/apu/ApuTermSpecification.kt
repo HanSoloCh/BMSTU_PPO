@@ -1,4 +1,4 @@
-package com.example.libraryapp.domain.specification.apu
+package com.example.domain.specification.apu
 
 import com.example.domain.model.ApuModel
 import com.example.domain.specification.Specification

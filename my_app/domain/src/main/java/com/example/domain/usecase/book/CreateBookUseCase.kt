@@ -7,10 +7,10 @@ import com.example.domain.repository.AuthorRepository
 import com.example.domain.repository.BbkRepository
 import com.example.domain.repository.BookRepository
 import com.example.domain.repository.PublisherRepository
-import com.example.libraryapp.domain.specification.author.AuthorIdSpecification
-import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
-import com.example.libraryapp.domain.specification.book.BookIdSpecification
-import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
+import com.example.domain.specification.author.AuthorIdSpecification
+import com.example.domain.specification.bbk.BbkIdSpecification
+import com.example.domain.specification.book.BookIdSpecification
+import com.example.domain.specification.publisher.PublisherIdSpecification
 import java.util.*
 
 class CreateBookUseCase(

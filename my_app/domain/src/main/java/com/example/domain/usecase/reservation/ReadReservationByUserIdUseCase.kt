@@ -2,7 +2,7 @@ package com.example.domain.usecase.reservation
 
 import com.example.domain.model.ReservationModel
 import com.example.domain.repository.ReservationRepository
-import com.example.libraryapp.domain.specification.reservation.ReservationUserIdSpecification
+import com.example.domain.specification.reservation.ReservationUserIdSpecification
 import java.util.*
 
 class ReadReservationByUserIdUseCase(

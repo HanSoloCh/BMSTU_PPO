@@ -3,7 +3,7 @@ package com.example.domain.usecase.publisher
 import com.example.domain.exception.ModelNotFoundException
 import com.example.domain.model.PublisherModel
 import com.example.domain.repository.PublisherRepository
-import com.example.libraryapp.domain.specification.publicher.PublisherIdSpecification
+import com.example.domain.specification.publisher.PublisherIdSpecification
 
 class UpdatePublisherUseCase(
     private val publisherRepository: PublisherRepository

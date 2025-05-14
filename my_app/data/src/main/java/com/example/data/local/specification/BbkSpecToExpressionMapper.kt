@@ -1,11 +1,11 @@
 package com.example.data.local.specification
 
 import com.example.data.local.entity.BbkEntity
+import com.example.domain.model.BbkModel
 import com.example.domain.specification.AndSpecification
 import com.example.domain.specification.Specification
-import com.example.domain.model.BbkModel
-import com.example.libraryapp.domain.specification.bbk.BbkCodeSpecification
-import com.example.libraryapp.domain.specification.bbk.BbkIdSpecification
+import com.example.domain.specification.bbk.BbkCodeSpecification
+import com.example.domain.specification.bbk.BbkIdSpecification
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like

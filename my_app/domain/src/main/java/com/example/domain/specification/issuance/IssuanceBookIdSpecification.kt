@@ -4,7 +4,7 @@ import com.example.domain.model.IssuanceModel
 import com.example.domain.specification.Specification
 import java.util.*
 
-class IssuanceIdSpecification(val id: UUID) : Specification<IssuanceModel> {
+class IssuanceBookIdSpecification(val bookId: UUID) : Specification<IssuanceModel> {
     override fun specified(candidate: IssuanceModel): Boolean =
-        candidate.id == id
+        candidate.bookId == bookId
 }
