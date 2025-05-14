@@ -1,28 +1,25 @@
 package com.example.domain.model
 
-import com.example.domain.domain.util.utils.UserRole
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
+import java.time.Year
 import java.util.*
 
 @Serializable
-data class UserModel(
+data class PublisherModel(
     val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
-    val surname: String,
-    val secondName: String? = null,
-    val password: String,
-    val email: String,
-    val phoneNumber: String,
-    val role: UserRole = UserRole.READER,
+    val description: String? = null,
+    val foundationYear: Int? = null,
+    val email: String? = null,
+    val phoneNumber: String? = null,
 ) {
     init {
         require(name.isNotBlank())
-        require(surname.isNotBlank())
-        require(secondName == null || secondName.isNotBlank())
-        require(password.isNotBlank())
-        require(isValidEmail(email))
-        require(isValidPhone(phoneNumber))
+        require(description == null || description.isNotBlank())
+        require(foundationYear in 0..Year.now().value)
+        require(email == null || isValidEmail(email))
+        require(phoneNumber == null || isValidPhone(phoneNumber))
     }
 
     private fun isValidEmail(email: String): Boolean {

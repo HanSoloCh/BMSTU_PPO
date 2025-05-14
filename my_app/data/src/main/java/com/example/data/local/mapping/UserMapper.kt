@@ -2,7 +2,7 @@ package com.example.data.local.mapping
 
 import com.example.data.local.entity.UserEntity
 import com.example.domain.model.UserModel
-import com.example.libraryapp.domain.util.utils.UserRole
+import com.example.domain.domain.util.utils.UserRole
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement

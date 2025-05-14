@@ -23,6 +23,4 @@ dependencies {
     testImplementation(libs.postgresql)
     testImplementation(libs.testcontainers)
     testImplementation(libs.testcontainers.postgresql)
-
-    implementation(libs.logback.classic)
 }

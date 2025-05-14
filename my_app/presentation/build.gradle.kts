@@ -23,7 +23,6 @@ dependencies {
 
     // Для Koin
     implementation(libs.koin.ktor)
-    implementation(libs.koin.logger.slf4j) // Логирование
 
     // Exposed
     implementation(libs.exposed.core)

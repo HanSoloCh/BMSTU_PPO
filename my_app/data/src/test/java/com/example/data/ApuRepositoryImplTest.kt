@@ -1,4 +1,4 @@
-package com.example.libraryapp
+package com.example.data
 
 import com.example.data.local.entity.BbkEntity
 import com.example.data.local.repository.ApuRepositoryImpl
