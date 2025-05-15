@@ -4,7 +4,7 @@ import java.util.*
 
 internal object TestAuthor {
     fun create(
-        id : UUID = UUID.randomUUID(),
+        id: UUID = UUID.randomUUID(),
         name: String = "Test Author",
     ) = AuthorModel(
         id = id,

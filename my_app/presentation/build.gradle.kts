@@ -28,4 +28,7 @@ dependencies {
 
     // Exposed
     implementation(libs.exposed.core)
+    // Connection pool
+    implementation(libs.hikariCP)
+
 }

@@ -14,6 +14,7 @@ testcontainers = "1.19.3"
 logbackClassic = "1.4.14"
 mockk = "1.13.8"
 loggerSlf4j = "1.7.36"
+hikariCPVersion = "5.1.0"
 
 [libraries]
 exposed-core = { module = "org.jetbrains.exposed:exposed-core", version.ref = "exposedCore" }
@@ -38,6 +39,8 @@ ktor-server-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktorVer
 logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassic" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "loggerSlf4j" }
+hikariCP = { module = "com.zaxxer:HikariCP", version.ref = "hikariCPVersion"}
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

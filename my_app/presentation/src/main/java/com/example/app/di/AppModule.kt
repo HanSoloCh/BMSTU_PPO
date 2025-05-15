@@ -1,6 +1,6 @@
 package com.example.app.di
 
-import DatabaseConfig
+import com.example.data.local.DatabaseBuilder
 import com.example.data.local.repository.*
 import com.example.domain.repository.*
 import com.example.domain.usecase.apu.CreateApuUseCase
@@ -29,10 +29,27 @@ import com.example.domain.usecase.user.CreateUserUseCase
 import com.example.domain.usecase.user.DeleteUserUseCase
 import com.example.domain.usecase.user.ReadUserByIdUseCase
 import com.example.domain.usecase.user.UpdateUserUseCase
+import com.typesafe.config.ConfigFactory
 import org.koin.dsl.module
+import javax.sql.DataSource
 
 val appModule = module {
-    single { DatabaseConfig.connectToDatabase() }
+    single {
+        val config = ConfigFactory.load()
+        DatabaseBuilder.DatabaseConfig(
+            url = config.getString("db.url"),
+            driver = config.getString("db.driver"),
+            username = config.getString("db.username"),
+            password = config.getString("db.password"),
+            maximumPoolSize = config.getInt("db.maxPoolSize")
+        )
+    }
+    single<DataSource> { DatabaseBuilder.createDataSource(get()) }
+    single {
+        val db = DatabaseBuilder.connect(get())
+        DatabaseBuilder.runMigrations(db)
+        db
+    }
 
     single<ApuRepository> { ApuRepositoryImpl(get()) }
     single<AuthorRepository> { AuthorRepositoryImpl(get()) }

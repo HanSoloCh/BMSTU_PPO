@@ -6,9 +6,7 @@ import com.example.domain.model.TestAuthor
 import com.example.domain.repository.AuthorRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.coVerifySequence
 import io.mockk.mockk
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test

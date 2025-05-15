@@ -6,18 +6,13 @@ import com.example.domain.model.ApuModel
 import com.example.domain.model.TestApu
 import com.example.domain.repository.ApuRepository
 import com.example.domain.repository.BbkRepository
-import com.example.domain.specification.apu.ApuIdSpecification
-import com.example.domain.specification.bbk.BbkIdSpecification
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import java.util.UUID
+import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 

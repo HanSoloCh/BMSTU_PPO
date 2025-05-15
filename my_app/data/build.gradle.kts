@@ -11,6 +11,9 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.kotlin.datetime)
     implementation(libs.sqlite.jdbc)
+    // Connection pool
+    implementation(libs.hikariCP)
+
 
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
