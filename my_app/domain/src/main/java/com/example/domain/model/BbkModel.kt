@@ -11,7 +11,7 @@ data class BbkModel(
     val description: String,
 ) {
     init {
-        require(code.isNotBlank())
-        require(description.isNotBlank())
-    }
+            require(code.isNotBlank())
+            require(description.isNotBlank())
+        }
 }

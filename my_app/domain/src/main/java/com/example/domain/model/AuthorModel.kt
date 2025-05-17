@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.domain.exception.EmptyStringException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -10,6 +11,8 @@ data class AuthorModel(
     val name: String,
 ) {
     init {
-        require(name.isNotBlank())
+        when {
+            name.isBlank() -> throw EmptyStringException(name)
+        }
     }
 }

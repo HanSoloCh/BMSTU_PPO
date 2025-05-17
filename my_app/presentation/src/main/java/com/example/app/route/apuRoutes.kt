@@ -37,11 +37,11 @@ fun Route.apuRoutes() {
             get {
                 val apuId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
 
-                val author = readApuByIdUseCase(apuId)
-                if (author == null) {
+                val apu = readApuByIdUseCase(apuId)
+                if (apu == null) {
                     call.respond(HttpStatusCode.NotFound, "Apu not found")
                 } else {
-                    call.respond(author)
+                    call.respond(apu)
                 }
             }
             delete {

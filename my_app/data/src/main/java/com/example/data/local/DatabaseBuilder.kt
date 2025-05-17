@@ -14,7 +14,7 @@ object DatabaseBuilder {
         val driver: String,
         val username: String,
         val password: String,
-        val maximumPoolSize: Int = 10,
+        val maximumPoolSize: Int = 10
     )
     fun connect(dataSource: DataSource): Database {
         return Database.connect(dataSource)
@@ -27,6 +27,8 @@ object DatabaseBuilder {
             username = config.username
             password = config.password
             maximumPoolSize = config.maximumPoolSize
+            connectionTimeout = 2000
+            validationTimeout = 1000
         }
         return HikariDataSource(hikariConfig)
     }

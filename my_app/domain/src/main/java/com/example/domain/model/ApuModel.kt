@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.domain.exception.EmptyStringException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -11,6 +12,8 @@ data class ApuModel(
     val bbkId: @Contextual UUID
 ) {
     init {
-        require(term.isNotBlank())
+        when {
+            term.isBlank() -> throw EmptyStringException(term)
+        }
     }
 }
