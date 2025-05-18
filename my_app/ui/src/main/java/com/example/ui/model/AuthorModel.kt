@@ -1,6 +1,6 @@
 package com.example.ui.model
 
-import com.example.domain.exception.EmptyStringException
+import com.example.ui.model.exception.EmptyStringException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
