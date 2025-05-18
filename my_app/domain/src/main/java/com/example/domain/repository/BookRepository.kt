@@ -5,6 +5,8 @@ import com.example.domain.specification.Specification
 import java.util.*
 
 interface BookRepository {
+    suspend fun readAll(): List<BookModel>
+
     suspend fun readById(bookId: UUID): BookModel?
 
     suspend fun readByAuthorId(authorId: UUID): List<BookModel>

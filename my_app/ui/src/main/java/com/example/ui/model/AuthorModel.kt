@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.ui.model
 
 import com.example.domain.exception.EmptyStringException
 import kotlinx.serialization.Contextual
@@ -12,7 +12,7 @@ data class AuthorModel(
 ) {
     init {
         when {
-            name.isBlank() -> throw EmptyStringException("name")
+            name.isBlank() -> throw EmptyStringException(name)
         }
     }
 }

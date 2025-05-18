@@ -13,7 +13,7 @@ data class ApuModel(
 ) {
     init {
         when {
-            term.isBlank() -> throw EmptyStringException(term)
+            term.isBlank() -> throw EmptyStringException("term")
         }
     }
 }

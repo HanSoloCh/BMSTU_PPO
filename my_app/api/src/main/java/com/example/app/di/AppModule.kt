@@ -114,6 +114,7 @@ val appModule = module {
     single { ReadBookByPublisherUseCase(get()) }
     single { ReadBookByAuthorUseCase(get()) }
     single { ReadBookBySentenceUseCase(get(), get()) }
+    single { ReadAllBooksUseCase(get()) }
 
     // Favorite use case
     single { CreateFavoriteUseCase(get(), get(), get()) }

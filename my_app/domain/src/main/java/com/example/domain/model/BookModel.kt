@@ -1,5 +1,8 @@
 package com.example.domain.model
 
+import com.example.domain.exception.EmptyStringException
+import com.example.domain.exception.InvalidDateException
+import com.example.domain.exception.InvalidValueException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.Year
@@ -23,15 +26,17 @@ data class BookModel(
     val availableCopies: Int = 0,
 ) {
     init {
-        require(title.isNotBlank())
-        require(annotation == null || annotation.isNotBlank())
-        require(publicationYear == null || publicationYear in 0..Year.now().value)
-        require(codeISBN == null || codeISBN.isNotBlank())
-        require(mediaType == null || mediaType.isNotBlank())
-        require(volume == null || volume.isNotBlank())
-        require(language == null || language.isNotBlank())
-        require(originalLanguage == null || originalLanguage.isNotBlank())
-        require(copies >= 0)
-        require(availableCopies in 0..copies)
+        when {
+            title.isBlank() -> throw EmptyStringException("title")
+            annotation != null && annotation.isBlank() -> throw EmptyStringException("annotation")
+            publicationYear != null && publicationYear !in 0..Year.now().value -> throw InvalidDateException(publicationYear.toString())
+            codeISBN != null && codeISBN.isBlank() -> throw EmptyStringException("codeISBN")
+            mediaType != null && mediaType.isBlank() -> throw EmptyStringException("mediaType")
+            volume != null && volume.isBlank() -> throw EmptyStringException("volume")
+            language != null && language.isBlank() -> throw EmptyStringException("language")
+            originalLanguage != null && originalLanguage.isBlank() -> throw EmptyStringException("originalLanguage")
+            copies < 0 -> throw InvalidValueException("copies", copies.toString())
+            availableCopies !in 0..copies -> throw InvalidValueException("availableCopies", availableCopies.toString())
+        }
     }
 }

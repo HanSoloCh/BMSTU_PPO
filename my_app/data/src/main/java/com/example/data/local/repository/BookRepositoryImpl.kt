@@ -20,6 +20,16 @@ import java.util.*
 class BookRepositoryImpl(
     private val db: Database
 ) : BookRepository {
+    override suspend fun readAll(): List<BookModel> = withContext(Dispatchers.IO) {
+        transaction(db) {
+            val books = (BookEntity innerJoin BookAuthorCrossRef)
+                .select(BookEntity.columns)
+                .toList()
+            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+        }
+    }
+
     override suspend fun readById(bookId: UUID): BookModel? = withContext(Dispatchers.IO) {
         transaction(db) {
             BookEntity.selectAll().where { BookEntity.id eq bookId }.firstOrNull()?.let {

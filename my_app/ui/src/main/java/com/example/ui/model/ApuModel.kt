@@ -1,4 +1,4 @@
-package com.example.domain.model
+package com.example.ui.model
 
 import com.example.domain.exception.EmptyStringException
 import kotlinx.serialization.Contextual
@@ -6,13 +6,14 @@ import kotlinx.serialization.Serializable
 import java.util.*
 
 @Serializable
-data class AuthorModel(
+data class ApuModel(
     val id: @Contextual UUID = UUID.randomUUID(),
-    val name: String,
+    val term: String,
+    val bbkId: @Contextual UUID
 ) {
     init {
         when {
-            name.isBlank() -> throw EmptyStringException("name")
+            term.isBlank() -> throw EmptyStringException(term)
         }
     }
 }
