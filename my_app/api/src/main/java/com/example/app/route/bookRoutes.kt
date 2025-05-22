@@ -19,7 +19,7 @@ fun Route.bookRoutes() {
     val deleteBookUseCase by inject<DeleteBookUseCase>()
 
     route("/book") {
-        val readAllBooksUseCase by inject<ReadAllBooksUseCase>()
+        val readAllBooksUseCase by inject<ReadBooksUseCase>()
 
         post {
             val book = call.receive<BookModel>()
@@ -32,7 +32,9 @@ fun Route.bookRoutes() {
             call.respond(HttpStatusCode.NoContent)
         }
         get {
-            val books = readAllBooksUseCase()
+            val page = call.getParam<Int>("page") { it.toInt() } ?: 1
+            val pageSize = call.getParam<Int>("pageSize") { it.toInt() } ?: 10
+            val books = readAllBooksUseCase(page, pageSize)
             call.respond(HttpStatusCode.OK, books)
         }
         route("/{id}") {

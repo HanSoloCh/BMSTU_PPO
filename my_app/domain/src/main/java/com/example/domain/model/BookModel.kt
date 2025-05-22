@@ -29,7 +29,10 @@ data class BookModel(
         when {
             title.isBlank() -> throw EmptyStringException("title")
             annotation != null && annotation.isBlank() -> throw EmptyStringException("annotation")
-            publicationYear != null && publicationYear !in 0..Year.now().value -> throw InvalidDateException(publicationYear.toString())
+            publicationYear != null && publicationYear !in 0..Year.now().value -> throw InvalidDateException(
+                publicationYear.toString()
+            )
+
             codeISBN != null && codeISBN.isBlank() -> throw EmptyStringException("codeISBN")
             mediaType != null && mediaType.isBlank() -> throw EmptyStringException("mediaType")
             volume != null && volume.isBlank() -> throw EmptyStringException("volume")

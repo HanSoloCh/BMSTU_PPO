@@ -20,10 +20,12 @@ import java.util.*
 class BookRepositoryImpl(
     private val db: Database
 ) : BookRepository {
-    override suspend fun readAll(): List<BookModel> = withContext(Dispatchers.IO) {
+    override suspend fun readBooks(page: Int, pageSize: Int): List<BookModel> = withContext(Dispatchers.IO) {
         transaction(db) {
+            val offset: Long = ((page - 1) * pageSize).toLong()
             val books = (BookEntity innerJoin BookAuthorCrossRef)
                 .select(BookEntity.columns)
+                .limit(pageSize, offset)
                 .toList()
             val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
             books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }

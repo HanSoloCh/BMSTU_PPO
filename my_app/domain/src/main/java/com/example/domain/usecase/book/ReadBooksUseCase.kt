@@ -2,12 +2,11 @@ package com.example.domain.usecase.book
 
 import com.example.domain.model.BookModel
 import com.example.domain.repository.BookRepository
-import java.util.UUID
 
-class ReadAllBooksUseCase(
+class ReadBooksUseCase(
     private val bookRepository: BookRepository
 ) {
-    suspend operator fun invoke(): List<BookModel> {
-        return bookRepository.readAll()
+    suspend operator fun invoke(page: Int, pageSize: Int): List<BookModel> {
+        return bookRepository.readBooks(page, pageSize)
     }
 }

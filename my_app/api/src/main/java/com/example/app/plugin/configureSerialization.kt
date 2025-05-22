@@ -1,4 +1,4 @@
-package com.example.app.plugins
+package com.example.app.plugin
 
 import com.example.app.serializer.LocalDateSerializer
 import com.example.app.serializer.UUIDSerializer

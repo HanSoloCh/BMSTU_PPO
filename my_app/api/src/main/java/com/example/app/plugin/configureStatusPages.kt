@@ -1,14 +1,11 @@
-package com.example.app.plugins
+package com.example.app.plugin
 
 import com.example.app.exception.ConversionFailureException
 import com.example.app.exception.MissingParametersException
 import com.example.app.logger.LogLevel
-import com.example.app.logger.logAction
+import com.example.app.logger.Logger
 import com.example.domain.exception.BaseDomainException
 import com.example.domain.exception.BookNoAvailableCopiesException
-import com.example.domain.exception.EmptyStringException
-import com.example.domain.exception.InvalidEmailException
-import com.example.domain.exception.InvalidPhoneException
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.exception.ModelNotFoundException
 import io.ktor.http.*
@@ -21,7 +18,7 @@ fun Application.configureStatusPages() {
         lateinit var infoMessage: String
         exception<MissingParametersException> { call, exception ->
             infoMessage = exception.message ?: MissingParametersException::class.java.canonicalName
-            logAction(LogLevel.ERROR, infoMessage)
+            Logger.logAction(infoMessage, LogLevel.ERROR)
 
             call.respond(
                 HttpStatusCode.BadRequest,
@@ -30,7 +27,7 @@ fun Application.configureStatusPages() {
         }
         exception<ConversionFailureException> { call, exception ->
             infoMessage = exception.message ?: ConversionFailureException::class.java.canonicalName
-            logAction(LogLevel.ERROR, infoMessage)
+            Logger.logAction(infoMessage, LogLevel.ERROR)
             call.respond(
                 HttpStatusCode.BadRequest,
                 infoMessage
@@ -39,7 +36,7 @@ fun Application.configureStatusPages() {
 
         exception<BaseDomainException> { call, exception ->
             infoMessage = exception.message ?: "Unknown domain error"
-            logAction(LogLevel.ERROR, infoMessage)
+            Logger.logAction(infoMessage, LogLevel.ERROR)
             when (exception) {
                 is ModelNotFoundException -> call.respond(HttpStatusCode.NotFound, infoMessage)
                 is ModelDuplicateException -> call.respond(HttpStatusCode.Conflict, infoMessage)
@@ -49,8 +46,8 @@ fun Application.configureStatusPages() {
             }
         }
         exception<Throwable> { call, exception ->
-            infoMessage = exception.cause?.message ?: Throwable::class.java.canonicalName
-            logAction(LogLevel.ERROR, infoMessage)
+            infoMessage = exception.cause?.message ?: exception.javaClass.canonicalName
+            Logger.logAction(infoMessage, LogLevel.ERROR)
             call.respond(HttpStatusCode.BadRequest, infoMessage)
         }
     }
