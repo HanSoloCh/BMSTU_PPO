@@ -8,6 +8,13 @@ application {
     mainClass.set("com.example.app.ApplicationKt")
 }
 
+//tasks {
+//    processResources {
+//        exclude("application.conf", "logback.xml")
+//    }
+//}
+//
+
 dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))

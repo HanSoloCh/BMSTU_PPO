@@ -10,7 +10,7 @@ import io.ktor.server.routing.*
 import org.koin.ktor.plugin.Koin
 import org.koin.logger.slf4jLogger
 
-fun main(args: Array<String>): Unit = EngineMain.main(args)
+fun main(args: Array<String>) = EngineMain.main(args)
 
 
 fun Application.module() {
