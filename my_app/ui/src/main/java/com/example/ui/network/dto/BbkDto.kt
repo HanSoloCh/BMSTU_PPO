@@ -5,13 +5,8 @@ import kotlinx.serialization.Serializable
 import java.util.*
 
 @Serializable
-data class BbkModel(
-    val id: @Contextual UUID = UUID.randomUUID(),
+data class BbkDto(
+    val id: @Contextual UUID,
     val code: String,
     val description: String,
-) {
-    init {
-            require(code.isNotBlank())
-            require(description.isNotBlank())
-        }
-}
+)

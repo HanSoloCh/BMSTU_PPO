@@ -3,16 +3,17 @@ package com.example.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.ui.screens.booklist.BookListScreen
-import com.example.ui.ui.theme.My_appTheme
+import androidx.navigation.compose.rememberNavController
+import com.example.ui.components.Menu
+import com.example.ui.components.NavGraph
+import com.example.ui.navigation.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -20,7 +21,29 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BookListScreen()
+            val navController = rememberNavController()
+            var searchText by rememberSaveable { mutableStateOf("") }
+
+            Scaffold(
+                topBar = {
+                    Menu(
+                        navController = navController,
+                        searchText = searchText,
+                        onSearchChange = { searchText = it },
+                        onSearchSubmit = {
+                            val query = searchText.trim()
+                            if (query.isNotEmpty()) {
+                                navController.navigate(Screen.SearchResults.createRoute(query))
+                            }
+                        }
+                    )
+                }
+            ) { innerPadding ->
+                NavGraph(
+                    navController = navController,
+                    modifier = Modifier.padding(innerPadding)
+                )
+            }
         }
     }
 }

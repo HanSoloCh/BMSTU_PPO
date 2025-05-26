@@ -36,6 +36,7 @@ fun Application.module() {
         reservationRoutes()
         issuanceRoutes()
         favoriteRoutes()
+        authRoutes()
     }
 }
 

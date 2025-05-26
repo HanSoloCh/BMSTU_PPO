@@ -1,4 +1,4 @@
-package com.example.ui.common.enums.serializer
+package com.example.ui.common.serializer
 
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.descriptors.PrimitiveKind

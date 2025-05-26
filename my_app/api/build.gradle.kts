@@ -2,18 +2,12 @@ plugins {
     kotlin("jvm")
     application
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    kotlin("plugin.serialization") version "1.9.0"  // Serialization plugin
 }
 
 application {
     mainClass.set("com.example.app.ApplicationKt")
 }
-
-//tasks {
-//    processResources {
-//        exclude("application.conf", "logback.xml")
-//    }
-//}
-//
 
 dependencies {
     implementation(project(":domain"))
@@ -33,6 +27,9 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.ktor.server.status.pages)
     implementation(libs.ktor.server.cors) // Для CORS
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation(libs.java.jwt)
 
     // Для Koin
     implementation(libs.koin.ktor)
@@ -43,5 +40,4 @@ dependencies {
     implementation(libs.exposed.core)
     // Connection pool
     implementation(libs.hikariCP)
-
 }

@@ -1,18 +1,20 @@
-package com.example.ui.screens.booklist
+package com.example.ui.screens.book_list
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.ui.mapping.BookMapper
 import com.example.ui.model.BookModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import javax.inject.Inject
 import com.example.ui.network.BookApi
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class BookListViewModel @Inject constructor(
     private val bookApi: BookApi,
+    private val mapper: BookMapper
 ) : ViewModel() {
     private val _state = MutableStateFlow<BookListState>(BookListState.Loading)
     val state: StateFlow<BookListState> = _state
@@ -27,13 +29,16 @@ class BookListViewModel @Inject constructor(
     init {
         loadBooksPage()
     }
+
     fun loadBooksPage() {
         if (isLoading || isLastPage) return
 
         isLoading = true
         viewModelScope.launch {
             try {
-                val newBooks = bookApi.getBooks(page = currentPage, pageSize = pageSize)
+                val newBooks = bookApi.getBooks(page = currentPage, pageSize = pageSize).map {
+                    mapper.toUi(it)
+                }
                 if (newBooks.isEmpty()) {
                     isLastPage = true
                 } else {

@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     kotlin("kapt")
     alias(libs.plugins.hilt)
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 android {

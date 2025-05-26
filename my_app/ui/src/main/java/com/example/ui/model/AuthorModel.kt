@@ -1,18 +1,11 @@
 package com.example.ui.model
 
-import com.example.ui.model.exception.EmptyStringException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
 
 @Serializable
 data class AuthorModel(
-    val id: @Contextual UUID = UUID.randomUUID(),
+    val id: @Contextual UUID,
     val name: String,
-) {
-    init {
-        when {
-            name.isBlank() -> throw EmptyStringException(name)
-        }
-    }
-}
+)

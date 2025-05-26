@@ -6,15 +6,10 @@ import java.time.LocalDate
 import java.util.*
 
 @Serializable
-data class ReservationModel(
-    val id: @Contextual UUID = UUID.randomUUID(),
+data class ReservationDto(
+    val id: @Contextual UUID,
     val bookId: @Contextual UUID,
     val userId: @Contextual UUID,
     val reservationDate: @Contextual LocalDate,
     val cancelDate: @Contextual LocalDate,
-) {
-    init {
-        require(reservationDate <= LocalDate.now())
-        require(cancelDate > reservationDate)
-    }
-}
+)

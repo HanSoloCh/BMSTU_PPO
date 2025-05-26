@@ -7,14 +7,9 @@ import java.util.*
 
 @Serializable
 data class ReservationModel(
-    val id: @Contextual UUID = UUID.randomUUID(),
-    val bookId: @Contextual UUID,
-    val userId: @Contextual UUID,
+    val id: @Contextual UUID,
+    val bookModel: BookModel,
+    val userId: UserModel,
     val reservationDate: @Contextual LocalDate,
     val cancelDate: @Contextual LocalDate,
-) {
-    init {
-        require(reservationDate <= LocalDate.now())
-        require(cancelDate > reservationDate)
-    }
-}
+)
