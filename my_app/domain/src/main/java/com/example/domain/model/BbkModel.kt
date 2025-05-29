@@ -1,5 +1,6 @@
 package com.example.domain.model
 
+import com.example.domain.exception.EmptyStringException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -11,7 +12,9 @@ data class BbkModel(
     val description: String,
 ) {
     init {
-        require(code.isNotBlank())
-        require(description.isNotBlank())
+        when {
+            code.isBlank() -> throw EmptyStringException("code")
+            description.isBlank() -> throw EmptyStringException(description)
+        }
     }
 }

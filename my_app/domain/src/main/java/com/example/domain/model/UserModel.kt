@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import com.example.libraryapp.domain.util.utils.UserRole
+import com.example.domain.enums.UserRole
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
@@ -14,7 +14,7 @@ data class UserModel(
     val password: String,
     val email: String,
     val phoneNumber: String,
-    val role: UserRole = UserRole.READER,
+    val role: UserRole,
 ) {
     init {
         require(name.isNotBlank())

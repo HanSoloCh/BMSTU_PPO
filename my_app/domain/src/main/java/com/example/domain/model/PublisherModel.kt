@@ -1,5 +1,10 @@
 package com.example.domain.model
 
+import com.example.domain.common.Regexes
+import com.example.domain.exception.EmptyStringException
+import com.example.domain.exception.InvalidDateException
+import com.example.domain.exception.InvalidEmailException
+import com.example.domain.exception.InvalidPhoneException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.Year
@@ -15,20 +20,20 @@ data class PublisherModel(
     val phoneNumber: String? = null,
 ) {
     init {
-        require(name.isNotBlank())
-        require(description == null || description.isNotBlank())
-        require(foundationYear in 0..Year.now().value)
-        require(email == null || isValidEmail(email))
-        require(phoneNumber == null || isValidPhone(phoneNumber))
+        when {
+            name.isBlank() -> throw EmptyStringException("name")
+            description != null && description.isBlank() -> throw EmptyStringException("description")
+            foundationYear !in 0..Year.now().value -> throw InvalidDateException(foundationYear.toString())
+            email != null && !isValidEmail(email) -> throw InvalidEmailException(email)
+            phoneNumber != null && !isValidPhone(phoneNumber) -> throw InvalidPhoneException(phoneNumber)
+        }
     }
 
     private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
-        return email.matches(emailRegex)
+        return email.matches(Regexes.EMAIL_ADDRESS)
     }
 
     private fun isValidPhone(phone: String): Boolean {
-        val phoneRegex = "^\\+?[78][0-9]{10}$".toRegex()
-        return phone.matches(phoneRegex)
+        return phone.matches(Regexes.PHONE_NUMBER)
     }
 }

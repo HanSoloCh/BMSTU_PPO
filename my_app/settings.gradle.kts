@@ -22,4 +22,5 @@ dependencyResolutionManagement {
 rootProject.name = "library_app"
 include(":domain")
 include(":data")
-include(":presentation")
+include(":api")
+include(":ui")

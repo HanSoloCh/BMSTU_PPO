@@ -1,11 +1,17 @@
 package com.example.data.local.repository
 
+import com.example.data.local.entity.BookEntity
 import com.example.data.local.entity.UserFavoriteCrossRef
+import com.example.data.local.mapping.BookMapper
+import com.example.domain.model.BookModel
 import com.example.domain.repository.UserFavoriteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.util.*
 
@@ -32,12 +38,12 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
-    override suspend fun readByUserId(userId: UUID): List<UUID> = withContext(Dispatchers.IO) {
+    override suspend fun readByUserId(userId: UUID): List<BookModel> = withContext(Dispatchers.IO) {
         transaction(db) {
-            UserFavoriteCrossRef
-                .selectAll()
+            (BookEntity innerJoin UserFavoriteCrossRef)
+                .select(BookEntity.columns)
                 .where { UserFavoriteCrossRef.userId eq userId }
-                .map { it[UserFavoriteCrossRef.bookId].value }
+                .map { BookMapper.toDomain(it) }
         }
     }
 }

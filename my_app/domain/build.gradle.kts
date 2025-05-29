@@ -10,4 +10,11 @@ dependencies {
 
     // Сериализация
     implementation(libs.ktor.serialization.kotlinx.json)
+
+    // Tests
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(kotlin("test"))
+    testImplementation(libs.mockk)
+    testImplementation(libs.slf4j.simple)
+    testImplementation(libs.logback.classic)
 }
