@@ -1,10 +1,9 @@
 package com.example.app.plugin
 
 import com.example.app.config.JwtConfig
-import io.ktor.server.application.Application
-import io.ktor.server.application.install
-import io.ktor.server.auth.Authentication
-import io.ktor.server.auth.jwt.jwt
+import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 
 fun Application.configureSecurity() {
     install(Authentication) {

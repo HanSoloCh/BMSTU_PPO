@@ -37,6 +37,7 @@ fun Application.module() {
         issuanceRoutes()
         favoriteRoutes()
         authRoutes()
+        languageRoutes()
     }
 }
 

@@ -13,8 +13,12 @@ object BookEntity : UUIDTable("book") {
     val bbkId = reference("bbk_id", BbkEntity, onDelete = ReferenceOption.RESTRICT)
     val mediaType = varchar("media_type", 100).nullable()
     val volume = text("volume").nullable()
-    val language = varchar("language", 100).nullable()
-    val originalLanguage = varchar("original_language", 100).nullable()
+//    val language = varchar("language", 100).nullable()
+//    val originalLanguage = varchar("original_language", 100).nullable()
+    val languageId = reference("language_id", LanguageEntity, onDelete = ReferenceOption.RESTRICT).nullable()
+    val originalLanguageId = reference("original_language_id", LanguageEntity, onDelete = ReferenceOption.RESTRICT).nullable()
+    val secondaryLanguageId = reference("secondary_language_id", LanguageEntity, onDelete = ReferenceOption.RESTRICT).nullable()
+
     val copies = integer("copies").default(0)
     val availableCopies = integer("available_copies").default(0)
 }

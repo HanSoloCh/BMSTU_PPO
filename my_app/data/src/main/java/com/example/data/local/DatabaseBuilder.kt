@@ -46,7 +46,8 @@ object DatabaseBuilder {
                 PublisherEntity,
                 ReservationEntity,
                 UserEntity,
-                UserFavoriteCrossRef
+                UserFavoriteCrossRef,
+                LanguageEntity,
             )
         }
     }

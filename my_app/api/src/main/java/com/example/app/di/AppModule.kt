@@ -4,15 +4,24 @@ import com.example.data.local.DatabaseBuilder
 import com.example.data.local.repository.*
 import com.example.domain.repository.*
 import com.example.domain.usecase.LoginUserUseCase
-import com.example.domain.usecase.apu.*
+import com.example.domain.usecase.apu.CreateApuUseCase
+import com.example.domain.usecase.apu.DeleteApuUseCase
+import com.example.domain.usecase.apu.ReadApuByIdUseCase
+import com.example.domain.usecase.apu.UpdateApuUseCase
 import com.example.domain.usecase.author.*
 import com.example.domain.usecase.bbk.*
 import com.example.domain.usecase.book.*
-import com.example.domain.usecase.favorite.*
+import com.example.domain.usecase.favorite.CreateFavoriteUseCase
+import com.example.domain.usecase.favorite.DeleteFavoriteUseCase
+import com.example.domain.usecase.favorite.ReadFavoriteByUserIdUseCase
 import com.example.domain.usecase.issuance.*
+import com.example.domain.usecase.language.*
 import com.example.domain.usecase.publisher.*
 import com.example.domain.usecase.reservation.*
-import com.example.domain.usecase.user.*
+import com.example.domain.usecase.user.CreateUserUseCase
+import com.example.domain.usecase.user.DeleteUserUseCase
+import com.example.domain.usecase.user.ReadUserByIdUseCase
+import com.example.domain.usecase.user.UpdateUserUseCase
 import com.typesafe.config.ConfigFactory
 import org.koin.dsl.module
 import javax.sql.DataSource
@@ -44,6 +53,7 @@ val appModule = module {
     single<ReservationRepository> { ReservationRepositoryImpl(get()) }
     single<IssuanceRepository> { IssuanceRepositoryImpl(get()) }
     single<UserFavoriteRepository> { UserFavoriteRepositoryImpl(get()) }
+    single<LanguageRepository> { LanguageRepositoryImpl(get()) }
 
     // Author use case
     single { ReadAuthorByIdUseCase(get()) }
@@ -64,6 +74,13 @@ val appModule = module {
     single { UpdateBbkUseCase(get()) }
     single { DeleteBbkUseCase(get()) }
     single { ReadBbkByCodeUseCase(get()) }
+
+    // Language use case
+    single { ReadLanguageByIdUseCase(get()) }
+    single { CreateLanguageUseCase(get()) }
+    single { UpdateLanguageUseCase(get()) }
+    single { DeleteLanguageUseCase(get()) }
+    single { ReadLanguageByNameUseCase(get()) }
 
     // Publisher use case
     single { ReadPublisherByIdUseCase(get()) }

@@ -22,8 +22,9 @@ object BookMapper {
             bbkId = row[BookEntity.bbkId].value,
             mediaType = row[BookEntity.mediaType],
             volume = row[BookEntity.volume],
-            language = row[BookEntity.language],
-            originalLanguage = row[BookEntity.originalLanguage],
+            languageId = row[BookEntity.languageId]?.value,
+            originalLanguageId = row[BookEntity.originalLanguageId]?.value,
+            secondaryLanguageId = row[BookEntity.secondaryLanguageId]?.value,
             copies = row[BookEntity.copies],
             availableCopies = row[BookEntity.availableCopies]
         )
@@ -43,8 +44,9 @@ object BookMapper {
             it[BookEntity.bbkId] = bookModel.bbkId
             it[BookEntity.mediaType] = bookModel.mediaType
             it[BookEntity.volume] = bookModel.volume
-            it[BookEntity.language] = bookModel.language
-            it[BookEntity.originalLanguage] = bookModel.originalLanguage
+            it[BookEntity.languageId] = bookModel.languageId
+            it[BookEntity.originalLanguageId] = bookModel.originalLanguageId
+            it[BookEntity.secondaryLanguageId] = bookModel.secondaryLanguageId
             it[BookEntity.copies] = bookModel.copies
             it[BookEntity.availableCopies] = bookModel.availableCopies
         }
@@ -61,8 +63,9 @@ object BookMapper {
             it[BookEntity.bbkId] = bookModel.bbkId
             it[BookEntity.mediaType] = bookModel.mediaType
             it[BookEntity.volume] = bookModel.volume
-            it[BookEntity.language] = bookModel.language
-            it[BookEntity.originalLanguage] = bookModel.originalLanguage
+            it[BookEntity.languageId] = bookModel.languageId
+            it[BookEntity.originalLanguageId] = bookModel.originalLanguageId
+            it[BookEntity.secondaryLanguageId] = bookModel.secondaryLanguageId
             it[BookEntity.copies] = bookModel.copies
             it[BookEntity.availableCopies] = bookModel.availableCopies
         }

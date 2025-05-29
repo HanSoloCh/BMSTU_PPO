@@ -1,6 +1,5 @@
 package com.example.app.route
 
-import com.example.app.logger.Logger
 import com.example.app.util.getParam
 import com.example.domain.usecase.favorite.CreateFavoriteUseCase
 import com.example.domain.usecase.favorite.DeleteFavoriteUseCase

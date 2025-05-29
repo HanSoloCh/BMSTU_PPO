@@ -2,10 +2,8 @@ package com.example.app.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.server.auth.jwt.JWTAuthenticationProvider
-import io.ktor.server.auth.jwt.JWTPrincipal
-import java.util.Date
-import java.util.UUID
+import io.ktor.server.auth.jwt.*
+import java.util.*
 
 object JwtConfig {
     private const val SECRET = "super_secret_key"

@@ -2,11 +2,7 @@ package com.example.app.route
 
 import com.example.app.util.getParam
 import com.example.domain.model.AuthorModel
-import com.example.domain.usecase.author.CreateAuthorUseCase
-import com.example.domain.usecase.author.DeleteAuthorUseCase
-import com.example.domain.usecase.author.ReadAuthorByIdUseCase
-import com.example.domain.usecase.author.ReadAuthorByNameUseCase
-import com.example.domain.usecase.author.UpdateAuthorUseCase
+import com.example.domain.usecase.author.*
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -55,7 +51,7 @@ fun Route.authorRoutes() {
         route("/by-name") {
             val readAuthorByNameUseCase: ReadAuthorByNameUseCase by inject()
             get {
-                val name =  call.getParam<String>("name", true) { it }!!
+                val name = call.getParam<String>("name", true) { it }!!
                 val author = readAuthorByNameUseCase(name)
                 if (author == null) {
                     call.respond(HttpStatusCode.NotFound, "Author not found")
