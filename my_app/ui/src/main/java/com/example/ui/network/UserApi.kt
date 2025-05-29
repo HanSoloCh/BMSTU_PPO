@@ -4,7 +4,6 @@ import com.example.ui.network.dto.BookDto
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.bodyAsText
 import java.util.*
 import javax.inject.Inject
 

@@ -1,13 +1,11 @@
 package com.example.ui.network
 
 import com.example.ui.network.dto.BookDto
-import com.example.ui.screens.add_entity.form.book_form.BookForm
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
+import io.ktor.http.*
 import java.util.*
 import javax.inject.Inject
 
@@ -30,7 +28,7 @@ class BookApi @Inject constructor(
     // Сделать пагинацию
     suspend fun getBooksByAuthorId(authorId: UUID): List<BookDto> {
         val response: HttpResponse = client.get("http://10.0.2.2:8080/book/search") {
-                parameter("authorId", authorId)
+            parameter("authorId", authorId)
 
         }
         return response.body()
@@ -38,14 +36,14 @@ class BookApi @Inject constructor(
 
     suspend fun getBooksByBbkId(id: UUID): List<BookDto> {
         val response: HttpResponse = client.get("http://10.0.2.2:8080/book/search") {
-                parameter("bbkId", id)
+            parameter("bbkId", id)
         }
         return response.body()
     }
 
     suspend fun getBooksBySentence(sentence: String): List<BookDto> {
         val response: HttpResponse = client.get("http://10.0.2.2:8080/book/search") {
-                parameter("q", sentence)
+            parameter("q", sentence)
         }
         return response.body()
     }

@@ -1,15 +1,11 @@
 package com.example.ui.network
 
 import com.example.ui.network.dto.AuthorDto
-import com.example.ui.network.dto.BbkDto
-import com.example.ui.network.dto.PublisherDto
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import io.ktor.http.ContentType
-import io.ktor.http.contentType
-import java.net.URLEncoder
+import io.ktor.http.*
 import java.util.*
 import javax.inject.Inject
 

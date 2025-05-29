@@ -21,7 +21,6 @@ import androidx.navigation.NavController
 import com.example.ui.common.json.appJson
 import com.example.ui.item.BookItem
 import com.example.ui.model.AuthorModel
-import com.example.ui.screens.add_entity.AddEntityViewModel
 
 
 @Composable
