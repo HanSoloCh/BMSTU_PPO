@@ -2,8 +2,14 @@ package com.example.ui.screens.book_detail
 
 import com.example.ui.model.BookModel
 
+data class BookActionsState(
+    val isFavorite: Boolean = false,
+    val isReserved: Boolean = false,
+    val isIssuance: Boolean = false
+)
+
 sealed class BookDetailState {
     object Loading : BookDetailState()
-    data class Success(val book: BookModel) : BookDetailState()
+    data class Success(val book: BookModel, val actionsState: BookActionsState) : BookDetailState()
     data class Error(val message: String) : BookDetailState()
 }

@@ -14,7 +14,7 @@ class PublisherMapper @Inject constructor() {
         phoneNumber = publisher.phoneNumber,
     )
 
-    suspend fun toDto(publisher: PublisherDto) = PublisherDto(
+    suspend fun toDto(publisher: PublisherModel) = PublisherDto(
         id = publisher.id,
         name = publisher.name,
         description = publisher.description,

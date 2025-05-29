@@ -1,4 +1,4 @@
-package com.example.app.util
+package com.example.ui.network.dto
 
 import kotlinx.serialization.Serializable
 

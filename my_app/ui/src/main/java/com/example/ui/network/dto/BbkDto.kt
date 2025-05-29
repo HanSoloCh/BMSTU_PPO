@@ -6,7 +6,7 @@ import java.util.*
 
 @Serializable
 data class BbkDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val code: String,
     val description: String,
 )

@@ -6,6 +6,6 @@ import java.util.*
 
 @Serializable
 data class AuthorDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
 )

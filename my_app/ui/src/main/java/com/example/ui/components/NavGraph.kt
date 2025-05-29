@@ -8,12 +8,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.ui.navigation.Screen
+import com.example.ui.screens.add_entity.AddEntityScreen
 import com.example.ui.screens.author_books.AuthorBooksScreen
 import com.example.ui.screens.bbk_books.BbkBooksScreen
 import com.example.ui.screens.book_detail.BookDetailScreen
 import com.example.ui.screens.book_list.BookListScreen
 import com.example.ui.screens.login.LoginScreen
 import com.example.ui.screens.search_books.SearchBooksScreen
+import com.example.ui.screens.user_favorite.UserFavoriteScreen
 
 @Composable
 fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
@@ -50,6 +52,17 @@ fun NavGraph(navController: NavHostController, modifier: Modifier = Modifier) {
             route = Screen.Login.route,
         ) {
             LoginScreen(navController = navController)
+        }
+        composable(
+            route = Screen.UserFavorite.route,
+            arguments = listOf(navArgument("userId") { type = NavType.StringType })
+        ) {
+            UserFavoriteScreen(navController = navController)
+        }
+        composable(
+            route = Screen.AddEntity.route,
+        ) {
+            AddEntityScreen(navController = navController)
         }
     }
 }

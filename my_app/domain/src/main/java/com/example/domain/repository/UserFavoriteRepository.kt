@@ -1,5 +1,6 @@
 package com.example.domain.repository
 
+import com.example.domain.model.BookModel
 import java.util.*
 
 interface UserFavoriteRepository {
@@ -7,5 +8,5 @@ interface UserFavoriteRepository {
 
     suspend fun delete(userId: UUID, bookId: UUID): Int
 
-    suspend fun readByUserId(userId: UUID): List<UUID>
+    suspend fun readByUserId(userId: UUID): List<BookModel>
 }

@@ -5,6 +5,7 @@ import com.example.domain.model.AuthorModel
 import com.example.domain.usecase.author.CreateAuthorUseCase
 import com.example.domain.usecase.author.DeleteAuthorUseCase
 import com.example.domain.usecase.author.ReadAuthorByIdUseCase
+import com.example.domain.usecase.author.ReadAuthorByNameUseCase
 import com.example.domain.usecase.author.UpdateAuthorUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -48,6 +49,19 @@ fun Route.authorRoutes() {
                 val authorId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deleteAuthorUseCase(authorId)
                 call.respond(HttpStatusCode.NoContent)
+            }
+        }
+
+        route("/by-name") {
+            val readAuthorByNameUseCase: ReadAuthorByNameUseCase by inject()
+            get {
+                val name =  call.getParam<String>("name", true) { it }!!
+                val author = readAuthorByNameUseCase(name)
+                if (author == null) {
+                    call.respond(HttpStatusCode.NotFound, "Author not found")
+                } else {
+                    call.respond(author)
+                }
             }
         }
     }

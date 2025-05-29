@@ -1,6 +1,9 @@
 package com.example.data.local.repository
 
+import com.example.data.local.entity.BookEntity
 import com.example.data.local.entity.UserFavoriteCrossRef
+import com.example.data.local.mapping.BookMapper
+import com.example.domain.model.BookModel
 import com.example.domain.repository.UserFavoriteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,12 +35,12 @@ class UserFavoriteRepositoryImpl(
         }
     }
 
-    override suspend fun readByUserId(userId: UUID): List<UUID> = withContext(Dispatchers.IO) {
+    override suspend fun readByUserId(userId: UUID): List<BookModel> = withContext(Dispatchers.IO) {
         transaction(db) {
-            UserFavoriteCrossRef
-                .selectAll()
+            (BookEntity innerJoin  UserFavoriteCrossRef)
+                .select(BookEntity.columns)
                 .where { UserFavoriteCrossRef.userId eq userId }
-                .map { it[UserFavoriteCrossRef.bookId].value }
+                .map { BookMapper.toDomain(it) }
         }
     }
 }

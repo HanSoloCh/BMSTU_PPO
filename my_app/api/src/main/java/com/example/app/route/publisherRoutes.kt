@@ -2,9 +2,11 @@ package com.example.app.route
 
 import com.example.app.util.getParam
 import com.example.domain.model.PublisherModel
+import com.example.domain.usecase.bbk.ReadBbkByCodeUseCase
 import com.example.domain.usecase.publisher.CreatePublisherUseCase
 import com.example.domain.usecase.publisher.DeletePublisherUseCase
 import com.example.domain.usecase.publisher.ReadPublisherByIdUseCase
+import com.example.domain.usecase.publisher.ReadPublisherByNameUseCase
 import com.example.domain.usecase.publisher.UpdatePublisherUseCase
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -48,6 +50,19 @@ fun Route.publisherRoutes() {
                 val publisherId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deletePublisherUseCase(publisherId)
                 call.respond(HttpStatusCode.NoContent)
+            }
+        }
+
+        route("/by-name") {
+            val readPublisherByNameUseCase: ReadPublisherByNameUseCase by inject()
+            get {
+                val name =  call.getParam<String>("name", true) { it }!!
+                val publisher = readPublisherByNameUseCase(name)
+                if (publisher == null) {
+                    call.respond(HttpStatusCode.NotFound, "Bbk not found")
+                } else {
+                    call.respond(publisher)
+                }
             }
         }
     }

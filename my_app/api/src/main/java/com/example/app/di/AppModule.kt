@@ -50,6 +50,7 @@ val appModule = module {
     single { CreateAuthorUseCase(get()) }
     single { UpdateAuthorUseCase(get()) }
     single { DeleteAuthorUseCase(get()) }
+    single { ReadAuthorByNameUseCase(get()) }
 
     // Apu use case
     single { ReadApuByIdUseCase(get()) }
@@ -62,12 +63,14 @@ val appModule = module {
     single { CreateBbkUseCase(get()) }
     single { UpdateBbkUseCase(get()) }
     single { DeleteBbkUseCase(get()) }
+    single { ReadBbkByCodeUseCase(get()) }
 
     // Publisher use case
     single { ReadPublisherByIdUseCase(get()) }
     single { CreatePublisherUseCase(get()) }
     single { UpdatePublisherUseCase(get()) }
     single { DeletePublisherUseCase(get()) }
+    single { ReadPublisherByNameUseCase(get()) }
 
     // User use case
     single { ReadUserByIdUseCase(get()) }

@@ -4,23 +4,24 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ui.common.enums.UserRole
 import com.example.ui.common.json.appJson
 import com.example.ui.model.AuthorModel
 import com.example.ui.model.BbkModel
 import com.example.ui.model.BookModel
 import com.example.ui.navigation.Screen
+import com.example.ui.util.UserStore
 
 @Composable
 fun BookDetailScreen(
@@ -37,7 +38,7 @@ fun BookDetailScreen(
 
     LaunchedEffect(book) {
         if (book != null) {
-            viewModel.setBook(book)
+            viewModel.setBook(book, UserStore.getId())
         }
     }
 
@@ -50,6 +51,7 @@ fun BookDetailScreen(
 
         is BookDetailState.Success -> {
             val book = (state as BookDetailState.Success).book
+            val actions = (state as BookDetailState.Success).actionsState
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -138,6 +140,31 @@ fun BookDetailScreen(
                 DetailRow("Язык:", book.language ?: "не указан")
                 book.originalLanguage?.let { lang ->
                     DetailRow("Оригинальный язык:", lang)
+                }
+                Spacer(modifier = Modifier.height(24.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    if (UserStore.getRole() == UserRole.READER) {
+                        Button(
+                            onClick = {
+                                viewModel.toggleFavorite(UserStore.getId()!!, book.id)
+                            },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = if (actions.isFavorite) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
+                            )
+                        ) {
+                            Text(if (actions.isFavorite) "Убрать из избранного" else "В избранное")
+                        }
+                        Button(onClick = {
+
+                        }) {
+                            Text("Заказать")
+                        }
+                    }
                 }
             }
         }

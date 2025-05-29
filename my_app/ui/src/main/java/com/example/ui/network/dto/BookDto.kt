@@ -6,7 +6,7 @@ import java.util.*
 
 @Serializable
 data class BookDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val title: String,
     val annotation: String? = null,
     val authors: List<@Contextual UUID>,

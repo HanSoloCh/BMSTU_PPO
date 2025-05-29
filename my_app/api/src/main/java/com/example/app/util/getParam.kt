@@ -1,27 +1,8 @@
 package com.example.app.util
 
-import com.example.app.exception.ConversionFailureException
+import com.example.app.exception.ConvertFailureException
 import com.example.app.exception.MissingParametersException
 import io.ktor.server.application.*
-
-
-//suspend fun getParam(call: ApplicationCall, param: String): String {
-//    val paramValue = call.parameters[param]
-//    if (paramValue == null) {
-//        throw MissingParametersException(param)
-//    }
-//    return paramValue
-//}
-//
-//suspend fun getId(call: ApplicationCall, param: String): UUID {
-//    val paramValue = getParam(call, param)
-//    val id = try {
-//        UUID.fromString(paramValue)
-//    } catch (e: IllegalArgumentException) {
-//        throw ConversionFailureException(param)
-//    }
-//    return id
-//}
 
 suspend inline fun <reified T> ApplicationCall.getParam(
     param: String,
@@ -35,7 +16,7 @@ suspend inline fun <reified T> ApplicationCall.getParam(
         else -> try {
             parser(value)
         } catch (e: IllegalArgumentException) {
-            throw ConversionFailureException(param)
+            throw ConvertFailureException(param)
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.example.data.local.mapping
 
 import com.example.data.local.entity.UserEntity
-import com.example.domain.domain.util.utils.UserRole
+import com.example.domain.enums.UserRole
 import com.example.domain.model.UserModel
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow

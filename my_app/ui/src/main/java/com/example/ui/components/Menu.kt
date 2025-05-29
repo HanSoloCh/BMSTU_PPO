@@ -12,11 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.ui.navigation.Screen
-import com.example.ui.util.TokenStore
+import com.example.ui.util.UserStore
 
 val searchBarVisibleRoutes = listOf(
     Screen.BookList.route,
-    Screen.AuthorBooks.route
+    Screen.AuthorBooks.route,
+    Screen.SearchResults.route,
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -53,7 +54,14 @@ fun Menu(
                             }
                         }
                     )
-                    if (TokenStore.getRole() == null) {
+                    DropdownMenuItem(
+                        text = { Text("Добавить") },
+                        onClick = {
+                            expanded = false
+                            navController.navigate(Screen.AddEntity.route)
+                        }
+                    )
+                    if (UserStore.getRole() == null) {
                         DropdownMenuItem(
                             text = { Text("Войти") },
                             onClick = {
@@ -65,10 +73,17 @@ fun Menu(
                         )
                     } else {
                         DropdownMenuItem(
+                            text = { Text("Избранное") },
+                            onClick = {
+                                expanded = false
+                                navController.navigate(Screen.UserFavorite.createRoute(UserStore.getId()!!))
+                            }
+                        )
+                        DropdownMenuItem(
                             text = { Text("Выйти") },
                             onClick = {
                                 expanded = false
-                                TokenStore.clear()
+                                UserStore.clear()
                                 navController.navigate(Screen.BookList.route) {
                                     popUpTo(0)
                                 }
@@ -89,4 +104,12 @@ fun Menu(
             )
         }
     }
+}
+
+@Composable
+fun MenuItem(text: String, onClick: () -> Unit) {
+    DropdownMenuItem(
+        text = { Text(text = text) },
+        onClick = onClick,
+    )
 }

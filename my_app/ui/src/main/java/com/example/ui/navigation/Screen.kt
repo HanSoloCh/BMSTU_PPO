@@ -18,5 +18,11 @@ sealed class Screen(val route: String) {
         fun createRoute(query: String) = "searchResults/${Uri.encode(query)}"
     }
 
+    object UserFavorite : Screen("userFavorite/{userId}") {
+        fun createRoute(userId: UUID) = "userFavorite/$userId"
+    }
+
+    object AddEntity : Screen("addEntity")
+
     object Login : Screen("login")
 }

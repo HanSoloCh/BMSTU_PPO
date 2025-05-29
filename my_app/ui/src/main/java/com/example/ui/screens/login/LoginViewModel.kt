@@ -2,16 +2,13 @@ package com.example.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ui.mapping.BookMapper
-import com.example.ui.model.BookModel
+import com.example.ui.mapping.UserMapper
 import com.example.ui.network.AuthApi
-import com.example.ui.network.BookApi
-import com.example.ui.network.LoginRequest
-import com.example.ui.screens.book_list.BookListState
-import com.example.ui.util.TokenStore
+import com.example.ui.network.dto.LoginRequest
+import com.example.ui.util.UserStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.ktor.client.plugins.ClientRequestException
-import io.ktor.client.statement.bodyAsText
+import io.ktor.client.plugins.*
+import io.ktor.client.statement.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -20,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authApi: AuthApi
+    private val authApi: AuthApi,
+    private val userMapper: UserMapper
 ) : ViewModel() {
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state
@@ -37,9 +35,9 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             try {
-                val token = authApi.login(LoginRequest(_state.value.email, _state.value.password))
-                TokenStore.saveToken(token)
-                println("HUI $token")
+                println(authApi.login(LoginRequest(_state.value.email, _state.value.password)))
+                val user = UserMapper().toUi(authApi.login(LoginRequest(_state.value.email, _state.value.password)))
+                UserStore.save(user)
                 _state.update { it.copy(isLoading = false) }
                 onComplete()
             } catch (e: ClientRequestException) {

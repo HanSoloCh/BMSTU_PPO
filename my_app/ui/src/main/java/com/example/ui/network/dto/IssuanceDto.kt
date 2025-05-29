@@ -7,7 +7,7 @@ import java.util.*
 
 @Serializable
 data class IssuanceDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val bookId: @Contextual UUID,
     val userId: @Contextual UUID,
     val issuanceDate: @Contextual LocalDate,

@@ -6,7 +6,7 @@ import java.util.*
 
 @Serializable
 data class ApuDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val term: String,
     val bbkId: @Contextual UUID
 )

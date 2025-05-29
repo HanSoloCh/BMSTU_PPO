@@ -1,4 +1,4 @@
-package com.example.domain.domain.util.utils
+package com.example.ui.common.enums
 
 enum class UserRole {
     READER,

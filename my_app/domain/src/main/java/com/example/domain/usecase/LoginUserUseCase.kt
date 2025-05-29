@@ -10,7 +10,6 @@ class LoginUserUseCase(
         if (email.isBlank() || password.isBlank()) {
             return null
         }
-
         return userRepository.login(email, hashPassword(password))
     }
 

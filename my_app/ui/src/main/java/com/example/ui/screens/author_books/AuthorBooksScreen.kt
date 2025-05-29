@@ -21,11 +21,14 @@ import androidx.navigation.NavController
 import com.example.ui.common.json.appJson
 import com.example.ui.item.BookItem
 import com.example.ui.model.AuthorModel
+import com.example.ui.screens.add_entity.AddEntityViewModel
 
 
 @Composable
-fun AuthorBooksScreen(navController: NavController) {
-    val viewModel: AuthorBooksViewModel = hiltViewModel()
+fun AuthorBooksScreen(
+    navController: NavController,
+    viewModel: AuthorBooksViewModel = hiltViewModel()
+) {
     val state by viewModel.state.collectAsState()
 
     val savedStateHandle = navController.previousBackStackEntry?.savedStateHandle

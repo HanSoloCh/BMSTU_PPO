@@ -1,6 +1,6 @@
 package com.example.ui.model
 
-import com.example.domain.domain.util.utils.UserRole
+import com.example.ui.common.enums.UserRole
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*

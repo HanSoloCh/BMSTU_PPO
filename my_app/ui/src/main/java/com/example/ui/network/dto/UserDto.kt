@@ -1,13 +1,13 @@
 package com.example.ui.network.dto
 
-import com.example.domain.domain.util.utils.UserRole
+import com.example.ui.common.enums.UserRole
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.util.*
 
 @Serializable
 data class UserDto(
-    val id: @Contextual UUID,
+    val id: @Contextual UUID = UUID.randomUUID(),
     val name: String,
     val surname: String,
     val secondName: String? = null,

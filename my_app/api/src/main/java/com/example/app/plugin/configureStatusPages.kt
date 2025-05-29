@@ -1,6 +1,6 @@
 package com.example.app.plugin
 
-import com.example.app.exception.ConversionFailureException
+import com.example.app.exception.ConvertFailureException
 import com.example.app.exception.MissingParametersException
 import com.example.app.logger.LogLevel
 import com.example.app.logger.Logger
@@ -25,8 +25,8 @@ fun Application.configureStatusPages() {
                 infoMessage
             )
         }
-        exception<ConversionFailureException> { call, exception ->
-            infoMessage = exception.message ?: ConversionFailureException::class.java.canonicalName
+        exception<ConvertFailureException> { call, exception ->
+            infoMessage = exception.message ?: ConvertFailureException::class.java.canonicalName
             Logger.logAction(infoMessage, LogLevel.ERROR)
             call.respond(
                 HttpStatusCode.BadRequest,

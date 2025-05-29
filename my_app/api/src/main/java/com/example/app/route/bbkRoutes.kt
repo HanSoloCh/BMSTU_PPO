@@ -2,8 +2,10 @@ package com.example.app.route
 
 import com.example.app.util.getParam
 import com.example.domain.model.BbkModel
+import com.example.domain.usecase.author.ReadAuthorByNameUseCase
 import com.example.domain.usecase.bbk.CreateBbkUseCase
 import com.example.domain.usecase.bbk.DeleteBbkUseCase
+import com.example.domain.usecase.bbk.ReadBbkByCodeUseCase
 import com.example.domain.usecase.bbk.ReadBbkByIdUseCase
 import com.example.domain.usecase.bbk.UpdateBbkUseCase
 import io.ktor.http.*
@@ -50,5 +52,19 @@ fun Route.bbkRoutes() {
                 call.respond(HttpStatusCode.NoContent)
             }
         }
+
+        route("/by-code") {
+            val readBbkByCodeUseCase: ReadBbkByCodeUseCase by inject()
+            get {
+                val code =  call.getParam<String>("code", true) { it }!!
+                val bbk = readBbkByCodeUseCase(code)
+                if (bbk == null) {
+                    call.respond(HttpStatusCode.NotFound, "Bbk not found")
+                } else {
+                    call.respond(bbk)
+                }
+            }
+        }
+
     }
 }
