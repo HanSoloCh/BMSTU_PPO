@@ -12,22 +12,18 @@ import com.example.ui.mapping.PublisherMapper
 import com.example.ui.model.AuthorModel
 import com.example.ui.model.BookModel
 import com.example.ui.model.PublisherModel
-import com.example.ui.network.AuthApi
 import com.example.ui.network.AuthorApi
 import com.example.ui.network.BbkApi
 import com.example.ui.network.BookApi
 import com.example.ui.network.PublisherApi
-import com.example.ui.network.dto.AuthorDto
-import com.example.ui.network.dto.BookDto
 import com.example.ui.screens.add_entity.form.author_form.AuthorForm
 import com.example.ui.screens.add_entity.form.book_form.BookForm
 import com.example.ui.screens.add_entity.form.publisher_form.PublisherForm
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.util.UUID
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -59,12 +55,15 @@ class AddEntityViewModel @Inject constructor(
                     EntityType.AUTHOR -> {
                         addAuthor(authorForm)
                     }
+
                     EntityType.BOOK -> {
                         addBook(bookForm)
                     }
+
                     EntityType.PUBLISHER -> {
                         addPublisher(publisherForm)
                     }
+
                     EntityType.BBK -> {}
                     EntityType.APU -> {}
                 }

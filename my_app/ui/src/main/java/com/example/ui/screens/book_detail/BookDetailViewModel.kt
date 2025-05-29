@@ -61,7 +61,7 @@ class BookDetailViewModel @Inject constructor(
 
     private suspend fun checkIfFavorite(userId: UUID, bookId: UUID): Boolean {
         val books = userApi.getFavoriteById(userId)
-    println(books)
+        println(books)
         return books.any { it.id == bookId }
     }
 }
