@@ -1,4 +1,4 @@
-package com.example.ui.screens.add_entity
+package com.example.ui.screens.add_entity.form
 
 enum class EntityType(val displayName: String) {
     BOOK("Книга"),

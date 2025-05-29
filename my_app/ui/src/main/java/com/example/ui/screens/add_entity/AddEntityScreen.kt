@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.ui.screens.add_entity.form.EntityType
 import com.example.ui.screens.add_entity.form.author_form.AuthorFormScreen
 import com.example.ui.screens.add_entity.form.book_form.BookFormScreen
 import com.example.ui.screens.add_entity.form.publisher_form.PublisherFormScreen
