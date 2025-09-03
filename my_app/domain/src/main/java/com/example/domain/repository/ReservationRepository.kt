@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.model.ReservationModel
 import com.example.domain.specification.Specification
-import java.util.*
+import java.util.UUID
 
 interface ReservationRepository {
     suspend fun create(reservationModel: ReservationModel): UUID

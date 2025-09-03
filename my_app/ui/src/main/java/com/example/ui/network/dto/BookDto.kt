@@ -2,7 +2,7 @@ package com.example.ui.network.dto
 
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class BookDto(
@@ -18,6 +18,6 @@ data class BookDto(
     val volume: String? = null,
     val language: String? = null,
     val originalLanguage: String? = null,
-    val copies: Int,
-    val availableCopies: Int,
+    val copies: Int = 0,
+    val availableCopies: Int = 0,
 )

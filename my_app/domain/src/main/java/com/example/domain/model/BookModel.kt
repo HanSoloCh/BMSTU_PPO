@@ -6,7 +6,7 @@ import com.example.domain.exception.InvalidValueException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.Year
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class BookModel(
@@ -14,7 +14,7 @@ data class BookModel(
     val title: String,
     val annotation: String? = null,
     val authors: List<@Contextual UUID>,
-    val publisherId: @Contextual UUID?,
+    val publisherId: @Contextual UUID? = null,
     val publicationYear: Int? = null,
     val codeISBN: String? = null,
     val bbkId: @Contextual UUID,
@@ -33,13 +33,15 @@ data class BookModel(
                 publicationYear.toString()
             )
 
-            codeISBN != null && codeISBN.isBlank() -> throw EmptyStringException("codeISBN")
             mediaType != null && mediaType.isBlank() -> throw EmptyStringException("mediaType")
             volume != null && volume.isBlank() -> throw EmptyStringException("volume")
             language != null && language.isBlank() -> throw EmptyStringException("language")
             originalLanguage != null && originalLanguage.isBlank() -> throw EmptyStringException("originalLanguage")
             copies < 0 -> throw InvalidValueException("copies", copies.toString())
-            availableCopies !in 0..copies -> throw InvalidValueException("availableCopies", availableCopies.toString())
+            availableCopies !in 0..copies -> throw InvalidValueException(
+                "availableCopies",
+                availableCopies.toString()
+            )
         }
     }
 }

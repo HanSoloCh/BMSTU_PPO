@@ -8,10 +8,11 @@ import com.example.domain.exception.BaseDomainException
 import com.example.domain.exception.BookNoAvailableCopiesException
 import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.exception.ModelNotFoundException
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.plugins.statuspages.*
-import io.ktor.server.response.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.plugins.statuspages.StatusPages
+import io.ktor.server.response.respond
 
 fun Application.configureStatusPages() {
     install(StatusPages) {
@@ -40,7 +41,10 @@ fun Application.configureStatusPages() {
             when (exception) {
                 is ModelNotFoundException -> call.respond(HttpStatusCode.NotFound, infoMessage)
                 is ModelDuplicateException -> call.respond(HttpStatusCode.Conflict, infoMessage)
-                is BookNoAvailableCopiesException -> call.respond(HttpStatusCode.Conflict, infoMessage)
+                is BookNoAvailableCopiesException -> call.respond(
+                    HttpStatusCode.Conflict,
+                    infoMessage
+                )
 
                 else -> call.respond(HttpStatusCode.BadRequest, infoMessage)
             }

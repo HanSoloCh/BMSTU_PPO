@@ -1,7 +1,7 @@
 package com.example.domain.usecase.reservation
 
 import com.example.domain.repository.ReservationRepository
-import java.util.*
+import java.util.UUID
 
 class DeleteReservationUseCase(
     private val reservationRepository: ReservationRepository

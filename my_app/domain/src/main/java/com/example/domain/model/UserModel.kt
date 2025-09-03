@@ -1,9 +1,13 @@
 package com.example.domain.model
 
+import com.example.domain.common.Regexes
 import com.example.domain.enums.UserRole
+import com.example.domain.exception.EmptyStringException
+import com.example.domain.exception.InvalidEmailException
+import com.example.domain.exception.InvalidPhoneException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class UserModel(
@@ -12,26 +16,28 @@ data class UserModel(
     val surname: String,
     val secondName: String? = null,
     val password: String,
-    val email: String,
+    val email: String? = null,
     val phoneNumber: String,
     val role: UserRole,
 ) {
     init {
-        require(name.isNotBlank())
-        require(surname.isNotBlank())
-        require(secondName == null || secondName.isNotBlank())
-        require(password.isNotBlank())
-        require(isValidEmail(email))
-        require(isValidPhone(phoneNumber))
+        when {
+            name.isBlank() -> throw EmptyStringException("name")
+            surname.isBlank() -> throw EmptyStringException("surname")
+            secondName != null && secondName.isBlank() -> throw EmptyStringException("secondName")
+            password.isBlank() -> throw EmptyStringException("password")
+            email != null && !isValidEmail(email) -> throw InvalidEmailException(email)
+            !isValidPhone(phoneNumber) -> throw InvalidPhoneException(
+                phoneNumber
+            )
+        }
     }
 
     private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$".toRegex()
-        return email.matches(emailRegex)
+        return email.matches(Regexes.EMAIL_ADDRESS)
     }
 
     private fun isValidPhone(phone: String): Boolean {
-        val phoneRegex = "^\\+?[78][0-9]{10}$".toRegex()
-        return phone.matches(phoneRegex)
+        return phone.matches(Regexes.PHONE_NUMBER)
     }
 }

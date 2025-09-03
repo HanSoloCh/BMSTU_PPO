@@ -8,10 +8,14 @@ import com.example.domain.repository.IssuanceRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class IssuanceRepositoryImpl(
     private val db: Database
@@ -21,7 +25,7 @@ class IssuanceRepositoryImpl(
             IssuanceEntity.insertAndGetId {
                 IssuanceMapper.toInsertStatement(issuanceModel, it)
             }.value
-            TODO("Сделать вызов функции по уменьшению общего числа книг")
+//            TODO("Сделать вызов функции по уменьшению общего числа книг")
         }
     }
 
@@ -44,11 +48,12 @@ class IssuanceRepositoryImpl(
             query(spec).isNotEmpty()
         }
 
-    override suspend fun query(spec: Specification<IssuanceModel>): List<IssuanceModel> = withContext(Dispatchers.IO) {
-        val expression = IssuanceSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<IssuanceModel>): List<IssuanceModel> =
+        withContext(Dispatchers.IO) {
+            val expression = IssuanceSpecToExpressionMapper.map(spec)
 
-        transaction(db) {
-            IssuanceEntity.selectAll().where { expression }.map { IssuanceMapper.toDomain(it) }
+            transaction(db) {
+                IssuanceEntity.selectAll().where { expression }.map { IssuanceMapper.toDomain(it) }
+            }
         }
-    }
 }

@@ -14,8 +14,8 @@ class BookMapper @Inject constructor(
     private val publisherApi: PublisherApi
 ) {
     suspend fun toUi(book: BookDto): BookModel {
-        println("BookMapper::toUi")
-        val authors = book.authors.map { authorId -> AuthorMapper().toUi(authorApi.getAuthor(authorId)) }
+        val authors =
+            book.authors.map { authorId -> AuthorMapper().toUi(authorApi.getAuthor(authorId)) }
         val bbk = BbkMapper().toUi(bbkApi.getBbk(book.bbkId))
         var publisher: PublisherModel? = null
         if (book.publisherId != null) {

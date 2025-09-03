@@ -10,7 +10,7 @@ import com.example.domain.repository.UserRepository
 import com.example.domain.specification.book.BookIdSpecification
 import com.example.domain.specification.reservation.ReservationIdSpecification
 import com.example.domain.specification.user.UserIdSpecification
-import java.util.*
+import java.util.UUID
 
 /**
  * Create reservation must decrement available copies
@@ -30,7 +30,8 @@ class CreateReservationUseCase(
         if (!bookRepository.isContain(BookIdSpecification(reservationModel.bookId)))
             throw ModelNotFoundException("Book", reservationModel.bookId)
 
-        if (bookRepository.query(BookIdSpecification(reservationModel.bookId)).first().availableCopies <= 0
+        if (bookRepository.query(BookIdSpecification(reservationModel.bookId))
+                .first().availableCopies <= 0
         )
             throw BookNoAvailableCopiesException(reservationModel.bookId)
 

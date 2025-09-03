@@ -19,8 +19,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.ui.common.json.appJson
-import com.example.ui.item.BookItem
+import com.example.ui.items.BookItem
 import com.example.ui.model.BbkModel
+import com.example.ui.model.BookModel
+import com.example.ui.navigation.Screen
 
 
 @Composable
@@ -66,7 +68,11 @@ fun BbkBooksScreen(navController: NavController) {
                     )
                 }
                 items(books) { book ->
-                    BookItem(book, navController)
+                    BookItem(book) {
+                        val bookJson = appJson.encodeToString(BookModel.serializer(), book)
+                        navController.currentBackStackEntry?.savedStateHandle?.set("book", bookJson)
+                        navController.navigate(Screen.BookDetail.route)
+                    }
                 }
             }
         }

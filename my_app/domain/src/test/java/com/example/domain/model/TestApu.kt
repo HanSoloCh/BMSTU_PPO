@@ -1,6 +1,6 @@
 package com.example.domain.model
 
-import java.util.*
+import java.util.UUID
 
 internal object TestApu {
     fun create(

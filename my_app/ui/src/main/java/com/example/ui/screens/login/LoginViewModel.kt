@@ -7,8 +7,8 @@ import com.example.ui.network.AuthApi
 import com.example.ui.network.dto.LoginRequest
 import com.example.ui.util.UserStore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.ktor.client.plugins.*
-import io.ktor.client.statement.*
+import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -23,8 +23,8 @@ class LoginViewModel @Inject constructor(
     private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state
 
-    fun onEmailChange(email: String) {
-        _state.value = _state.value.copy(email = email)
+    fun onEmailChange(phone: String) {
+        _state.value = _state.value.copy(phone = phone)
     }
 
     fun onPasswordChange(password: String) {
@@ -35,8 +35,14 @@ class LoginViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
             try {
-                println(authApi.login(LoginRequest(_state.value.email, _state.value.password)))
-                val user = UserMapper().toUi(authApi.login(LoginRequest(_state.value.email, _state.value.password)))
+                val user = UserMapper().toUi(
+                    authApi.login(
+                        LoginRequest(
+                            _state.value.phone,
+                            _state.value.password
+                        )
+                    )
+                )
                 UserStore.save(user)
                 _state.update { it.copy(isLoading = false) }
                 onComplete()

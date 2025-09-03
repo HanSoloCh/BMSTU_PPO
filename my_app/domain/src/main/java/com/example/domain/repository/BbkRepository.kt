@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.model.BbkModel
 import com.example.domain.specification.Specification
-import java.util.*
+import java.util.UUID
 
 interface BbkRepository {
     suspend fun readById(bbkId: UUID): BbkModel?

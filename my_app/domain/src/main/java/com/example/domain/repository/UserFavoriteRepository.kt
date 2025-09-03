@@ -1,7 +1,7 @@
 package com.example.domain.repository
 
 import com.example.domain.model.BookModel
-import java.util.*
+import java.util.UUID
 
 interface UserFavoriteRepository {
     suspend fun create(userId: UUID, bookId: UUID): Pair<UUID, UUID>

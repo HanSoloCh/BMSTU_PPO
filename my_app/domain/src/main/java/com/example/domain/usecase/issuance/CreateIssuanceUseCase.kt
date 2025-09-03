@@ -13,7 +13,7 @@ import com.example.domain.specification.book.BookIdSpecification
 import com.example.domain.specification.issuance.IssuanceIdSpecification
 import com.example.domain.specification.reservation.ReservationUserIdSpecification
 import com.example.domain.specification.user.UserIdSpecification
-import java.util.*
+import java.util.UUID
 
 class CreateIssuanceUseCase(
     private val issuanceRepository: IssuanceRepository,

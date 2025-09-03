@@ -1,7 +1,7 @@
-package com.example.domain.domain.util.utils
+package com.example.domain.enums
 
 enum class ReservationStatus {
     RESERVED,
-    WAITING,
+    FULFILLED,
     CANCEL,
 }

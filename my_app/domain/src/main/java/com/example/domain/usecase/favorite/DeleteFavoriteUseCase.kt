@@ -1,7 +1,7 @@
 package com.example.domain.usecase.favorite
 
 import com.example.domain.repository.UserFavoriteRepository
-import java.util.*
+import java.util.UUID
 
 class DeleteFavoriteUseCase(
     val userFavoriteRepository: UserFavoriteRepository

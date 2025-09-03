@@ -8,7 +8,7 @@ import com.example.domain.exception.InvalidPhoneException
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.Year
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class PublisherModel(
@@ -23,9 +23,14 @@ data class PublisherModel(
         when {
             name.isBlank() -> throw EmptyStringException("name")
             description != null && description.isBlank() -> throw EmptyStringException("description")
-            foundationYear !in 0..Year.now().value -> throw InvalidDateException(foundationYear.toString())
+            foundationYear != null && foundationYear !in 0..Year.now().value -> throw InvalidDateException(
+                foundationYear.toString()
+            )
+
             email != null && !isValidEmail(email) -> throw InvalidEmailException(email)
-            phoneNumber != null && !isValidPhone(phoneNumber) -> throw InvalidPhoneException(phoneNumber)
+            phoneNumber != null && !isValidPhone(phoneNumber) -> throw InvalidPhoneException(
+                phoneNumber
+            )
         }
     }
 

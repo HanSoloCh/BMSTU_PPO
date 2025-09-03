@@ -6,11 +6,11 @@ import com.example.domain.repository.UserRepository
 class LoginUserUseCase(
     private val userRepository: UserRepository
 ) {
-    suspend operator fun invoke(email: String, password: String): UserModel? {
-        if (email.isBlank() || password.isBlank()) {
+    suspend operator fun invoke(phone: String, password: String): UserModel? {
+        if (phone.isBlank() || password.isBlank()) {
             return null
         }
-        return userRepository.login(email, hashPassword(password))
+        return userRepository.login(phone, hashPassword(password))
     }
 
     private fun hashPassword(password: String): String {

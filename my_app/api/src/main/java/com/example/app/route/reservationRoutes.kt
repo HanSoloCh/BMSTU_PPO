@@ -2,18 +2,25 @@ package com.example.app.route
 
 import com.example.app.util.getParam
 import com.example.domain.model.ReservationModel
-import com.example.domain.usecase.reservation.*
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import com.example.domain.usecase.reservation.CreateReservationUseCase
+import com.example.domain.usecase.reservation.DeleteReservationUseCase
+import com.example.domain.usecase.reservation.ReadReservationUseCase
+import com.example.domain.usecase.reservation.UpdateReservationUseCase
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.put
+import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
-import java.util.*
+import java.util.UUID
 
 fun Route.reservationRoutes() {
-    val readReservationByUserIdUseCase by inject<ReadReservationByUserIdUseCase>()
-    val readReservationByBookIdUseCase by inject<ReadReservationByBookIdUseCase>()
+    val readReservationUseCase by inject<ReadReservationUseCase>()
     val createReservationUseCase by inject<CreateReservationUseCase>()
     val updateReservationUseCase by inject<UpdateReservationUseCase>()
     val deleteReservationUseCase by inject<DeleteReservationUseCase>()
@@ -31,26 +38,19 @@ fun Route.reservationRoutes() {
             call.respond(HttpStatusCode.NoContent)
         }
 
+        get {
+            val bookId = call.getParam<UUID>("bookId") { UUID.fromString(it) }
+            val userId = call.getParam<UUID>("userId") { UUID.fromString(it) }
+
+            val result = readReservationUseCase(bookId, userId)
+            call.respond(HttpStatusCode.OK, result)
+        }
+
         route("/{id}") {
             delete {
                 val reservationId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deleteReservationUseCase(reservationId)
                 call.respond(HttpStatusCode.NoContent)
-            }
-        }
-
-        route("/user/{userId}") {
-            get {
-                val userId = call.getParam<UUID>("userId", true) { UUID.fromString(it) }!!
-                val result = readReservationByUserIdUseCase(userId)
-                call.respond(HttpStatusCode.OK, result)
-            }
-        }
-        route("/book/{bookId}") {
-            get {
-                val bookId = call.getParam<UUID>("bookId", true) { UUID.fromString(it) }!!
-                val result = readReservationByBookIdUseCase(bookId)
-                call.respond(HttpStatusCode.OK, result)
             }
         }
     }

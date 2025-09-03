@@ -13,7 +13,8 @@ import org.jetbrains.exposed.sql.and
 
 object IssuanceSpecToExpressionMapper {
     fun map(spec: Specification<IssuanceModel>): Op<Boolean> = when (spec) {
-        is AndSpecification<IssuanceModel> -> spec.specifications.map { map(it) }.reduce { a, b -> a and b }
+        is AndSpecification<IssuanceModel> -> spec.specifications.map { map(it) }
+            .reduce { a, b -> a and b }
 
         is IssuanceIdSpecification -> IssuanceEntity.id eq spec.id
         is IssuanceUserIdSpecification -> IssuanceEntity.userId eq spec.userId

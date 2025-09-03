@@ -8,10 +8,14 @@ import com.example.domain.repository.AuthorRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 
 class AuthorRepositoryImpl(
@@ -51,11 +55,12 @@ class AuthorRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<AuthorModel>): List<AuthorModel> = withContext(Dispatchers.IO) {
-        val expression = AuthorSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<AuthorModel>): List<AuthorModel> =
+        withContext(Dispatchers.IO) {
+            val expression = AuthorSpecToExpressionMapper.map(spec)
 
-        transaction(db) {
-            AuthorEntity.selectAll().where { expression }.map { AuthorMapper.toDomain(it) }
+            transaction(db) {
+                AuthorEntity.selectAll().where { expression }.map { AuthorMapper.toDomain(it) }
+            }
         }
-    }
 }

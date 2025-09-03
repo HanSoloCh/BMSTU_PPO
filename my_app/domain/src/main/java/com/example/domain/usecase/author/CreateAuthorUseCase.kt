@@ -4,7 +4,7 @@ import com.example.domain.exception.ModelDuplicateException
 import com.example.domain.model.AuthorModel
 import com.example.domain.repository.AuthorRepository
 import com.example.domain.specification.author.AuthorIdSpecification
-import java.util.*
+import java.util.UUID
 
 class CreateAuthorUseCase(
     private val authorRepository: AuthorRepository

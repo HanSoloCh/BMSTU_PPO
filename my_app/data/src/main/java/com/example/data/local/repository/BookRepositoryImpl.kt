@@ -12,27 +12,31 @@ import com.example.domain.repository.BookRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class BookRepositoryImpl(
     private val db: Database
 ) : BookRepository {
-    override suspend fun readBooks(page: Int, pageSize: Int): List<BookModel> = withContext(Dispatchers.IO) {
-        transaction(db) {
-            val offset: Long = ((page - 1) * pageSize).toLong()
-            val books = BookEntity
-                .selectAll()
-                .limit(pageSize, offset)
-                .toList()
-            println(books[0])
-            println(books[1])
-            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
-            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+    override suspend fun readBooks(page: Int, pageSize: Int): List<BookModel> =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                val offset: Long = ((page - 1) * pageSize).toLong()
+                val books = BookEntity
+                    .selectAll()
+                    .limit(pageSize, offset)
+                    .toList()
+                val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+                books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+            }
         }
-    }
 
     override suspend fun readById(bookId: UUID): BookModel? = withContext(Dispatchers.IO) {
         transaction(db) {
@@ -42,16 +46,17 @@ class BookRepositoryImpl(
         }
     }
 
-    override suspend fun readByAuthorId(authorId: UUID): List<BookModel> = withContext(Dispatchers.IO) {
-        transaction(db) {
-            val books = (BookEntity innerJoin BookAuthorCrossRef)
-                .select(BookEntity.columns)
-                .where { BookAuthorCrossRef.authorId eq authorId }
-                .toList()
-            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
-            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+    override suspend fun readByAuthorId(authorId: UUID): List<BookModel> =
+        withContext(Dispatchers.IO) {
+            transaction(db) {
+                val books = (BookEntity innerJoin BookAuthorCrossRef)
+                    .select(BookEntity.columns)
+                    .where { BookAuthorCrossRef.authorId eq authorId }
+                    .toList()
+                val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+                books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+            }
         }
-    }
 
 
     override suspend fun create(bookModel: BookModel) = withContext(Dispatchers.IO) {
@@ -64,7 +69,7 @@ class BookRepositoryImpl(
             bookModel.authors.forEach { author ->
                 BookAuthorCrossRef.insert {
                     it[BookAuthorCrossRef.bookId] = bookId
-                    it[BookAuthorCrossRef.authorId] = author
+                    it[authorId] = author
                 }
             }
             bookId
@@ -77,12 +82,12 @@ class BookRepositoryImpl(
                 BookMapper.toUpdateStatement(bookModel, it)
             }
             if (returnValue > 0) {
-                BookAuthorCrossRef.deleteWhere { BookAuthorCrossRef.bookId eq bookModel.id }
+                BookAuthorCrossRef.deleteWhere { bookId eq bookModel.id }
 
                 bookModel.authors.forEach { author ->
                     BookAuthorCrossRef.insert {
-                        it[BookAuthorCrossRef.bookId] = bookModel.id
-                        it[BookAuthorCrossRef.authorId] = author
+                        it[bookId] = bookModel.id
+                        it[authorId] = author
                     }
                 }
             }
@@ -100,28 +105,30 @@ class BookRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<BookModel>): List<BookModel> = withContext(Dispatchers.IO) {
-        val expression = BookSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<BookModel>): List<BookModel> =
+        withContext(Dispatchers.IO) {
+            val expression = BookSpecToExpressionMapper.map(spec)
 
-        transaction(db) {
-            val books = BookEntity
-                .selectAll()
-                .where { expression }
-                .toList()
-            val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
-            books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+            transaction(db) {
+                val books = BookEntity
+                    .selectAll()
+                    .where { expression }
+                    .toList()
+                val authors = getAuthorsByBookId(books.map { it[BookEntity.id].value })
+                books.map { BookMapper.toDomain(it, authors[it[BookEntity.id].value].orEmpty()) }
+            }
         }
-    }
 
     private fun getAuthorsByBookId(bookId: UUID): List<AuthorModel> = transaction {
         getAuthorsByBookId(listOf(bookId))[bookId].orEmpty()
     }
 
-    private fun getAuthorsByBookId(bookIds: List<UUID>): Map<UUID, List<AuthorModel>> = transaction {
-        (AuthorEntity innerJoin BookAuthorCrossRef)
-            .selectAll()
-            .where { BookAuthorCrossRef.bookId inList bookIds }
-            .map { row -> row[BookAuthorCrossRef.bookId].value to AuthorMapper.toDomain(row) }
-            .groupBy({ it.first }, { it.second })
-    }
+    private fun getAuthorsByBookId(bookIds: List<UUID>): Map<UUID, List<AuthorModel>> =
+        transaction {
+            (AuthorEntity innerJoin BookAuthorCrossRef)
+                .selectAll()
+                .where { BookAuthorCrossRef.bookId inList bookIds }
+                .map { row -> row[BookAuthorCrossRef.bookId].value to AuthorMapper.toDomain(row) }
+                .groupBy({ it.first }, { it.second })
+        }
 }

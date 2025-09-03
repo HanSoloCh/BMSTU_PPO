@@ -9,10 +9,14 @@ import com.example.domain.repository.PublisherRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class PublisherRepositoryImpl(
     private val db: Database
@@ -45,7 +49,7 @@ class PublisherRepositoryImpl(
 
     override suspend fun deleteById(publisherId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            ApuEntity.deleteWhere { ApuEntity.id eq publisherId }
+            ApuEntity.deleteWhere { id eq publisherId }
         }
     }
 
@@ -59,7 +63,8 @@ class PublisherRepositoryImpl(
             val expression = PublisherSpecToExpressionMapper.map(spec)
 
             transaction(db) {
-                PublisherEntity.selectAll().where { expression }.map { PublisherMapper.toDomain(it) }
+                PublisherEntity.selectAll().where { expression }
+                    .map { PublisherMapper.toDomain(it) }
             }
         }
 }

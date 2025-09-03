@@ -5,14 +5,20 @@ import com.example.domain.model.UserModel
 import com.example.domain.usecase.user.CreateUserUseCase
 import com.example.domain.usecase.user.DeleteUserUseCase
 import com.example.domain.usecase.user.ReadUserByIdUseCase
+import com.example.domain.usecase.user.ReadUserByPhoneUseCase
 import com.example.domain.usecase.user.UpdateUserUseCase
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.put
+import io.ktor.server.routing.route
 import org.koin.ktor.ext.inject
-import java.util.*
+import java.util.UUID
 
 fun Route.userRoutes() {
     val readUserByIdUseCase by inject<ReadUserByIdUseCase>()
@@ -49,6 +55,15 @@ fun Route.userRoutes() {
                 val userId = call.getParam<UUID>("id", true) { UUID.fromString(it) }!!
                 deleteUserUseCase(userId)
                 call.respond(HttpStatusCode.NoContent)
+            }
+        }
+
+        route("/by-phone") {
+            val userByPhoneUseCase: ReadUserByPhoneUseCase by inject()
+            get {
+                val name = call.getParam<String>("phone", true) { it }!!
+                val user = userByPhoneUseCase(name)
+                call.respond(user)
             }
         }
     }

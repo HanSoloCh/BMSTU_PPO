@@ -7,7 +7,7 @@ import com.example.domain.repository.ApuRepository
 import com.example.domain.repository.BbkRepository
 import com.example.domain.specification.apu.ApuIdSpecification
 import com.example.domain.specification.bbk.BbkIdSpecification
-import java.util.*
+import java.util.UUID
 
 class CreateApuUseCase(
     private val apuRepository: ApuRepository,

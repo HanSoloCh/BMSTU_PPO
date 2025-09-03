@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.statements.UpdateStatement
-import java.util.*
+import java.util.UUID
 
 object AuthorMapper {
     fun toDomain(row: ResultRow): AuthorModel {

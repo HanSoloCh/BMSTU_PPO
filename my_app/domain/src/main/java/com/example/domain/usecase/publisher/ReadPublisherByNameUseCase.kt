@@ -7,8 +7,8 @@ import com.example.domain.specification.publisher.PublisherNameSpecification
 class ReadPublisherByNameUseCase(
     private val publisherRepository: PublisherRepository
 ) {
-    suspend operator fun invoke(publisherName: String): PublisherModel? {
-        return publisherRepository.query(PublisherNameSpecification(publisherName)).firstOrNull()
+    suspend operator fun invoke(publisherName: String): List<PublisherModel> {
+        return publisherRepository.query(PublisherNameSpecification(publisherName))
     }
 }
 

@@ -3,7 +3,7 @@ package com.example.domain.model
 import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDate
-import java.util.*
+import java.util.UUID
 
 @Serializable
 data class IssuanceModel(

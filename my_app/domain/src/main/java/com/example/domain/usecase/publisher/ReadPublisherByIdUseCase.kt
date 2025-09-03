@@ -2,7 +2,7 @@ package com.example.domain.usecase.publisher
 
 import com.example.domain.model.PublisherModel
 import com.example.domain.repository.PublisherRepository
-import java.util.*
+import java.util.UUID
 
 class ReadPublisherByIdUseCase(
     private val publisherRepository: PublisherRepository

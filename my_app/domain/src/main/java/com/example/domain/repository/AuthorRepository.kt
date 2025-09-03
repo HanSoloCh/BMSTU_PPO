@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.model.AuthorModel
 import com.example.domain.specification.Specification
-import java.util.*
+import java.util.UUID
 
 interface AuthorRepository {
     suspend fun readById(authorId: UUID): AuthorModel?

@@ -2,7 +2,11 @@ package com.example.app.plugin
 
 import com.example.app.logger.LogLevel
 import com.example.app.logger.Logger
-import io.ktor.server.application.*
+import io.ktor.server.application.Application
+import io.ktor.server.application.ApplicationStarted
+import io.ktor.server.application.ApplicationStarting
+import io.ktor.server.application.ApplicationStopped
+import io.ktor.server.application.ApplicationStopping
 
 fun Application.configureLog() {
     environment.monitor.subscribe(ApplicationStarting) {

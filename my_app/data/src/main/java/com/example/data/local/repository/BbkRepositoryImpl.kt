@@ -8,10 +8,14 @@ import com.example.domain.repository.BbkRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class BbkRepositoryImpl(
     private val db: Database
@@ -50,11 +54,12 @@ class BbkRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<BbkModel>): List<BbkModel> = withContext(Dispatchers.IO) {
-        val expression = BbkSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<BbkModel>): List<BbkModel> =
+        withContext(Dispatchers.IO) {
+            val expression = BbkSpecToExpressionMapper.map(spec)
 
-        transaction(db) {
-            BbkEntity.selectAll().where { expression }.map { BbkMapper.toDomain(it) }
+            transaction(db) {
+                BbkEntity.selectAll().where { expression }.map { BbkMapper.toDomain(it) }
+            }
         }
-    }
 }

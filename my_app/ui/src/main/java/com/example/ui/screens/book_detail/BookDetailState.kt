@@ -5,7 +5,8 @@ import com.example.ui.model.BookModel
 data class BookActionsState(
     val isFavorite: Boolean = false,
     val isReserved: Boolean = false,
-    val isIssuance: Boolean = false
+    val isIssuance: Boolean = false,
+    val queueNumber: Int = 0
 )
 
 sealed class BookDetailState {

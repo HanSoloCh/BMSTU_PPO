@@ -6,7 +6,7 @@ import com.example.domain.repository.UserFavoriteRepository
 import com.example.domain.repository.UserRepository
 import com.example.domain.specification.book.BookIdSpecification
 import com.example.domain.specification.user.UserIdSpecification
-import java.util.*
+import java.util.UUID
 
 class CreateFavoriteUseCase(
     private val userFavoriteRepository: UserFavoriteRepository,

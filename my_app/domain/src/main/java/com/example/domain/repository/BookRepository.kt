@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.model.BookModel
 import com.example.domain.specification.Specification
-import java.util.*
+import java.util.UUID
 
 interface BookRepository {
     suspend fun readBooks(page: Int, pageSize: Int): List<BookModel>

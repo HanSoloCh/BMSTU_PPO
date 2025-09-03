@@ -8,10 +8,15 @@ import com.example.domain.repository.UserRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class UserRepositoryImpl(
     private val db: Database
@@ -50,21 +55,22 @@ class UserRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<UserModel>): List<UserModel> = withContext(Dispatchers.IO) {
-        val expression = UserSpecToExpressionMapper.map(spec)
+    override suspend fun query(spec: Specification<UserModel>): List<UserModel> =
+        withContext(Dispatchers.IO) {
+            val expression = UserSpecToExpressionMapper.map(spec)
 
-        transaction(db) {
-            UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
+            transaction(db) {
+                UserEntity.selectAll().where { expression }.map { UserMapper.toDomain(it) }
+            }
+
         }
 
-    }
-
-    override suspend fun login(email: String, password: String) = withContext(Dispatchers.IO) {
+    override suspend fun login(phone: String, password: String) = withContext(Dispatchers.IO) {
         transaction(db) {
             UserEntity
                 .selectAll()
                 .where {
-                    (UserEntity.email eq email) and (UserEntity.password eq password)
+                    (UserEntity.phoneNumber eq phone) and (UserEntity.password eq password)
                 }
                 .firstOrNull()?.let { UserMapper.toDomain(it) }
         }

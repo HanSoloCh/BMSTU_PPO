@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +24,6 @@ class UserFavoriteViewModel @Inject constructor(
     private val userId = UUID.fromString(savedStateHandle.get<String>("userId")!!)
 
     fun loadBooks() {
-        println("HI")
         viewModelScope.launch {
             _state.value = UserFavoriteState.Loading
             try {

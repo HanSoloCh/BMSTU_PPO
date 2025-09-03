@@ -11,8 +11,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.ui.components.Menu
-import com.example.ui.components.NavGraph
+import com.example.ui.component.Menu
+import com.example.ui.navigation.NavGraph
 import com.example.ui.navigation.Screen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -33,7 +33,7 @@ class MainActivity : ComponentActivity() {
                         onSearchSubmit = {
                             val query = searchText.trim()
                             if (query.isNotEmpty()) {
-                                navController.navigate(Screen.SearchResults.createRoute(query))
+                                navController.navigate(Screen.BookList.createRoute(query))
                             }
                         }
                     )

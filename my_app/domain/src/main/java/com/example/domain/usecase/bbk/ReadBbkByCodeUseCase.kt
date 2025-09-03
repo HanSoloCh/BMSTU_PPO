@@ -7,7 +7,7 @@ import com.example.domain.specification.bbk.BbkCodeSpecification
 class ReadBbkByCodeUseCase(
     private val bbkRepository: BbkRepository
 ) {
-    suspend operator fun invoke(bbkCode: String): BbkModel? {
-        return bbkRepository.query(BbkCodeSpecification(bbkCode)).firstOrNull()
+    suspend operator fun invoke(bbkCode: String): List<BbkModel> {
+        return bbkRepository.query(BbkCodeSpecification(bbkCode))
     }
 }

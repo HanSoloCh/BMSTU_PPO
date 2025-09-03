@@ -8,10 +8,14 @@ import com.example.domain.repository.ApuRepository
 import com.example.domain.specification.Specification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import java.util.*
+import org.jetbrains.exposed.sql.update
+import java.util.UUID
 
 class ApuRepositoryImpl(
     private val db: Database
@@ -42,7 +46,7 @@ class ApuRepositoryImpl(
 
     override suspend fun deleteById(apuId: UUID) = withContext(Dispatchers.IO) {
         transaction(db) {
-            ApuEntity.deleteWhere { ApuEntity.id eq apuId }
+            ApuEntity.deleteWhere { id eq apuId }
         }
     }
 
@@ -50,10 +54,11 @@ class ApuRepositoryImpl(
         query(spec).isNotEmpty()
     }
 
-    override suspend fun query(spec: Specification<ApuModel>): List<ApuModel> = withContext(Dispatchers.IO) {
-        val expression = ApuSpecToExpressionMapper.map(spec)
-        transaction(db) {
-            ApuEntity.selectAll().where(expression).map { ApuMapper.toDomain(it) }
+    override suspend fun query(spec: Specification<ApuModel>): List<ApuModel> =
+        withContext(Dispatchers.IO) {
+            val expression = ApuSpecToExpressionMapper.map(spec)
+            transaction(db) {
+                ApuEntity.selectAll().where(expression).map { ApuMapper.toDomain(it) }
+            }
         }
-    }
 }

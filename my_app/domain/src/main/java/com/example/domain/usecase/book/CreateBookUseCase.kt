@@ -11,7 +11,7 @@ import com.example.domain.specification.author.AuthorIdSpecification
 import com.example.domain.specification.bbk.BbkIdSpecification
 import com.example.domain.specification.book.BookIdSpecification
 import com.example.domain.specification.publisher.PublisherIdSpecification
-import java.util.*
+import java.util.UUID
 
 class CreateBookUseCase(
     private val bookRepository: BookRepository,

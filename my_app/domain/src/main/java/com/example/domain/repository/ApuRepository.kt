@@ -2,7 +2,7 @@ package com.example.domain.repository
 
 import com.example.domain.model.ApuModel
 import com.example.domain.specification.Specification
-import java.util.*
+import java.util.UUID
 
 interface ApuRepository {
     suspend fun readById(apuId: UUID?): ApuModel?

@@ -1,6 +1,16 @@
 package com.example.data.local
 
-import com.example.data.local.entity.*
+import com.example.data.local.entity.ApuEntity
+import com.example.data.local.entity.AuthorEntity
+import com.example.data.local.entity.BbkEntity
+import com.example.data.local.entity.BookAuthorCrossRef
+import com.example.data.local.entity.BookEntity
+import com.example.data.local.entity.IssuanceEntity
+import com.example.data.local.entity.PublisherEntity
+import com.example.data.local.entity.QueueEntity
+import com.example.data.local.entity.ReservationEntity
+import com.example.data.local.entity.UserEntity
+import com.example.data.local.entity.UserFavoriteCrossRef
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.jetbrains.exposed.sql.Database
@@ -45,6 +55,7 @@ object DatabaseBuilder {
                 IssuanceEntity,
                 PublisherEntity,
                 ReservationEntity,
+                QueueEntity,
                 UserEntity,
                 UserFavoriteCrossRef
             )

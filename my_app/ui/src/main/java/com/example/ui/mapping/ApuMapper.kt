@@ -17,7 +17,7 @@ class ApuMapper @Inject constructor(
         )
     }
 
-    suspend fun toDomain(apu: ApuModel) = ApuDto(
+    suspend fun toDto(apu: ApuModel) = ApuDto(
         id = apu.id,
         term = apu.term,
         bbkId = apu.bbkModel.id

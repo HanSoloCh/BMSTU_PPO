@@ -2,8 +2,10 @@ package com.example.app.config
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import io.ktor.server.auth.jwt.*
-import java.util.*
+import io.ktor.server.auth.jwt.JWTAuthenticationProvider
+import io.ktor.server.auth.jwt.JWTPrincipal
+import java.util.Date
+import java.util.UUID
 
 object JwtConfig {
     private const val SECRET = "super_secret_key"
@@ -29,7 +31,9 @@ object JwtConfig {
                 .build()
         )
         config.validate { credential ->
-            if (credential.payload.getClaim("userId").asInt() != null) JWTPrincipal(credential.payload) else null
+            if (credential.payload.getClaim("userId")
+                    .asInt() != null
+            ) JWTPrincipal(credential.payload) else null
         }
     }
 }

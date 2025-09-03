@@ -3,7 +3,7 @@ package com.example.ui.util
 
 import com.example.ui.common.enums.UserRole
 import com.example.ui.model.UserModel
-import java.util.*
+import java.util.UUID
 
 object UserStore {
     private var userId: UUID? = null

@@ -1,7 +1,7 @@
 package com.example.domain.usecase.bbk
 
 import com.example.domain.repository.BbkRepository
-import java.util.*
+import java.util.UUID
 
 class DeleteBbkUseCase(
     private val bbkRepository: BbkRepository

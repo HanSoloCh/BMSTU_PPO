@@ -2,15 +2,28 @@ package com.example.app.route
 
 import com.example.app.util.getParam
 import com.example.domain.model.BookModel
-import com.example.domain.usecase.book.*
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
+import com.example.domain.usecase.book.CreateBookUseCase
+import com.example.domain.usecase.book.DeleteBookUseCase
+import com.example.domain.usecase.book.ReadBookByAuthorUseCase
+import com.example.domain.usecase.book.ReadBookByBbkUseCase
+import com.example.domain.usecase.book.ReadBookByIdUseCase
+import com.example.domain.usecase.book.ReadBookByPublisherUseCase
+import com.example.domain.usecase.book.ReadBookBySentenceUseCase
+import com.example.domain.usecase.book.ReadBooksUseCase
+import com.example.domain.usecase.book.UpdateBookUseCase
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.call
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.delete
+import io.ktor.server.routing.get
+import io.ktor.server.routing.post
+import io.ktor.server.routing.put
+import io.ktor.server.routing.route
 import kotlinx.coroutines.flow.emptyFlow
 import org.koin.ktor.ext.inject
-import java.util.*
+import java.util.UUID
 
 fun Route.bookRoutes() {
     val readBookByIdUseCase by inject<ReadBookByIdUseCase>()
@@ -43,7 +56,7 @@ fun Route.bookRoutes() {
 
                 val book = readBookByIdUseCase(bookId)
                 if (book == null) {
-                    call.respond(HttpStatusCode.NotFound, "Bbk not found")
+                    call.respond(HttpStatusCode.NotFound, "Book not found")
                 } else {
                     call.respond(book)
                 }

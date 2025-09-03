@@ -10,12 +10,15 @@ import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.like
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.lowerCase
 
 object ApuSpecToExpressionMapper {
     fun map(spec: Specification<ApuModel>): Op<Boolean> = when (spec) {
-        is AndSpecification<ApuModel> -> spec.specifications.map { map(it) }.reduce { a, b -> a and b }
+        is AndSpecification<ApuModel> -> spec.specifications.map { map(it) }
+            .reduce { a, b -> a and b }
+
         is ApuIdSpecification -> ApuEntity.id eq spec.id
-        is ApuTermSpecification -> ApuEntity.term like spec.term
+        is ApuTermSpecification -> ApuEntity.term.lowerCase() like "%${spec.term.lowercase()}%"
 
         else -> throw IllegalArgumentException("Unknown spec")
     }
