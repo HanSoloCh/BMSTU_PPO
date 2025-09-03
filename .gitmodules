@@ -1,0 +1,3 @@
+[submodule "library_app"]
+	path = library_app
+	url = https://github.com/HanSoloCh/BMSTU_CW_DB
