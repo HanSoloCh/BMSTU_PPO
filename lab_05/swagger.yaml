@@ -562,6 +562,33 @@ paths:
           description: Невалидные данные
         '404':
           description: Выдача не найдена
+          
+    get:
+      tags: [issuance]
+      summary: Получить выдачи с фильтром по пользователю и/или книге
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: bookId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '200':
+          description: Список выдач
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/IssuanceModel"
+        '404':
+          description: Нет выдач для указанных фильтров
+
 
   /issuance/{id}:
     delete:
@@ -579,50 +606,6 @@ paths:
         '404':
           description: Выдача не найдена
 
-  /issuance/user/{user_id}:
-    get:
-      tags: [issuance]
-      summary: Получить выдачи по ID пользователя
-      parameters:
-        - name: user_id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-      responses:
-        '200':
-          description: Список выдач пользователя
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/IssuanceModel"
-        '404':
-          description: Пользователь не найден или нет выдач
-
-  /issuance/book/{book_id}:
-    get:
-      tags: [issuance]
-      summary: Получить выдачи по ID книги
-      parameters:
-        - name: book_id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-      responses:
-        '200':
-          description: Список выдач книги
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/IssuanceModel"
-        '404':
-          description: Книга не найдена или нет выдач
-          
   /reservation:
     post:
       tags: [reservation]
@@ -661,6 +644,33 @@ paths:
         '404':
           description: Бронь не найдена
 
+    get:
+      tags: [reservation]
+      summary: Получить брони с фильтром по пользователю и/или книге
+      parameters:
+        - name: userId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: bookId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '200':
+          description: Список броней
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ReservationModel"
+        '404':
+          description: Нет броней для указанных фильтров
+
+
   /reservation/{id}:
     delete:
       tags: [reservation]
@@ -677,49 +687,111 @@ paths:
         '404':
           description: Бронь не найдена
 
-  /reservation/user/{user_id}:
+  /queue:
+    post:
+      tags: [queue]
+      summary: Создать новую запись в очереди
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueueModel"
+      responses:
+        '201':
+          description: Запись в очереди успешно создана
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        '400':
+          description: Невалидные данные
+  
+    put:
+      tags: [queue]
+      summary: Обновить данные записи в очереди
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/QueueModel"
+      responses:
+        '204':
+          description: Запись в очереди успешно обновлена
+        '400':
+          description: Невалидные данные
+        '404':
+          description: Запись в очереди не найдена
+  
     get:
-      tags: [reservation]
-      summary: Получить бронь по ID пользователя
+      tags: [queue]
+      summary: Получить записи очереди с фильтром по пользователю и/или книге
       parameters:
-        - name: user_id
+        - name: userId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: bookId
+          in: query
+          required: false
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '200':
+          description: Список записей в очереди
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/QueueModel"
+        '404':
+          description: Нет записей в очереди для указанных фильтров
+  
+  /queue/position/{bookId}/{userId}:
+    get:
+      tags: [queue]
+      summary: Получить позицию в очереди для конкретного пользователя и книги
+      parameters:
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: userId
           in: path
           required: true
           schema:
             $ref: "#/components/schemas/UUID"
       responses:
         '200':
-          description: Список выдач пользователя
+          description: Позиция в очереди
           content:
-            application/json:
+            text/plain:
               schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ReservationModel"
-        '404':
-          description: Пользователь не найден или нет броней
+                type: integer
+                nullable: true
+          '404':
+            description: Позиция не найдена
 
-  /reservation/book/{book_id}:
-    get:
-      tags: [reservation]
-      summary: Получить бронь по ID книги
-      parameters:
-        - name: book_id
-          in: path
-          required: true
-          schema:
-            $ref: "#/components/schemas/UUID"
-      responses:
-        '200':
-          description: Список выдач книги
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: "#/components/schemas/ReservationModel"
-        '404':
-          description: Книга не найдена или нет броней
+/queue/{id}:
+  delete:
+    tags: [queue]
+    summary: Удалить запись из очереди
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          $ref: "#/components/schemas/UUID"
+    responses:
+      '204':
+        description: Запись в очереди успешно удалена
+      '404':
+        description: Запись в очереди не найдена
 
   /user/{userId}/favorite/{bookId}:
     post:
@@ -803,6 +875,12 @@ components:
       type: string
       format: date
       example: "2023-12-31"
+    
+    Instan:
+      type: string
+      format: date-time
+      example: "2023-01-15T12:00:00Z"
+
 
     UserRole:
       type: string
@@ -933,6 +1011,24 @@ components:
         copies: 10
         availableCopies: 10
 
+    QueueModel:
+      type: object
+      required: [bookId, userId, createdAt]
+      properties:
+        id:
+          $ref: "#/components/schemas/UUID"
+        bookId:
+          $ref: "#/components/schemas/UUID"
+        userId:
+          $ref: "#/components/schemas/UUID"
+        createdAt:
+          $ref: "#/components/schemas/Instant"
+      example:
+        id: "990a3e98-7b0d-4b5e-8b9a-3a1b2c4f5e6f"
+        bookId: "990a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
+        userId: "aa0a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
+        createdAt: "2023-01-15T12:00:00Z"
+
     IssuanceModel:
       type: object
       required: [bookId, userId, issuanceDate, returnDate]
@@ -948,6 +1044,7 @@ components:
         returnDate:
           $ref: "#/components/schemas/LocalDate"
       example:
+        id: "990a3e98-sb0d-4b5e-8b9a-3a1b2c4f5e6f"
         bookId: "990a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
         userId: "aa0a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
         issuanceDate: "2023-01-15"
@@ -968,12 +1065,6 @@ components:
           nullable: true
           minLength: 1
           example: "Крупное издательство"
-        foundationYear:
-          type: integer
-          nullable: true
-          minimum: 0
-          maximum: 2023
-          example: 1990
         email:
           type: string
           nullable: true
@@ -1004,6 +1095,7 @@ components:
         cancelDate:
           $ref: "#/components/schemas/LocalDate"
       example:
+        id: "990a3e98-sb0d-4b5e-8b9a-3a1b2c4f5e6f"
         bookId: "990a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
         userId: "aa0a3e98-7b0d-4b5e-8b9a-3a1b2c4d5e6f"
         reservationDate: "2023-03-01"
@@ -1049,5 +1141,4 @@ components:
         password: "password"
         phoneNumber: "+79104563245"
         role: "READER"
-
 
