@@ -776,6 +776,79 @@ paths:
                 nullable: true
           '404':
             description: Позиция не найдена
+            
+  /user/{userId}/favorite/{bookId}:
+    post:
+      tags: [favorite]
+      summary: Добавить книгу в избранное пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '201':
+          description: Книга успешно добавлена в избранное
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uuid
+        '400':
+          description: Невалидные параметры
+        '404':
+          description: Пользователь или книга не найдены
+
+    delete:
+      tags: [favorite]
+      summary: Удалить книгу из избранного пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+        - name: bookId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '204':
+          description: Книга успешно удалена из избранного
+        '400':
+          description: Невалидные параметры
+        '404':
+          description: Запись в избранном не найдена
+
+  /user/{userId}/favorite:
+    get:
+      tags: [favorite]
+      summary: Получить список избранных книг пользователя
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            $ref: "#/components/schemas/UUID"
+      responses:
+        '200':
+          description: Список избранных книг
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/BookModel"
+        '404':
+          description: Пользователь не найден или нет избранных книг
+
 
 /queue/{id}:
   delete:
